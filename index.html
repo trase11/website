@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cerovia Systems — Laser weeding χωρίς χημικά</title>
+<meta name="description" content="Η Cerovia Systems χτίζει αυτόνομα laser-weeding rovers για τον μικρομεσαίο αγρότη. R&D stage — working prototype, Λάρισα.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        navy:     '#0A1628',
+        forest:   '#1B4D1E',
+        leaf:     '#4CAF50',
+        offwhite: '#F7F9F7',
+        charcoal: '#1A1A1A',
+        muted:    '#4A4A4A',
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        mono: ['"Space Mono"', 'monospace'],
+      },
+    }
+  }
+}
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', system-ui, sans-serif; }
+
+  /* ---- backgrounds: navy base + low-opacity green radials + grain ---- */
+  .hero-bg {
+    background-color: #0A1628;
+    background-image:
+      radial-gradient(ellipse 80% 55% at 75% 110%, rgba(76,175,80,0.12), transparent 60%),
+      radial-gradient(ellipse 60% 45% at 15% -10%, rgba(27,77,30,0.45), transparent 65%);
+  }
+  .dark-section-bg {
+    background-color: #0A1628;
+    background-image:
+      radial-gradient(ellipse 70% 50% at 85% 0%, rgba(27,77,30,0.35), transparent 65%),
+      radial-gradient(ellipse 50% 40% at 5% 100%, rgba(76,175,80,0.07), transparent 60%);
+  }
+  .forest-band-bg {
+    background-color: #1B4D1E;
+    background-image:
+      radial-gradient(ellipse 75% 60% at 20% 0%, rgba(10,22,40,0.45), transparent 65%),
+      radial-gradient(ellipse 55% 50% at 90% 100%, rgba(76,175,80,0.18), transparent 60%);
+  }
+  .grain::before {
+    content: '';
+    position: absolute; inset: 0;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* ---- layered brand-tinted shadows ---- */
+  .shadow-card {
+    box-shadow:
+      0 1px 2px rgba(10,22,40,0.06),
+      0 4px 12px rgba(10,22,40,0.07),
+      0 12px 32px rgba(27,77,30,0.06);
+  }
+  .shadow-float {
+    box-shadow:
+      0 2px 4px rgba(10,22,40,0.10),
+      0 10px 24px rgba(10,22,40,0.14),
+      0 24px 56px rgba(27,77,30,0.12);
+  }
+
+  /* ---- hero HUD load sequence: rows draw -> boxes lock -> laser fires -> confirm ---- */
+  .hud-rows path {
+    stroke-dasharray: 600;
+    stroke-dashoffset: 600;
+    animation: drawline 1.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  @keyframes drawline { to { stroke-dashoffset: 0; } }
+
+  .hud-box {
+    opacity: 0;
+    transform-origin: center;
+    transform: scale(1.6);
+    animation: locktarget 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  .hud-box-crop  { animation-delay: 0.9s; }
+  .hud-box-weed  { animation-delay: 1.25s; }
+  @keyframes locktarget { to { opacity: 1; transform: scale(1); } }
+
+  .hud-laser {
+    stroke-dasharray: 400;
+    stroke-dashoffset: 400;
+    animation: drawline 0.32s cubic-bezier(0.7, 0, 1, 1) 1.85s forwards;
+  }
+  .hud-flash {
+    opacity: 0;
+    animation: flash 0.5s ease-out 2.15s forwards;
+  }
+  @keyframes flash { 0% { opacity: 0; } 35% { opacity: 1; } 100% { opacity: 0.85; } }
+  .hud-confirm {
+    opacity: 0;
+    animation: fadein 0.5s ease-out 2.45s forwards;
+  }
+  @keyframes fadein { to { opacity: 1; } }
+  .hud-pulse { animation: hudpulse 2.4s cubic-bezier(0.4, 0, 0.6, 1) 2.6s infinite; }
+  @keyframes hudpulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
+
+  /* hero text enters after a beat, laser strike on the headline word */
+  .hero-enter { opacity: 0; transform: translateY(16px); animation: heroenter 0.8s cubic-bezier(0.22,1,0.36,1) forwards; }
+  .hero-enter-1 { animation-delay: 0.15s; }
+  .hero-enter-2 { animation-delay: 0.35s; }
+  .hero-enter-3 { animation-delay: 0.55s; }
+  .hero-enter-4 { animation-delay: 0.75s; }
+  @keyframes heroenter { to { opacity: 1; transform: translateY(0); } }
+
+  .strike-target { position: relative; white-space: nowrap; }
+  .strike-target::after {
+    content: '';
+    position: absolute;
+    left: -2%; right: -2%;
+    top: 54%;
+    height: 4px;
+    background: #4CAF50;
+    box-shadow: 0 0 12px rgba(76,175,80,0.8);
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: strikethrough 0.3s cubic-bezier(0.7, 0, 1, 1) 2.15s forwards;
+  }
+  @keyframes strikethrough { to { transform: scaleX(1); } }
+
+  /* ---- scroll reveals ---- */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+  /* ---- interactive states ---- */
+  .btn-primary {
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s ease, box-shadow 0.25s ease;
+    box-shadow: 0 2px 6px rgba(76,175,80,0.25), 0 8px 20px rgba(76,175,80,0.18);
+    cursor: pointer;
+  }
+  .btn-primary:hover { transform: translateY(-2px); background-color: #5CBA60; box-shadow: 0 4px 10px rgba(76,175,80,0.30), 0 14px 30px rgba(76,175,80,0.22); }
+  .btn-primary:active { transform: translateY(0) scale(0.98); }
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid #4CAF50; outline-offset: 3px; border-radius: 9999px;
+  }
+  .link-secondary { transition: opacity 0.2s ease, transform 0.25s cubic-bezier(0.34,1.56,0.64,1); }
+  .link-secondary:hover { opacity: 0.8; transform: translateX(2px); }
+
+  .process-card { transition: transform 0.3s cubic-bezier(0.22,1,0.36,1), border-color 0.3s ease; }
+  .process-card:hover { transform: translateY(-4px); border-color: rgba(76,175,80,0.5); }
+
+  /* crop pill chips */
+  .pill {
+    display: inline-flex; align-items: center;
+    border-radius: 9999px;
+    padding: 0.5rem 1.1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    background: rgba(76,175,80,0.10);
+    color: #1B4D1E;
+    border: 1px solid rgba(27,77,30,0.18);
+  }
+  .pill-ghost {
+    background: transparent;
+    color: #4A4A4A;
+    border: 1px dashed rgba(10,22,40,0.25);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .hud-rows path { stroke-dashoffset: 0; animation: none; }
+    .hud-box, .hud-laser, .hud-flash, .hud-confirm, .hero-enter { opacity: 1; transform: none; animation: none; stroke-dashoffset: 0; }
+    .hud-pulse { animation: none; }
+    .strike-target::after { transform: scaleX(1); animation: none; }
+    .btn-primary, .link-secondary, .process-card { transition: none; }
+  }
+</style>
+</head>
+<body class="bg-white text-charcoal antialiased" style="letter-spacing: -0.01em;">
+
+<!-- ============ NAV ============ -->
+<header class="fixed top-0 inset-x-0 z-50 border-b border-white/10" style="background: rgba(10,22,40,0.85); backdrop-filter: blur(12px);">
+  <nav class="mx-auto max-w-6xl px-5 sm:px-8 h-16 flex items-center justify-between" aria-label="Κύρια πλοήγηση">
+    <!-- Wordmark placeholder (no white logo version yet — brand book §08) -->
+    <a href="#top" class="flex items-baseline gap-2 text-white font-bold tracking-wide text-sm sm:text-base" aria-label="Cerovia Systems — αρχή σελίδας">
+      CEROVIA<span class="text-leaf font-normal">SYSTEMS</span>
+    </a>
+    <div class="hidden md:flex items-center gap-8 text-sm text-white/70">
+      <a href="#problem" class="hover:text-white transition-colors">Το πρόβλημα</a>
+      <a href="#rover" class="hover:text-white transition-colors">Η τεχνολογία</a>
+      <a href="#opportunity" class="hover:text-white transition-colors">Η ευκαιρία</a>
+      <a href="#traction" class="hover:text-white transition-colors">Πορεία</a>
+    </div>
+    <a href="#contact" class="btn-primary bg-leaf text-navy font-semibold text-sm px-4 sm:px-6 py-2.5 rounded-full">
+      Ζήτησε field pilot
+    </a>
+  </nav>
+</header>
+
+<!-- ============ 1. HERO — centered statement + machine-vision media card ============ -->
+<section id="top" class="hero-bg grain relative overflow-hidden pt-32 pb-16 sm:pt-44 sm:pb-24">
+  <div class="relative mx-auto max-w-6xl px-5 sm:px-8">
+
+    <div class="max-w-4xl mx-auto text-center">
+      <p class="hero-enter hero-enter-1 font-mono text-leaf text-xs sm:text-sm mb-7">
+        [ R&amp;D · WORKING PROTOTYPE · ΛΑΡΙΣΑ ]
+      </p>
+      <h1 class="hero-enter hero-enter-2 text-white font-bold leading-[1.06]" style="font-size: clamp(38px, 5.6vw, 64px); letter-spacing: -0.03em;">
+        Laser που σκοτώνει <span class="strike-target">ζιζάνια</span>,<br class="hidden sm:block"> όχι καλλιέργειες.
+      </h1>
+      <p class="hero-enter hero-enter-3 mt-7 text-white/65 text-base sm:text-lg max-w-2xl mx-auto" style="line-height: 1.7;">
+        Χτίζουμε ένα αυτόνομο rover που βλέπει κάθε φυτό στο χωράφι σου.
+        Ό,τι είναι ζιζάνιο, δέχεται μια ριπή laser. Χωρίς ψεκασμό, χωρίς
+        υπολείμματα, χωρίς εργατικά.
+      </p>
+      <div class="hero-enter hero-enter-3 mt-9 flex flex-col sm:flex-row items-center justify-center gap-5">
+        <a href="#contact" class="btn-primary bg-leaf text-navy font-semibold px-8 py-4 rounded-full text-base">
+          Ζήτησε field pilot
+        </a>
+        <a href="#opportunity" class="link-secondary inline-flex items-center gap-1.5 text-white/75 text-sm font-medium">
+          Είσαι επενδυτής; Δες την ευκαιρία <span aria-hidden="true">→</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- media card: how the rover sees the field (no real product photos yet — R&D) -->
+    <figure role="img" aria-label="Σχηματική απεικόνιση μηχανικής όρασης: το rover αναγνωρίζει την καλλιέργεια ως ασφαλή και στοχεύει το ζιζάνιο με laser" class="hero-enter hero-enter-4 select-none mt-14 sm:mt-20">
+      <div class="rounded-2xl sm:rounded-3xl border border-white/10 overflow-hidden shadow-float" style="background: rgba(247,249,247,0.03);">
+        <div class="flex items-center justify-between gap-3 px-4 sm:px-6 py-3 border-b border-white/10 font-mono text-[10px] sm:text-xs text-white/45">
+          <span>CAM_01 · LIVE FEED</span>
+          <span class="hud-pulse text-leaf">● REC</span>
+        </div>
+        <svg viewBox="0 0 960 420" class="w-full h-auto block" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <!-- crop rows in perspective -->
+          <g class="hud-rows" stroke="rgba(247,249,247,0.20)" stroke-width="1.5">
+            <path d="M480 60 L40 420"/>
+            <path d="M480 60 L260 420"/>
+            <path d="M480 60 L490 420"/>
+            <path d="M480 60 L710 420"/>
+            <path d="M480 60 L920 420"/>
+          </g>
+          <!-- horizon -->
+          <path class="hud-rows" d="M0 60 L960 60" stroke="rgba(247,249,247,0.10)" stroke-width="1"/>
+
+          <!-- crops along rows (tidy dots) -->
+          <g fill="rgba(76,175,80,0.7)">
+            <circle cx="388" cy="140" r="3"/><circle cx="345" cy="200" r="4"/><circle cx="298" cy="270" r="5"/><circle cx="243" cy="350" r="6"/>
+            <circle cx="484" cy="140" r="3"/><circle cx="487" cy="200" r="4"/><circle cx="490" cy="270" r="5"/><circle cx="494" cy="350" r="6"/>
+            <circle cx="578" cy="140" r="3"/><circle cx="622" cy="200" r="4"/><circle cx="670" cy="270" r="5"/><circle cx="726" cy="350" r="6"/>
+          </g>
+          <!-- the weed: irregular shape, off-row -->
+          <g fill="rgba(247,249,247,0.7)">
+            <path d="M168 280 l6 -14 4 12 8 -8 -2 12 10 -2 -8 9 6 6 -12 1 2 10 -8 -7 -5 9 -3 -12 -9 4 5 -10 -8 -5 10 -2z"/>
+          </g>
+
+          <!-- detection box: crop = safe -->
+          <g class="hud-box hud-box-crop">
+            <path d="M466 246 h-14 v14 M514 246 h14 v14 M466 294 h-14 v-14 M514 294 h14 v-14" stroke="#4CAF50" stroke-width="2.5"/>
+            <text x="452" y="234" font-family="'Space Mono', monospace" font-size="14" fill="#4CAF50">ΚΑΛΛΙΕΡΓΕΙΑ · ΑΣΦΑΛΗΣ</text>
+          </g>
+
+          <!-- detection box: weed = target -->
+          <g class="hud-box hud-box-weed">
+            <path d="M142 250 h-14 v14 M198 250 h14 v14 M142 314 h-14 v-14 M198 314 h14 v-14" stroke="#F7F9F7" stroke-width="2.5"/>
+            <path d="M170 272 v-10 M170 292 v10 M160 282 h-10 M180 282 h10" stroke="#F7F9F7" stroke-width="1.5"/>
+            <text x="128" y="238" font-family="'Space Mono', monospace" font-size="14" fill="#F7F9F7">ΖΙΖΑΝΙΟ · ΣΤΟΧΟΣ</text>
+          </g>
+
+          <!-- laser from off-frame rover (top right) to the weed -->
+          <line class="hud-laser" x1="840" y1="-20" x2="174" y2="280" stroke="#4CAF50" stroke-width="2"/>
+          <circle class="hud-flash" cx="172" cy="281" r="10" fill="rgba(76,175,80,0.45)"/>
+          <circle class="hud-flash" cx="172" cy="281" r="4" fill="#4CAF50"/>
+
+          <!-- confirmation -->
+          <g class="hud-confirm">
+            <text x="128" y="348" font-family="'Space Mono', monospace" font-size="14" fill="#4CAF50">ΕΞΟΥΔΕΤΕΡΩΘΗΚΕ ✓</text>
+          </g>
+        </svg>
+        <!-- telemetry strip -->
+        <div class="px-4 sm:px-6 py-3.5 border-t border-white/10 flex flex-wrap gap-x-8 gap-y-2 font-mono text-[10px] sm:text-xs text-white/45">
+          <span>39.63°N 22.42°E · ΛΑΡΙΣΑ</span>
+          <span>STATUS: <span class="text-leaf">R&amp;D PROTOTYPE</span></span>
+          <span>ΧΗΜΙΚΑ: <span class="text-leaf">0</span></span>
+          <span>ΛΕΙΤΟΥΡΓΙΑ: <span class="text-leaf">24/7</span></span>
+        </div>
+      </div>
+      <figcaption class="hud-confirm mt-3 text-center font-mono text-[11px] text-white/35">
+        σχηματική απεικόνιση · μηχανική όραση prototype — όχι τελικό προϊόν
+      </figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ 2. THE PROBLEM — stacked oversized stats ============ -->
+<section id="problem" class="bg-white py-24 sm:py-32">
+  <div class="mx-auto max-w-6xl px-5 sm:px-8">
+    <p class="reveal font-mono text-forest text-xs sm:text-sm mb-5">[ ΤΟ ΠΡΟΒΛΗΜΑ ]</p>
+    <h2 class="reveal font-semibold text-navy max-w-3xl" style="font-size: clamp(28px, 4vw, 40px); letter-spacing: -0.03em; line-height: 1.15;">
+      Το χωράφι σου πληρώνει τα ζιζάνια τρεις φορές.
+    </h2>
+    <p class="reveal mt-5 text-muted text-base sm:text-lg max-w-2xl" style="line-height: 1.7;">
+      Στο ταμείο, στην απόδοση και στο μέλλον. Τρεις αριθμοί που τα λένε όλα:
+    </p>
+
+    <div class="mt-14 divide-y divide-navy/10 border-t border-b border-navy/10">
+      <div class="reveal py-12 sm:py-16 grid md:grid-cols-[1fr_1.1fr] gap-6 md:gap-12 items-center">
+        <p class="font-mono font-bold text-forest" style="font-size: clamp(56px, 9vw, 108px); line-height: 1; letter-spacing: -0.02em;">
+          €500<span style="font-size: 0.34em;">/στρ</span>
+        </p>
+        <div>
+          <h3 class="text-navy font-semibold text-lg sm:text-xl">Στο ταμείο — κάθε χρόνο, ξανά</h3>
+          <p class="mt-2 text-muted text-base" style="line-height: 1.7;">
+            Τόσο μπορεί να φτάνει το συνολικό ετήσιο κόστος των ζιζανίων σε εντατικές
+            καλλιέργειες — σκευάσματα, ψεκασμοί, εργατικά και χαμένη απόδοση μαζί.
+            Και οι τιμές των σκευασμάτων μόνο ανεβαίνουν.
+          </p>
+        </div>
+      </div>
+      <div class="reveal py-12 sm:py-16 grid md:grid-cols-[1fr_1.1fr] gap-6 md:gap-12 items-center">
+        <p class="font-mono font-bold text-forest" style="font-size: clamp(56px, 9vw, 108px); line-height: 1; letter-spacing: -0.02em;">
+          270+
+        </p>
+        <div>
+          <h3 class="text-navy font-semibold text-lg sm:text-xl">Στην απόδοση — τα χημικά χάνουν</h3>
+          <p class="mt-2 text-muted text-base" style="line-height: 1.7;">
+            Τόσα είδη ζιζανίων παγκοσμίως αντέχουν πια τα ζιζανιοκτόνα που ήδη πληρώνεις.
+            Όσα γλιτώνουν τον ψεκασμό, κλέβουν νερό, φως και θρεπτικά από την καλλιέργειά σου.
+          </p>
+        </div>
+      </div>
+      <div class="reveal py-12 sm:py-16 grid md:grid-cols-[1fr_1.1fr] gap-6 md:gap-12 items-center">
+        <p class="font-mono font-bold text-forest" style="font-size: clamp(56px, 9vw, 108px); line-height: 1; letter-spacing: -0.02em;">
+          −50%
+        </p>
+        <div>
+          <h3 class="text-navy font-semibold text-lg sm:text-xl">Στο μέλλον — η ΕΕ κλείνει τη στρόφιγγα</h3>
+          <p class="mt-2 text-muted text-base" style="line-height: 1.7;">
+            Ο στόχος της ΕΕ για τη χρήση χημικών φυτοφαρμάκων ως το 2030. Όσοι μείνουν
+            στα χημικά, μένουν με λιγότερα εργαλεία και αυστηρότερους ελέγχους.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3. WHAT WE'RE BUILDING — 4-step process + adaptability pills ============ -->
+<section id="rover" class="dark-section-bg grain relative overflow-hidden py-24 sm:py-32">
+  <div class="relative mx-auto max-w-6xl px-5 sm:px-8">
+    <p class="reveal font-mono text-leaf text-xs sm:text-sm mb-5">[ ΤΙ ΧΤΙΖΟΥΜΕ ]</p>
+    <h2 class="reveal font-semibold text-white max-w-3xl" style="font-size: clamp(28px, 4vw, 40px); letter-spacing: -0.03em; line-height: 1.15;">
+      Φτιαγμένο για πραγματική δουλειά στο χωράφι.
+    </h2>
+    <p class="reveal mt-5 text-white/65 text-base sm:text-lg max-w-2xl" style="line-height: 1.7;">
+      Ένα σύστημα laser weeding που χτίζεται για να μειώσει τα κόστη σου, να
+      προστατέψει το χώμα σου και να κρατήσει τη γεωργία βιώσιμη για την επόμενη
+      γενιά. Σε τέσσερα βήματα — με αυτή τη σειρά:
+    </p>
+
+    <!-- the rover's loop is a real sequence, so the numbers mean something -->
+    <ol class="mt-14 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <li class="reveal process-card rounded-2xl border border-white/10 bg-white/5 p-6 sm:p-7">
+        <p class="font-mono text-leaf text-xs">01 — DETECT</p>
+        <h3 class="mt-4 text-white font-semibold text-xl">Ανίχνευση</h3>
+        <p class="mt-3 text-white/60 text-sm" style="line-height: 1.7;">
+          Οι κάμερες σαρώνουν τη σειρά και βλέπουν κάθε φυτό σε πραγματικό χρόνο,
+          μέρα και νύχτα.
+        </p>
+      </li>
+      <li class="reveal process-card rounded-2xl border border-white/10 bg-white/5 p-6 sm:p-7">
+        <p class="font-mono text-leaf text-xs">02 — TARGET</p>
+        <h3 class="mt-4 text-white font-semibold text-xl">Στόχευση</h3>
+        <p class="mt-3 text-white/60 text-sm" style="line-height: 1.7;">
+          Το AI ξεχωρίζει ζιζάνιο από καλλιέργεια και κλειδώνει τη θέση του στόχου
+          με ακρίβεια χιλιοστού.
+        </p>
+      </li>
+      <li class="reveal process-card rounded-2xl border border-white/10 bg-white/5 p-6 sm:p-7">
+        <p class="font-mono text-leaf text-xs">03 — ELIMINATE</p>
+        <h3 class="mt-4 text-white font-semibold text-xl">Εξουδετέρωση</h3>
+        <p class="mt-3 text-white/60 text-sm" style="line-height: 1.7;">
+          Μια στοχευμένη ριπή laser εξουδετερώνει το ζιζάνιο. Η καλλιέργεια δεν
+          αγγίζεται, το χώμα δεν δέχεται ούτε σταγόνα χημικού.
+        </p>
+      </li>
+      <li class="reveal process-card rounded-2xl border border-white/10 bg-white/5 p-6 sm:p-7">
+        <p class="font-mono text-leaf text-xs">04 — LEARN</p>
+        <h3 class="mt-4 text-white font-semibold text-xl">Μάθηση</h3>
+        <p class="mt-3 text-white/60 text-sm" style="line-height: 1.7;">
+          Κάθε πέρασμα μαζεύει δεδομένα και εκπαιδεύει το μοντέλο. Όσο δουλεύει το
+          rover, τόσο καλύτερο γίνεται.
+        </p>
+      </li>
+    </ol>
+
+    <div class="reveal mt-10 flex flex-wrap items-center gap-x-8 gap-y-3 font-mono text-[11px] sm:text-xs text-white/45">
+      <span>ΑΥΤΟΝΟΜΗ ΠΛΟΗΓΗΣΗ ΣΤΙΣ ΣΕΙΡΕΣ · 24/7</span>
+      <span>ΚΑΤΑΣΤΑΣΗ: <span class="text-leaf">WORKING PROTOTYPE — ΔΕΝ ΠΩΛΕΙΤΑΙ ΑΚΟΜΗ</span></span>
+    </div>
+
+    <!-- adaptability: target crops of the R&D program -->
+    <div class="reveal mt-20 rounded-2xl sm:rounded-3xl bg-offwhite p-7 sm:p-12">
+      <div class="grid lg:grid-cols-[1fr_1.2fr] gap-8 lg:gap-14 items-center">
+        <div>
+          <p class="font-mono text-forest text-xs sm:text-sm mb-4">[ ΠΡΟΣΑΡΜΟΣΤΙΚΟΤΗΤΑ ]</p>
+          <h3 class="text-navy font-semibold" style="font-size: clamp(22px, 3vw, 30px); letter-spacing: -0.02em; line-height: 1.2;">
+            Χτισμένο για να προσαρμόζεται στο δικό σου χωράφι.
+          </h3>
+          <p class="mt-4 text-muted text-base" style="line-height: 1.7;">
+            Το AI εκπαιδεύεται ανά καλλιέργεια. Αυτές δουλεύουμε πρώτες στο
+            πρόγραμμα R&amp;D — με αφετηρία τον θεσσαλικό κάμπο:
+          </p>
+        </div>
+        <div>
+          <div class="flex flex-wrap gap-2.5">
+            <span class="pill">Βαμβάκι</span>
+            <span class="pill">Βιομηχανική ντομάτα</span>
+            <span class="pill">Ηλίανθος</span>
+            <span class="pill">Καλαμπόκι</span>
+            <span class="pill">Τεύτλα</span>
+            <span class="pill">Μηδική</span>
+            <span class="pill">Κρεμμύδι</span>
+            <span class="pill">Μαρούλι</span>
+            <span class="pill">Σπανάκι</span>
+            <span class="pill pill-ghost">η δική σου καλλιέργεια;</span>
+          </div>
+          <p class="mt-5 text-muted text-sm" style="line-height: 1.7;">
+            Δεν βλέπεις την καλλιέργειά σου; <a href="#contact" class="text-forest font-semibold underline underline-offset-4 hover:text-leaf transition-colors">Πες μας</a> —
+            οι καλλιέργειες των πρώτων pilots θα μπουν πρώτες στην εκπαίδευση του AI.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4. MISSION ============ -->
+<section class="forest-band-bg grain relative overflow-hidden py-20 sm:py-28">
+  <div class="relative mx-auto max-w-4xl px-5 sm:px-8 text-center reveal">
+    <p class="font-mono text-white/60 text-xs sm:text-sm mb-6">[ Η ΑΠΟΣΤΟΛΗ ΜΑΣ ]</p>
+    <blockquote class="text-white font-semibold" style="font-size: clamp(24px, 3.5vw, 36px); letter-spacing: -0.02em; line-height: 1.35;">
+      "Χτίζουμε αυτόνομες ρομποτικές πλατφόρμες προσβάσιμες σε κάθε μικρομεσαίο αγρότη —
+      απαλλάσσοντάς τον από χημικά και μειώνοντας τα κόστη του."
+    </blockquote>
+    <p class="mt-7 text-white/55 italic text-sm sm:text-base">
+      "We aren't just building a robot — we are engineering the next generation of farming."
+    </p>
+  </div>
+</section>
+
+<!-- ============ 5. THE OPPORTUNITY ============ -->
+<section id="opportunity" class="bg-white py-24 sm:py-32">
+  <div class="mx-auto max-w-6xl px-5 sm:px-8">
+    <p class="reveal font-mono text-forest text-xs sm:text-sm mb-5">[ Η ΕΥΚΑΙΡΙΑ · ΓΙΑ ΕΠΕΝΔΥΤΕΣ ]</p>
+    <h2 class="reveal font-semibold text-navy max-w-3xl" style="font-size: clamp(28px, 4vw, 40px); letter-spacing: -0.03em; line-height: 1.15;">
+      Precision farming για τον αγρότη με 80 στρέμματα — όχι μόνο για τον&nbsp;με&nbsp;8.000.
+    </h2>
+    <p class="reveal mt-5 text-muted text-base sm:text-lg max-w-2xl" style="line-height: 1.7;">
+      Τα σημερινά agri-robotics σχεδιάζονται για mega-farms. Όμως η ευρωπαϊκή γεωργία
+      είναι μικρομεσαία — και μένει χωρίς λύση τη στιγμή που τα χημικά ακριβαίνουν
+      και περιορίζονται θεσμικά. Αυτό το κενό χτίζουμε να καλύψουμε, με βάση τη Λάρισα.
+    </p>
+
+    <div class="reveal mt-12 grid md:grid-cols-3 gap-5">
+      <div class="rounded-2xl bg-offwhite p-7 sm:p-8">
+        <p class="font-mono font-bold text-forest" style="font-size: clamp(32px, 4vw, 44px); line-height: 1.1;">~6 στα 10</p>
+        <p class="mt-4 text-muted text-sm sm:text-base" style="line-height: 1.7;">αγροκτήματα της ΕΕ είναι κάτω από 50 στρέμματα — η αγορά που όλοι προσπερνούν.</p>
+      </div>
+      <div class="rounded-2xl bg-offwhite p-7 sm:p-8">
+        <p class="font-mono font-bold text-forest" style="font-size: clamp(32px, 4vw, 44px); line-height: 1.1;">2030</p>
+        <p class="mt-4 text-muted text-sm sm:text-base" style="line-height: 1.7;">ο στόχος της ΕΕ για −50% χρήση φυτοφαρμάκων. Η ζήτηση για μη-χημική ζιζανιοκτονία είναι θεσμικά εγγυημένη.</p>
+      </div>
+      <div class="rounded-2xl bg-offwhite p-7 sm:p-8">
+        <p class="font-mono font-bold text-forest" style="font-size: clamp(32px, 4vw, 44px); line-height: 1.1;">1η</p>
+        <p class="mt-4 text-muted text-sm sm:text-base" style="line-height: 1.7;">ελληνική πλατφόρμα laser weeding, χτισμένη μέσα στον θεσσαλικό κάμπο — δίπλα στους αγρότες που θα την χρησιμοποιήσουν.</p>
+      </div>
+    </div>
+
+    <div class="reveal mt-14 border-l-4 border-leaf pl-6 sm:pl-8 max-w-3xl">
+      <p class="text-navy font-semibold" style="font-size: clamp(20px, 2.6vw, 26px); letter-spacing: -0.02em; line-height: 1.45;">
+        "Να γίνουμε το standard της νέας γενιάς γεωργίας στην Ευρώπη — αποδεικνύοντας ότι
+        η τεχνολογία αιχμής δεν ανήκει μόνο στις μεγάλες εκμεταλλεύσεις."
+      </p>
+      <a href="#contact" class="link-secondary mt-5 inline-flex items-center gap-1.5 text-forest text-sm font-semibold">
+        Ζήτησε το investor deck <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6. BRAND VALUES — big rows, engineering-principles style ============ -->
+<section class="bg-offwhite py-24 sm:py-28">
+  <div class="mx-auto max-w-6xl px-5 sm:px-8">
+    <p class="reveal font-mono text-forest text-xs sm:text-sm mb-5">[ ΟΙ ΑΞΙΕΣ ΜΑΣ ]</p>
+    <h2 class="reveal font-semibold text-navy" style="font-size: clamp(28px, 4vw, 40px); letter-spacing: -0.03em; line-height: 1.15;">
+      Τρεις αρχές. Καμία εξαίρεση.
+    </h2>
+    <div class="mt-12 divide-y divide-navy/10 border-t border-b border-navy/10">
+      <div class="reveal py-10 sm:py-12 grid md:grid-cols-[1fr_1.4fr] gap-4 md:gap-12 items-start">
+        <h3 class="text-navy font-semibold" style="font-size: clamp(22px, 3vw, 30px); letter-spacing: -0.02em;">Προσβασιμότητα</h3>
+        <p class="text-muted text-base" style="line-height: 1.7;">
+          Η τεχνολογία αιχμής δεν είναι προνόμιο των μεγάλων. Σχεδιάζουμε για τον αγρότη
+          με 80 στρέμματα, όχι για τον με 8.000.
+        </p>
+      </div>
+      <div class="reveal py-10 sm:py-12 grid md:grid-cols-[1fr_1.4fr] gap-4 md:gap-12 items-start">
+        <h3 class="text-navy font-semibold" style="font-size: clamp(22px, 3vw, 30px); letter-spacing: -0.02em;">Σεβασμός στη γη</h3>
+        <p class="text-muted text-base" style="line-height: 1.7;">
+          Δεν χτίζουμε τεχνολογία παρά τη φύση — χτίζουμε για αυτήν. Κάθε απόφασή μας
+          ξεκινά από αυτή την αρχή.
+        </p>
+      </div>
+      <div class="reveal py-10 sm:py-12 grid md:grid-cols-[1fr_1.4fr] gap-4 md:gap-12 items-start">
+        <h3 class="text-navy font-semibold" style="font-size: clamp(22px, 3vw, 30px); letter-spacing: -0.02em;">Πρακτική καινοτομία</h3>
+        <p class="text-muted text-base" style="line-height: 1.7;">
+          Δεν καινοτομούμε για το θέαμα. Καινοτομούμε για να λύσουμε ένα πραγματικό
+          πρόβλημα σε ένα πραγματικό χωράφι.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 7. TRACTION — a real sequence, so real numbers ============ -->
+<section id="traction" class="dark-section-bg grain relative overflow-hidden py-24 sm:py-32">
+  <div class="relative mx-auto max-w-6xl px-5 sm:px-8">
+    <p class="reveal font-mono text-leaf text-xs sm:text-sm mb-5">[ ΠΟΥ ΒΡΙΣΚΟΜΑΣΤΕ ]</p>
+    <h2 class="reveal font-semibold text-white max-w-3xl" style="font-size: clamp(28px, 4vw, 40px); letter-spacing: -0.03em; line-height: 1.15;">
+      Χωρίς υποσχέσεις. Μόνο βήματα.
+    </h2>
+    <p class="reveal mt-5 text-white/65 text-base sm:text-lg max-w-2xl" style="line-height: 1.7;">
+      Είμαστε εταιρεία R&amp;D. Αυτή είναι η πραγματική μας πορεία — τι έχει γίνει,
+      πού είμαστε, τι έρχεται.
+    </p>
+
+    <ol class="mt-14 grid md:grid-cols-4 gap-5">
+      <li class="reveal rounded-2xl border border-white/10 bg-white/5 p-6 sm:p-7">
+        <p class="font-mono font-bold text-white/35 text-2xl">01</p>
+        <h3 class="mt-3 text-white font-semibold">Έρευνα &amp; σχεδιασμός</h3>
+        <p class="mt-2 text-white/55 text-sm" style="line-height: 1.7;">Μελέτη του προβλήματος στον κάμπο, αρχιτεκτονική συστήματος, πρώτα δοκιμαστικά με laser.</p>
+        <p class="mt-4 font-mono text-[11px] text-leaf">ΟΛΟΚΛΗΡΩΘΗΚΕ ✓</p>
+      </li>
+      <li class="reveal rounded-2xl border border-leaf/50 bg-white/5 p-6 sm:p-7">
+        <p class="font-mono font-bold text-leaf text-2xl">02</p>
+        <h3 class="mt-3 text-white font-semibold">Working prototype</h3>
+        <p class="mt-2 text-white/55 text-sm" style="line-height: 1.7;">Λειτουργικό rover: αναγνώριση ζιζανίων με AI και εξουδετέρωση με laser σε ελεγχόμενες συνθήκες.</p>
+        <p class="mt-4 font-mono text-[11px] text-leaf"><span class="hud-pulse">●</span> ΕΔΩ ΕΙΜΑΣΤΕ</p>
+      </li>
+      <li class="reveal rounded-2xl border border-white/10 bg-white/5 p-6 sm:p-7">
+        <p class="font-mono font-bold text-white/35 text-2xl">03</p>
+        <h3 class="mt-3 text-white font-semibold">Field pilots στη Θεσσαλία</h3>
+        <p class="mt-2 text-white/55 text-sm" style="line-height: 1.7;">Δοκιμές σε πραγματικά χωράφια με πραγματικούς αγρότες. Μετράμε αποτέλεσμα σε €/στρέμμα.</p>
+        <p class="mt-4 font-mono text-[11px] text-white/40">ΕΠΟΜΕΝΟ ΒΗΜΑ</p>
+      </li>
+      <li class="reveal rounded-2xl border border-white/10 bg-white/5 p-6 sm:p-7">
+        <p class="font-mono font-bold text-white/35 text-2xl">04</p>
+        <h3 class="mt-3 text-white font-semibold">Πρώτες μονάδες σε αγρότες</h3>
+        <p class="mt-2 text-white/55 text-sm" style="line-height: 1.7;">Από prototype σε προϊόν: μικρή σειρά παραγωγής για τους πρώτους συνεργάτες-αγρότες.</p>
+        <p class="mt-4 font-mono text-[11px] text-white/40">ΣΤΟΧΟΣ</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ 8. TEAM ============ -->
+<section class="bg-white py-24 sm:py-28">
+  <div class="mx-auto max-w-6xl px-5 sm:px-8">
+    <p class="reveal font-mono text-forest text-xs sm:text-sm mb-5">[ Η ΟΜΑΔΑ ]</p>
+    <h2 class="reveal font-semibold text-navy max-w-3xl" style="font-size: clamp(28px, 4vw, 40px); letter-spacing: -0.03em; line-height: 1.15;">
+      Μηχανικοί που μεγάλωσαν σε χωράφι.
+    </h2>
+    <p class="reveal mt-5 text-muted text-base sm:text-lg max-w-2xl" style="line-height: 1.7;">
+      Καταλαβαίνουμε και τον αγρότη και την τεχνολογία — γιατί ζούμε και τα δύο.
+    </p>
+    <div class="reveal mt-12 grid sm:grid-cols-3 gap-5">
+      <div class="bg-offwhite rounded-2xl overflow-hidden shadow-card">
+        <img src="https://placehold.co/400x300/0A1628/F7F9F7?text=PLACEHOLDER%0A%CE%A6%CF%89%CF%84%CE%BF+%CE%BC%CE%AD%CE%BB%CE%BF%CF%85%CF%82" alt="Placeholder — φωτογραφία μέλους ομάδας" class="w-full h-auto block" width="400" height="300" loading="lazy">
+        <div class="p-6">
+          <h3 class="text-navy font-semibold">Όνομα Επώνυμο <span class="text-muted font-normal text-xs">(placeholder)</span></h3>
+          <p class="mt-1 text-muted text-sm">Co-founder · Robotics</p>
+        </div>
+      </div>
+      <div class="bg-offwhite rounded-2xl overflow-hidden shadow-card">
+        <img src="https://placehold.co/400x300/0A1628/F7F9F7?text=PLACEHOLDER%0A%CE%A6%CF%89%CF%84%CE%BF+%CE%BC%CE%AD%CE%BB%CE%BF%CF%85%CF%82" alt="Placeholder — φωτογραφία μέλους ομάδας" class="w-full h-auto block" width="400" height="300" loading="lazy">
+        <div class="p-6">
+          <h3 class="text-navy font-semibold">Όνομα Επώνυμο <span class="text-muted font-normal text-xs">(placeholder)</span></h3>
+          <p class="mt-1 text-muted text-sm">Co-founder · AI &amp; Vision</p>
+        </div>
+      </div>
+      <div class="bg-offwhite rounded-2xl overflow-hidden shadow-card">
+        <img src="https://placehold.co/400x300/0A1628/F7F9F7?text=PLACEHOLDER%0A%CE%A6%CF%89%CF%84%CE%BF+%CE%BC%CE%AD%CE%BB%CE%BF%CF%85%CF%82" alt="Placeholder — φωτογραφία μέλους ομάδας" class="w-full h-auto block" width="400" height="300" loading="lazy">
+        <div class="p-6">
+          <h3 class="text-navy font-semibold">Όνομα Επώνυμο <span class="text-muted font-normal text-xs">(placeholder)</span></h3>
+          <p class="mt-1 text-muted text-sm">Agronomy &amp; Field Ops</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 9. CTA + FOOTER ============ -->
+<section id="contact" class="bg-white pt-4 pb-20 sm:pb-24">
+  <div class="mx-auto max-w-6xl px-5 sm:px-8">
+    <!-- big rounded CTA card, reference-style -->
+    <div class="reveal forest-band-bg grain relative overflow-hidden rounded-3xl px-6 py-16 sm:px-12 sm:py-24 text-center shadow-float">
+      <div class="relative max-w-2xl mx-auto">
+        <p class="font-mono text-white/70 text-xs sm:text-sm mb-6">[ FIELD PILOTS — ΑΝΟΙΧΤΗ ΛΙΣΤΑ ]</p>
+        <h2 class="font-semibold text-white" style="font-size: clamp(28px, 4.5vw, 44px); letter-spacing: -0.03em; line-height: 1.15;">
+          Θες το laser στο δικό σου&nbsp;χωράφι;
+        </h2>
+        <p class="mt-5 text-white/70 text-base sm:text-lg" style="line-height: 1.7;">
+          Ετοιμάζουμε τα πρώτα field pilots στη Θεσσαλία. Όσοι δηλώσουν νωρίς, μπαίνουν πρώτοι στη λίστα.
+        </p>
+        <div class="mt-9 flex flex-col sm:flex-row items-center justify-center gap-5">
+          <a href="mailto:pilots@cerovia.example?subject=Field pilot" class="btn-primary bg-leaf text-navy font-semibold px-8 py-4 rounded-full text-base">
+            Ζήτησε field pilot
+          </a>
+          <a href="mailto:investors@cerovia.example?subject=Investor deck" class="link-secondary text-white/80 text-sm font-medium">
+            Επενδυτές: ζητήστε το deck <span aria-hidden="true">→</span>
+          </a>
+        </div>
+        <p class="mt-4 text-white/40 text-xs">(διευθύνσεις email — placeholder)</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="bg-offwhite border-t border-navy/10 py-12">
+  <div class="mx-auto max-w-6xl px-5 sm:px-8">
+    <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+      <a href="#top" aria-label="Cerovia Systems — αρχή σελίδας">
+        <img src="brand_assets/logo.png" alt="Cerovia Systems" class="h-36 w-auto block -my-12" width="500" height="500">
+      </a>
+      <div class="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 text-sm text-muted">
+        <a href="#problem" class="hover:text-navy transition-colors">Το πρόβλημα</a>
+        <a href="#rover" class="hover:text-navy transition-colors">Η τεχνολογία</a>
+        <a href="#opportunity" class="hover:text-navy transition-colors">Η ευκαιρία</a>
+        <a href="#traction" class="hover:text-navy transition-colors">Πορεία</a>
+      </div>
+      <p class="text-muted text-xs font-mono">39.63°N 22.42°E · ΛΑΡΙΣΑ · R&amp;D</p>
+    </div>
+    <p class="mt-10 text-center text-muted/80 italic text-xs sm:text-sm" style="line-height: 1.6;">
+      "We aren't just building a robot — we are engineering the next generation of farming."
+    </p>
+  </div>
+</footer>
+
+<script>
+  // Reveal-on-scroll (opacity/transform only)
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!prefersReduced && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); }
+      }
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  } else {
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('is-visible'));
+  }
+</script>
+</body>
+</html>
