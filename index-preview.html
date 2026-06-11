@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cerovia Systems — Laser weeding χωρίς χημικά</title>
+<meta name="description" content="Η Cerovia Systems χτίζει αυτόνομα laser-weeding rovers για τον μικρομεσαίο αγρότη. R&D stage — working prototype, Λάρισα.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: {
+    extend: {
+      colors: {
+        navy:     '#0A1628',
+        forest:   '#1B4D1E',
+        leaf:     '#4CAF50',
+        offwhite: '#F7F9F7',
+        charcoal: '#1A1A1A',
+        muted:    '#4A4A4A',
+      },
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
+        mono: ['"Space Mono"', 'monospace'],
+      },
+    }
+  }
+}
+</script>
+<style>
+  html { scroll-behavior: smooth; }
+  body { font-family: 'Inter', system-ui, sans-serif; }
+
+  /* ---- backgrounds & branding definitions ---- */
+  .hero-bg {
+    background-color: #0A1628;
+    background-image:
+      radial-gradient(ellipse 80% 55% at 75% 110%, rgba(76,175,80,0.12), transparent 60%),
+      radial-gradient(ellipse 60% 45% at 15% -10%, rgba(27,77,30,0.45), transparent 65%);
+  }
+  .dark-section-bg {
+    background-color: #0A1628;
+    background-image:
+      radial-gradient(ellipse 70% 50% at 85% 0%, rgba(27,77,30,0.35), transparent 65%),
+      radial-gradient(ellipse 50% 40% at 5% 100%, rgba(76,175,80,0.07), transparent 60%);
+  }
+  .forest-band-bg {
+    background-color: #1B4D1E;
+    background-image:
+      radial-gradient(ellipse 75% 60% at 20% 0%, rgba(10,22,40,0.45), transparent 65%),
+      radial-gradient(ellipse 55% 50% at 90% 100%, rgba(76,175,80,0.18), transparent 60%);
+  }
+  .grain::before {
+    content: '';
+    position: absolute; inset: 0;
+    pointer-events: none;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .shadow-card {
+    box-shadow:
+      0 1px 2px rgba(10,22,40,0.06),
+      0 4px 12px rgba(10,22,40,0.07),
+      0 12px 32px rgba(27,77,30,0.06);
+  }
+  .shadow-float {
+    box-shadow:
+      0 2px 4px rgba(10,22,40,0.10),
+      0 10px 24px rgba(10,22,40,0.14),
+      0 24px 56px rgba(27,77,30,0.12);
+  }
+
+  /* ---- hero entering animations ---- */
+  .hero-enter { opacity: 0; transform: translateY(12px); animation: heroenter 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+  .hero-enter-1 { animation-delay: 0.1s; }
+  .hero-enter-2 { animation-delay: 0.25s; }
+  @keyframes heroenter { to { opacity: 1; transform: translateY(0); } }
+
+  /* ---- smooth scroll reveal sections ---- */
+  .reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.9s cubic-bezier(0.215, 0.610, 0.355, 1), transform 0.9s cubic-bezier(0.215, 0.610, 0.355, 1);
+  }
+  .reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+  /* ---- button micro-interactions ---- */
+  .btn-primary {
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 14px rgba(76,175,80,0.2);
+    cursor: pointer;
+  }
+  .btn-primary:hover { transform: translateY(-2px); background-color: #5CBA60; box-shadow: 0 6px 20px rgba(76,175,80,0.3); }
+  .btn-primary:active { transform: translateY(0) scale(0.98); }
+  
+  .link-secondary { transition: opacity 0.2s ease, transform 0.2s ease; }
+  .link-secondary:hover { opacity: 0.85; transform: translateX(3px); }
+
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid #4CAF50; outline-offset: 3px; border-radius: 9999px;
+  }
+  /* anchored sections land below the fixed nav */
+  section[id] { scroll-margin-top: 4.5rem; }
+
+  /* ---- Continuous Marquee for Supporters (JS-driven: auto + drag + wheel) ---- */
+  .animate-marquee {
+    display: flex;
+    width: max-content;
+    cursor: grab;
+    touch-action: pan-y; /* vertical page scroll still works on touch */
+    user-select: none;
+  }
+  .animate-marquee:active { cursor: grabbing; }
+  .animate-marquee img { -webkit-user-drag: none; user-select: none; pointer-events: none; }
+  .mask-gradient {
+    -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  }
+
+  /* ---- PHASE TRACK (roadmap tabs): fill draws once; selected tab gets brackets ---- */
+  #phase-track .pt-fill {
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.25s;
+  }
+  #phase-track.is-visible .pt-fill { transform: scaleX(1); }
+  .hud-pulse-dot { animation: hudpulsedot 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+  @keyframes hudpulsedot { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+
+  /* ---- ΜΑΘΗΣΗ layer: detections accumulating + accuracy curve, CSS-only ---- */
+  .learn-pulse {
+    opacity: 0;
+    animation: learnpulse 4.8s ease-in-out infinite;
+  }
+  @keyframes learnpulse { 0%, 100% { opacity: 0; } 22%, 62% { opacity: 1; } }
+  .learn-curve {
+    stroke-dasharray: 1100;
+    stroke-dashoffset: 1100;
+    animation: learndraw 7s cubic-bezier(0.4, 0, 0.4, 1) infinite;
+  }
+  @keyframes learndraw { 0% { stroke-dashoffset: 1100; } 65%, 100% { stroke-dashoffset: 0; } }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .reveal { opacity: 1; transform: none; transition: none; }
+    .hero-enter { opacity: 1; transform: none; animation: none; }
+    .btn-primary, .link-secondary { transition: none; }
+    .animate-ping { animation: none; }
+    .learn-pulse { opacity: 1; animation: none; }
+    .learn-curve { stroke-dashoffset: 0; animation: none; }
+    .hud-pulse-dot { animation: none; }
+    #phase-track .pt-fill { transform: scaleX(1); transition: none; }
+    /* unpin the scroll-driven scenes and show every step statically */
+    #top, #rover { height: auto !important; }
+    #top .sticky, #rover .sticky { position: relative !important; height: auto !important; min-height: 100vh; }
+    .rm-static-parent { height: auto !important; min-height: 0 !important; }
+    [id^="text-desc-"] {
+      position: static !important; opacity: 1 !important; transform: none !important; margin-top: 0.75rem;
+    }
+  }
+</style>
+</head>
+<body class="bg-white text-charcoal antialiased" style="letter-spacing: -0.01em;">
+
+<!-- ============ NAV ============ -->
+<header class="fixed top-0 inset-x-0 z-50 border-b border-white/5" style="background: rgba(10,22,40,0.85); backdrop-filter: blur(16px);">
+  <nav class="mx-auto max-w-6xl px-6 sm:px-8 h-16 flex items-center justify-between" aria-label="Κύρια πλοήγηση">
+    <a href="#top" class="flex items-baseline gap-2 text-white font-bold tracking-wide text-sm sm:text-base" aria-label="Cerovia Systems — αρχή σελίδας">
+      CEROVIA<span class="text-leaf font-normal">SYSTEMS</span>
+    </a>
+    <div class="hidden md:flex items-center gap-8 text-xs font-medium uppercase tracking-wider text-white/60">
+      <a href="#problem" class="hover:text-white transition-colors">Το πρόβλημα</a>
+      <a href="#rover" class="hover:text-white transition-colors">Η τεχνολογία</a>
+      <a href="#supporters" class="hover:text-white transition-colors">Υποστηρικτές</a>
+      <a href="#opportunity" class="hover:text-white transition-colors">Η ευκαιρία</a>
+      <a href="#testimonials" class="hover:text-white transition-colors">Μαρτυρίες</a>
+      <a href="#traction" class="hover:text-white transition-colors">Πορεία</a>
+    </div>
+    <a href="#contact" class="btn-primary bg-leaf text-white font-semibold text-sm px-5 py-2.5 rounded-full">
+      Ζήτησε field pilot
+    </a>
+  </nav>
+</header>
+
+<!-- ============ 1. HERO — Pinned Sticky Scroll Layout ============ -->
+<section id="top" class="relative h-[135vh] bg-navy">
+  <div class="sticky top-0 h-screen w-full flex items-center justify-center grain overflow-hidden border-b border-white/5 bg-navy">
+    <!-- field photo backdrop, darkened for text legibility -->
+    <div class="absolute inset-0" aria-hidden="true">
+      <img src="brand_assets/hero-field.jpg" alt="" class="w-full h-full object-cover">
+      <div class="absolute inset-0 bg-gradient-to-b from-navy/50 via-navy/25 to-navy/70"></div>
+    </div>
+    <!-- horizontal laser beam: enters from the page's left edge, stops at the end of "ζιζάνια" -->
+    <div id="hero-beam" class="absolute left-0 h-[4px] bg-leaf shadow-[0_0_18px_#4CAF50,0_0_5px_#FFF] opacity-0 pointer-events-none z-30 rounded-r-full" style="width: 0; top: 50%;" aria-hidden="true"></div>
+    <div class="relative mx-auto max-w-6xl w-full px-6 sm:px-8 pt-12">
+
+      <div class="max-w-3xl mx-auto text-center space-y-6" style="text-shadow: 0 1px 16px rgba(10,22,40,0.55), 0 1px 3px rgba(10,22,40,0.35);">
+        <h1 class="hero-enter hero-enter-1 text-white font-bold leading-[1.12] tracking-tight text-[34px] sm:text-[52px] md:text-[64px]">
+          Laser που σκοτώνει<br>
+          <span class="relative inline-block">
+            <span id="hero-weed-text" class="inline-block text-white">ζιζάνια</span>
+          </span><br>
+          όχι καλλιέργειες.
+        </h1>
+        
+        <p class="hero-enter hero-enter-2 text-white/70 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+          Χτίζουμε ένα αυτόνομο rover που βλέπει κάθε φυτό στο χωράφι σου. Ό,τι είναι ζιζάνιο, δέχεται μια ριπή laser. Χωρίς ψεκασμό, χωρίς υπολείμματα, χωρίς εργατικά.
+        </p>
+        <div class="hero-enter hero-enter-2 pt-4 flex flex-col sm:flex-row items-center justify-center gap-6">
+          <a href="#contact" class="btn-primary bg-leaf text-white font-semibold px-8 py-4 rounded-full text-base tracking-wide">
+            Ζήτησε field pilot
+          </a>
+          <a href="#opportunity" class="link-secondary inline-flex items-center gap-2 text-white/75 text-sm font-medium">
+            Είσαι επενδυτής; Δες την ευκαιρία <span aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ 2. THE PROBLEM ============ -->
+<section id="problem" class="bg-white py-28 sm:py-36 relative z-10">
+  <div class="mx-auto max-w-6xl px-6 sm:px-8 space-y-16">
+    <div class="grid lg:grid-cols-[1.2fr_0.8fr] gap-12 items-start">
+      <div class="space-y-4">
+        <p class="font-mono text-forest text-xs tracking-widest">[ ΤΟ ΠΡΟΒΛΗΜΑ ]</p>
+        <h2 class="text-navy font-bold tracking-tight" style="font-size: clamp(28px, 4.2vw, 42px); line-height: 1.15;">
+          Το χωράφι σου πληρώνει τα ζιζάνια τρεις φορές.
+        </h2>
+        <p class="text-muted text-base sm:text-lg leading-relaxed">
+          Στο ταμείο, στην απόδοση και στο μέλλον. Τρεις ξεκάθαροι αριθμοί που αποδεικνύουν την ανάγκη για άμεση αλλαγή:
+        </p>
+      </div>
+      <div class="relative rounded-2xl overflow-hidden shadow-card border border-navy/5 hidden lg:block">
+        <img src="brand_assets/spraying-new.jpg" alt="Τρακτέρ ψεκάζει χημικά σε καλλιέργεια — ο παραδοσιακός τρόπος ζιζανιοκτονίας" class="w-full h-48 object-cover" loading="lazy">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none"></div>
+        <div class="absolute inset-0 bg-forest/20 mix-blend-multiply pointer-events-none"></div>
+        <p class="absolute bottom-3 left-4 font-mono text-[10px] text-white/70 tracking-widest">Ο ΠΑΛΙΟΣ ΤΡΟΠΟΣ · ΨΕΚΑΣΜΟΣ <span class="text-white/40">· φωτ. geograph.org.uk (CC BY-SA)</span></p>
+      </div>
+    </div>
+
+    <div class="divide-y divide-navy/10 border-t border-b border-navy/10">
+      <div class="reveal py-14 grid md:grid-cols-[1fr_1.2fr] gap-8 md:gap-16 items-center">
+        <p class="font-mono font-bold text-forest tracking-tight" style="font-size: clamp(64px, 10vw, 112px); line-height: 1;">
+          €500<span style="font-size: 0.34em;">/στρ</span>
+        </p>
+        <div class="space-y-2">
+          <h3 class="text-navy font-bold text-lg sm:text-xl">Στο ταμείο — κάθε χρόνο, ξανά</h3>
+          <p class="text-muted text-base leading-relaxed">
+            Τόσο μπορεί να φτάνει το συνολικό ετήσιο κόστος των ζιζανίων σε εντατικές καλλιέργειες — σκευάσματα, ψεκασμοί, εργατικά και χαμένη απόδοση μαζί.
+          </p>
+        </div>
+      </div>
+      <div class="reveal py-14 grid md:grid-cols-[1fr_1.2fr] gap-8 md:gap-16 items-center">
+        <p class="font-mono font-bold text-forest tracking-tight" style="font-size: clamp(64px, 10vw, 112px); line-height: 1;">
+          270+
+        </p>
+        <div class="space-y-2">
+          <h3 class="text-navy font-bold text-lg sm:text-xl">Στην απόδοση — τα χημικά χάνουν</h3>
+          <p class="text-muted text-base leading-relaxed">
+            Τόσα είδη ζιζανίων παγκοσμίως αντέχουν πια τα ζιζανιοκτόνα που ήδη πληρώνεις. Όσα γλιτώνουν τον ψεκασμό, κλέβουν νερό, φως και θρεπτικά από την καλλιέργειά σου.
+          </p>
+        </div>
+      </div>
+      <div class="reveal py-14 grid md:grid-cols-[1fr_1.2fr] gap-8 md:gap-16 items-center">
+        <p class="font-mono font-bold text-forest tracking-tight" style="font-size: clamp(64px, 10vw, 112px); line-height: 1;">
+          −50%
+        </p>
+        <div class="space-y-2">
+          <h3 class="text-navy font-bold text-lg sm:text-xl">Στο μέλλον — η ΕΕ κλείνει τη στρόφιγγα</h3>
+          <p class="text-muted text-base leading-relaxed">
+            Ο στόχος της ΕΕ για τη χρήση χημικών φυτοφαρμάκων ως το 2030. Όσοι μείνουν στα χημικά, μένουν με λιγότερα εργαλεία και αυστηρότερους ελέγχους.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3. THE FIXED STICKY-SCROLL SHOWCASE (Clean Black Canvas) ============ -->
+<section id="rover" class="relative h-[400vh] bg-navy">
+  <div class="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
+    
+    <!-- BACKGROUND CANVAS -->
+    <div class="absolute inset-0 w-full h-full z-0 bg-black" aria-hidden="true">
+      <div id="img-layer-1" class="absolute inset-0 w-full h-full bg-black opacity-100">
+        <img src="brand_assets/plants/scene03371.png" alt="" class="w-full h-full object-cover">
+      </div>
+      <div id="img-layer-2" class="absolute inset-0 w-full h-full bg-black overflow-hidden" style="clip-path: inset(0 0 0 100%);">
+        <img src="brand_assets/plants/Screenshot_2.png" alt="" class="w-full h-full object-cover">
+      </div>
+      <div id="img-layer-3" class="absolute inset-0 w-full h-full bg-black overflow-hidden" style="clip-path: inset(0 0 0 100%);">
+        <img src="brand_assets/plants/Screenshot_1.png" alt="" class="w-full h-full object-cover">
+      </div>
+      <div id="img-layer-4" class="absolute inset-0 w-full h-full bg-navy overflow-hidden" style="clip-path: inset(0 0 0 100%);">
+        <!-- ΜΑΘΗΣΗ: the same field, now understood as data — photo behind, stats on top -->
+        <img src="brand_assets/plants/scene03371.png" alt="" class="absolute inset-0 w-full h-full object-cover opacity-50">
+        <div class="absolute inset-0 bg-navy/70"></div>
+        <svg viewBox="0 0 1440 810" preserveAspectRatio="xMidYMid slice" class="relative w-full h-full" fill="none" aria-hidden="true">
+          <g stroke="rgba(247,249,247,0.13)" stroke-width="1.5">
+            <path d="M720 150 L-320 810"/><path d="M720 150 L170 810"/><path d="M720 150 L720 810"/><path d="M720 150 L1270 810"/><path d="M720 150 L1760 810"/>
+          </g>
+          <path d="M0 150 H1440" stroke="rgba(247,249,247,0.08)"/>
+          <g fill="rgba(76,175,80,0.5)">
+            <circle cx="560" cy="300" r="5"/><circle cx="455" cy="430" r="6"/><circle cx="320" cy="600" r="8"/>
+            <circle cx="723" cy="300" r="5"/><circle cx="726" cy="430" r="6"/><circle cx="730" cy="600" r="8"/>
+            <circle cx="885" cy="300" r="5"/><circle cx="995" cy="430" r="6"/><circle cx="1135" cy="600" r="8"/>
+          </g>
+          <!-- detections learned over passes -->
+          <g class="learn-pulse" style="animation-delay: 0s;">
+            <path d="M420 400 h-16 v16 M490 400 h16 v16 M420 462 h-16 v-16 M490 462 h16 v-16" stroke="#4CAF50" stroke-width="2.5"/>
+            <text x="404" y="388" font-family="'Space Mono', monospace" font-size="15" fill="#4CAF50">plant 0.98</text>
+          </g>
+          <g class="learn-pulse" style="animation-delay: 1.2s;">
+            <path d="M940 560 h-16 v16 M1010 560 h16 v16 M940 640 h-16 v-16 M1010 640 h16 v-16" stroke="#F7F9F7" stroke-width="2.5"/>
+            <text x="924" y="548" font-family="'Space Mono', monospace" font-size="15" fill="#F7F9F7">weed 0.91</text>
+          </g>
+          <g class="learn-pulse" style="animation-delay: 2.4s;">
+            <path d="M680 270 h-13 v13 M740 270 h13 v13 M680 326 h-13 v-13 M740 326 h13 v-13" stroke="#4CAF50" stroke-width="2.5"/>
+            <text x="667" y="258" font-family="'Space Mono', monospace" font-size="15" fill="#4CAF50">plant 0.99</text>
+          </g>
+          <g class="learn-pulse" style="animation-delay: 3.6s;">
+            <path d="M230 540 h-16 v16 M300 540 h16 v16 M230 620 h-16 v-16 M300 620 h16 v-16" stroke="#F7F9F7" stroke-width="2.5"/>
+            <text x="214" y="528" font-family="'Space Mono', monospace" font-size="15" fill="#F7F9F7">weed 0.87</text>
+          </g>
+          <!-- accuracy curve climbing, pass after pass -->
+          <g transform="translate(1010, 130)">
+            <path d="M0 170 V0 M0 170 H340" stroke="rgba(247,249,247,0.25)" stroke-width="1.5"/>
+            <path class="learn-curve" d="M8 160 C70 150, 95 105, 150 75 S 270 28, 332 18" stroke="#4CAF50" stroke-width="3" stroke-linecap="round"/>
+            <text x="0" y="-14" font-family="'Space Mono', monospace" font-size="14" fill="rgba(247,249,247,0.55)">ΑΚΡΙΒΕΙΑ ΑΝΑ ΠΕΡΑΣΜΑ ↑</text>
+          </g>
+        </svg>
+      </div>
+      <!-- uniform darkening so the overlay text stays readable on the bright frames -->
+      <div class="absolute inset-0 bg-navy/35 pointer-events-none"></div>
+      <div id="sweep-curtain-laser" class="absolute top-0 bottom-0 left-[100%] w-[4px] bg-leaf shadow-[0_0_20px_#4CAF50,0_0_6px_#FFF] z-50 pointer-events-none opacity-0"></div>
+    </div>
+
+    <!-- Foreground narrative overlay dashboard UI -->
+    <div class="relative z-10 mx-auto max-w-6xl w-full px-6 sm:px-8 h-full flex flex-col justify-between py-20 pointer-events-none">
+      <div class="space-y-2">
+        <p class="font-mono text-leaf text-xs tracking-widest">[ SYSTEM OPERATION · LIVE DEV ]</p>
+        <h2 class="text-white font-bold tracking-tight text-2xl sm:text-4xl">Φτιαγμένο για πραγματική δουλειά στο χωράφι.</h2>
+      </div>
+
+      <div class="rm-static-parent w-full max-w-xl bg-navy/20 backdrop-blur-sm p-8 sm:p-10 rounded-3xl border border-white/10 relative min-h-[260px] sm:min-h-[230px] flex items-center">
+        <div id="text-desc-1" class="absolute inset-x-8 sm:inset-x-10 space-y-3 transition-[opacity,transform] duration-300 opacity-100 transform translate-y-0">
+          <span class="inline-block text-[10px] font-bold text-leaf bg-leaf/10 border border-leaf/20 px-2.5 py-0.5 rounded font-mono uppercase">STAGE_01 // DETECT</span>
+          <h3 class="text-white font-bold text-xl sm:text-2xl">01. Ανίχνευση</h3>
+          <p class="text-white/70 text-sm leading-relaxed">Οι κάμερες του rover σαρώνουν τις γραμμές φύτευσης εκατοστό προς εκατοστό, καταγράφοντας δεδομένα σε πραγματικό χρόνο, μέρα και νύχτα.</p>
+        </div>
+        <div id="text-desc-2" class="absolute inset-x-8 sm:inset-x-10 space-y-3 transition-[opacity,transform] duration-300 opacity-0 transform translate-y-4">
+          <span class="inline-block text-[10px] font-bold text-leaf bg-leaf/10 border border-leaf/20 px-2.5 py-0.5 rounded font-mono uppercase">STAGE_02 // TARGET</span>
+          <h3 class="text-white font-bold text-xl sm:text-2xl">02. Στόχευση</h3>
+          <p class="text-white/70 text-sm leading-relaxed">Το ενσωματωμένο AI αναλύει το σχήμα των φύλλων, ξεχωρίζει ακαριαία την καλλιέργεια από τα ζιζάνια και κλειδώνει τη θέση του στόχου.</p>
+        </div>
+        <div id="text-desc-3" class="absolute inset-x-8 sm:inset-x-10 space-y-3 transition-[opacity,transform] duration-300 opacity-0 transform translate-y-4">
+          <span class="inline-block text-[10px] font-bold text-leaf bg-leaf/10 border border-leaf/20 px-2.5 py-0.5 rounded font-mono uppercase">STAGE_03 // ELIMINATE</span>
+          <h3 class="text-white font-bold text-xl sm:text-2xl">03. Εξουδετέρωση</h3>
+          <p class="text-white/70 text-sm leading-relaxed">Μια στοχευμένη ριπή θερμικού laser χτυπά το κέντρο ανάπτυξης του ζιζανίου. Το χώμα και οι ρίζες της καλλιέργειας δεν αγγίζονται.</p>
+        </div>
+        <div id="text-desc-4" class="absolute inset-x-8 sm:inset-x-10 space-y-3 transition-[opacity,transform] duration-300 opacity-0 transform translate-y-4">
+          <span class="inline-block text-[10px] font-bold text-leaf bg-leaf/10 border border-leaf/20 px-2.5 py-0.5 rounded font-mono uppercase">STAGE_04 // LEARN</span>
+          <h3 class="text-white font-bold text-xl sm:text-2xl">04. Μάθηση</h3>
+          <p class="text-white/70 text-sm leading-relaxed">Κάθε πέρασμα μαζεύει δεδομένα και εκπαιδεύει το μοντέλο. Όσο δουλεύει το rover στο χωράφι σου, τόσο καλύτερο και ταχύτερο γίνεται.</p>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-x-8 gap-y-2 font-mono text-[10px] sm:text-xs text-white/40">
+        <span>39.63°N 22.42°E · ΛΑΡΙΣΑ</span>
+        <span>STATUS: <span class="text-leaf">R&amp;D PROTOTYPE</span></span>
+        <span>ΧΗΜΙΚΑ: <span class="text-leaf">0</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 3B. STRATEGIC SUPPORTERS (Infinite Film-Strip Marquee) ============ -->
+<section id="supporters" class="bg-white py-16 border-b border-navy/5 overflow-hidden relative z-10">
+  <div class="mx-auto max-w-6xl px-6 sm:px-8 mb-10 text-center">
+    <p class="font-mono text-forest text-xs tracking-widest">[ ΧΟΡΗΓΟΙ &amp; ΟΙΚΟΣΥΣΤΗΜΑ ]</p>
+  </div>
+
+  <div class="w-full flex relative mask-gradient">
+    <div class="animate-marquee gap-8 items-stretch py-4">
+      <!-- set A -->
+      <div class="mx-6 px-10 group rounded-2xl border border-navy/10 bg-white shadow-card min-w-[240px] h-28 flex flex-col items-center justify-center gap-2.5">
+        <img src="brand_assets/sponsors/uth.png" alt="Πανεπιστήμιο Θεσσαλίας" class="h-12 w-auto object-contain grayscale group-hover:grayscale-0 opacity-80 group-hover:opacity-100 transition-opacity duration-200" loading="lazy">
+        <span class="font-mono text-muted text-[10px] tracking-widest">ΠΑΝΕΠΙΣΤΗΜΙΟ ΘΕΣΣΑΛΙΑΣ</span>
+      </div>
+      <div class="mx-6 px-10 group rounded-2xl border border-navy/10 bg-white shadow-card min-w-[240px] h-28 flex flex-col items-center justify-center gap-2.5">
+        <img src="brand_assets/sponsors/innovent.svg" alt="Innovent Forum" class="h-7 w-auto object-contain grayscale group-hover:grayscale-0 opacity-80 group-hover:opacity-100 transition-opacity duration-200" loading="lazy">
+        <span class="font-mono text-muted text-[10px] tracking-widest">INNOVENT FORUM · ΛΑΡΙΣΑ</span>
+      </div>
+      <div class="mx-6 px-10 group rounded-2xl border border-navy/10 bg-white shadow-card min-w-[240px] h-28 flex flex-col items-center justify-center gap-2.5">
+        <img src="brand_assets/sponsors/piraeus.svg" alt="Piraeus" class="h-7 w-auto object-contain grayscale group-hover:grayscale-0 opacity-80 group-hover:opacity-100 transition-opacity duration-200" loading="lazy">
+        <span class="font-mono text-muted text-[10px] tracking-widest">PIRAEUS</span>
+      </div>
+      <div class="mx-6 px-10 group rounded-2xl border border-navy/10 bg-white shadow-card min-w-[240px] h-28 flex flex-col items-center justify-center gap-2.5">
+        <img src="brand_assets/sponsors/grobotronics.png" alt="Grobotronics" class="h-9 w-auto object-contain grayscale group-hover:grayscale-0 opacity-80 group-hover:opacity-100 transition-opacity duration-200" loading="lazy">
+        <span class="font-mono text-muted text-[10px] tracking-widest">GROBOTRONICS</span>
+      </div>
+      <div class="mx-6 px-10 group rounded-2xl border border-navy/10 bg-white shadow-card min-w-[240px] h-28 flex flex-col items-center justify-center gap-2.5">
+        <img src="brand_assets/sponsors/hellasdigital.jpg" alt="Hellas Digital" class="h-9 w-auto object-contain grayscale group-hover:grayscale-0 opacity-80 group-hover:opacity-100 transition-opacity duration-200" loading="lazy">
+        <span class="font-mono text-muted text-[10px] tracking-widest">HELLAS DIGITAL</span>
+      </div>
+      <div class="mx-6 px-10 group rounded-2xl border border-navy/10 bg-white shadow-card min-w-[240px] h-28 flex flex-col items-center justify-center gap-2.5">
+        <img src="brand_assets/sponsors/eu-flag.svg" alt="Ευρωπαϊκή Ένωση" class="h-9 w-auto object-contain rounded-sm grayscale group-hover:grayscale-0 opacity-80 group-hover:opacity-100 transition-opacity duration-200" loading="lazy">
+        <span class="font-mono text-muted text-[10px] tracking-widest">ΕΥΡΩΠΑΪΚΗ ΕΝΩΣΗ</span>
+      </div>
+      <div class="mx-6 px-10 group rounded-2xl border border-navy/10 bg-white shadow-card min-w-[240px] h-28 flex flex-col items-center justify-center gap-2.5">
+        <p class="font-bold text-forest text-lg tracking-tight leading-none">EU GREEN DEAL</p>
+        <span class="font-mono text-muted text-[10px] tracking-widest">FARM TO FORK · ΠΛΑΙΣΙΟ ΠΟΛΙΤΙΚΗΣ</span>
+      </div>
+      <!-- set B (identical copy so the 50% loop is seamless) -->
+      <div class="mx-6 px-10 group rounded-2xl border border-navy/10 bg-white shadow-card min-w-[240px] h-28 flex flex-col items-center justify-center gap-2.5" aria-hidden="true">
+        <img src="brand_assets/sponsors/uth.png" alt="" class="h-12 w-auto object-contain grayscale group-hover:grayscale-0 opacity-80 group-hover:opacity-100 transition-opacity duration-200" loading="lazy">
+        <span class="font-mono text-muted text-[10px] tracking-widest">ΠΑΝΕΠΙΣΤΗΜΙΟ ΘΕΣΣΑΛΙΑΣ</span>
+      </div>
+      <div class="mx-6 px-10 group rounded-2xl border border-navy/10 bg-white shadow-card min-w-[240px] h-28 flex flex-col items-center justify-center gap-2.5" aria-hidden="true">
+        <img src="brand_assets/sponsors/innovent.svg" alt="" class="h-7 w-auto object-contain grayscale group-hover:grayscale-0 opacity-80 group-hover:opacity-100 transition-opacity duration-200" loading="lazy">
+        <span class="font-mono text-muted text-[10px] tracking-widest">INNOVENT FORUM · ΛΑΡΙΣΑ</span>
+      </div>
+      <div class="mx-6 px-10 group rounded-2xl border border-navy/10 bg-white shadow-card min-w-[240px] h-28 flex flex-col items-center justify-center gap-2.5" aria-hidden="true">
+        <img src="brand_assets/sponsors/piraeus.svg" alt="" class="h-7 w-auto object-contain grayscale group-hover:grayscale-0 opacity-80 group-hover:opacity-100 transition-opacity duration-200" loading="lazy">
+        <span class="font-mono text-muted text-[10px] tracking-widest">PIRAEUS</span>
+      </div>
+      <div class="mx-6 px-10 group rounded-2xl border border-navy/10 bg-white shadow-card min-w-[240px] h-28 flex flex-col items-center justify-center gap-2.5" aria-hidden="true">
+        <img src="brand_assets/sponsors/grobotronics.png" alt="" class="h-9 w-auto object-contain grayscale group-hover:grayscale-0 opacity-80 group-hover:opacity-100 transition-opacity duration-200" loading="lazy">
+        <span class="font-mono text-muted text-[10px] tracking-widest">GROBOTRONICS</span>
+      </div>
+      <div class="mx-6 px-10 group rounded-2xl border border-navy/10 bg-white shadow-card min-w-[240px] h-28 flex flex-col items-center justify-center gap-2.5" aria-hidden="true">
+        <img src="brand_assets/sponsors/hellasdigital.jpg" alt="" class="h-9 w-auto object-contain grayscale group-hover:grayscale-0 opacity-80 group-hover:opacity-100 transition-opacity duration-200" loading="lazy">
+        <span class="font-mono text-muted text-[10px] tracking-widest">HELLAS DIGITAL</span>
+      </div>
+      <div class="mx-6 px-10 group rounded-2xl border border-navy/10 bg-white shadow-card min-w-[240px] h-28 flex flex-col items-center justify-center gap-2.5" aria-hidden="true">
+        <img src="brand_assets/sponsors/eu-flag.svg" alt="" class="h-9 w-auto object-contain rounded-sm grayscale group-hover:grayscale-0 opacity-80 group-hover:opacity-100 transition-opacity duration-200" loading="lazy">
+        <span class="font-mono text-muted text-[10px] tracking-widest">ΕΥΡΩΠΑΪΚΗ ΕΝΩΣΗ</span>
+      </div>
+      <div class="mx-6 px-10 group rounded-2xl border border-navy/10 bg-white shadow-card min-w-[240px] h-28 flex flex-col items-center justify-center gap-2.5" aria-hidden="true">
+        <p class="font-bold text-forest text-lg tracking-tight leading-none">EU GREEN DEAL</p>
+        <span class="font-mono text-muted text-[10px] tracking-widest">FARM TO FORK · ΠΛΑΙΣΙΟ ΠΟΛΙΤΙΚΗΣ</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 4. THE OPPORTUNITY ============ -->
+<section id="opportunity" class="bg-white py-28 sm:py-36 relative z-10">
+  <div class="mx-auto max-w-6xl px-6 sm:px-8 space-y-16">
+    <div class="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 items-start">
+      <div>
+        <p class="font-mono text-forest text-xs tracking-widest">[ Η ΕΥΚΑΙΡΙΑ · ΓΙΑ ΕΠΕΝΔΥΤΕΣ ]</p>
+        <h2 class="text-navy font-bold tracking-tight mt-2" style="font-size: clamp(28px, 4vw, 42px); line-height: 1.15;">
+          Precision farming για τον αγρότη με 80 στρέμματα — όχι μόνο για τον&nbsp;με&nbsp;8.000.
+        </h2>
+      </div>
+      <p class="text-muted text-base leading-relaxed lg:pt-8">
+        Τα σημερινά agri-robotics σχεδιάζονται για mega-farms. Όμως η ευρωπαϊκή γεωργία είναι μικρομεσαία — και μένει χωρίς λύση τη στιγμή που τα χημικά ακριβαίνουν και περιορίζονται θεσμικά. Αυτό το κενό χτίζουμε να καλύψουμε, με βάση τη Λάρισα.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="rounded-2xl bg-offwhite p-8 space-y-4 shadow-card border border-navy/5">
+        <p class="font-mono font-bold text-forest text-4xl">~6 στα 10</p>
+        <p class="text-charcoal font-semibold text-sm">Μικρομεσαία γεωργία</p>
+        <p class="text-muted text-sm leading-relaxed">Αγροκτήματα της ΕΕ είναι κάτω από 50 στρέμματα — η τεράστια αγορά που όλοι οι άλλοι προσπερνούν.</p>
+      </div>
+      <div class="rounded-2xl bg-offwhite p-8 space-y-4 shadow-card border border-navy/5">
+        <p class="font-mono font-bold text-forest text-4xl">2030</p>
+        <p class="text-charcoal font-semibold text-sm">Θεσμική αναγκαιότητα</p>
+        <p class="text-muted text-sm leading-relaxed">Ο επίσημος στόχος της ΕΕ για −50% χρήση φυτοφαρμάκων. Η ζήτηση για μη-χημική ζιζανιοκτονία είναι εγγυημένη.</p>
+      </div>
+      <div class="rounded-2xl bg-offwhite p-8 space-y-4 shadow-card border border-navy/5">
+        <p class="font-mono font-bold text-forest text-4xl">1η</p>
+        <p class="text-charcoal font-semibold text-sm">Στρατηγική έδρα</p>
+        <p class="text-muted text-sm leading-relaxed">Η πρώτη ελληνική πλατφόρμα laser weeding, χτισμένη μέσα στον θεσσαλικό κάμπο — δίπλα στους αγρότες.</p>
+      </div>
+    </div>
+
+    <div class="reveal border-l-4 border-leaf pl-6 sm:pl-8 max-w-3xl space-y-4">
+      <p class="text-navy font-bold font-sans text-xl sm:text-2xl leading-relaxed">
+        "Να γίνουμε το standard της νέας γενιάς γεωργίας στην Ευρώπη — αποδεικνύοντας ότι η τεχνολογία αιχμής δεν ανήκει μόνο στις μεγάλες εκμεταλλεύσεις."
+      </p>
+      <a href="#contact" class="link-secondary inline-flex items-center gap-2 text-forest text-xs font-bold uppercase tracking-wider">
+        Ζήτησε το investor deck <span aria-hidden="true">→</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 5. TESTIMONIALS ============ -->
+<section id="testimonials" class="bg-offwhite py-28 border-t border-b border-navy/5 relative z-10">
+  <div class="mx-auto max-w-6xl px-6 sm:px-8 space-y-12">
+    <div class="space-y-3">
+      <p class="font-mono text-forest text-xs tracking-widest">[ ΜΑΡΤΥΡΙΕΣ &amp; FEEDBACK ]</p>
+      <h2 class="text-navy font-bold tracking-tight text-2xl sm:text-3xl">Τι λένε για το όραμα της Cerovia Systems</h2>
+    </div>
+    
+    <div class="grid md:grid-cols-2 gap-8">
+      <div class="bg-white p-8 sm:p-10 rounded-2xl border border-navy/10 shadow-card flex flex-col justify-between space-y-6">
+        <p class="text-charcoal text-base italic leading-relaxed">
+          "Το κόστος των ζιζανιοκτόνων έχει διπλασιαστεί τα τελευταία χρόνια, ενώ πολλά αγριόχορτα δεν πεθαίνουν πια με τον ψεκασμό. Μια αυτόνομη λύση laser, προσαρμοσμένη στα δικά μας στρέμματα στη Θεσσαλία, θα άλλαζε ριζικά τα οικονομικά του χωραφιού μας."
+        </p>
+        <div class="pt-6 border-t border-navy/5 flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full bg-forest text-white flex items-center justify-center font-bold text-xs">ΓΚ</div>
+          <div>
+            <h4 class="text-navy font-bold text-sm">Γιώργος Κ.</h4>
+            <p class="text-muted text-xs font-medium">Παραγωγός Βαμβακιού · Λάρισα (Early Pilot Applicant)</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white p-8 sm:p-10 rounded-2xl border border-navy/10 shadow-card flex flex-col justify-between space-y-6">
+        <p class="text-charcoal text-base italic leading-relaxed">
+          "Η προσέγγιση της Cerovia λύνει ένα τεράστιο κενό στην ευρωπαϊκή αγορά αγροτεχνολογίας. Σχεδιάζουν ρομποτική πλατφόρμα με βάση τα πραγματικά δεδομένα της μικρομεσαίας γεωργίας. Η διάκρισή τους στο Ideathlon επιβεβαιώνει την τεχνική και επιχειρηματική τους εγκυρότητα."
+        </p>
+        <div class="pt-6 border-t border-navy/5 flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full bg-navy text-white flex items-center justify-center font-bold text-xs">ΣΑ</div>
+          <div>
+            <h4 class="text-navy font-bold text-sm">Σύμβουλος Καινοτομίας</h4>
+            <p class="text-muted text-xs font-medium">Κριτική Επιτροπή · Ideathlon Accelerator</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 6. TRACTION — glass phases over the field ============ -->
+<section id="traction" class="relative py-24 sm:py-32 border-b border-white/5 z-10 overflow-hidden bg-navy">
+  <!-- the field behind the journey -->
+  <div class="absolute inset-0" aria-hidden="true">
+    <img src="brand_assets/plants/scene03371.png" alt="" class="w-full h-full object-cover">
+    <div class="absolute inset-0 bg-gradient-to-b from-navy/90 via-navy/55 to-navy/90"></div>
+  </div>
+
+  <div class="relative mx-auto max-w-6xl px-6 sm:px-8" style="text-shadow: 0 1px 10px rgba(10,22,40,0.45);">
+    <p class="reveal font-mono text-leaf text-xs tracking-widest">[ ΠΟΥ ΒΡΙΣΚΟΜΑΣΤΕ ]</p>
+    <h2 class="reveal mt-3 text-white font-bold tracking-tight text-2xl sm:text-4xl">Χωρίς υποσχέσεις. Μόνο βήματα.</h2>
+    <p class="reveal mt-4 text-white/75 text-base sm:text-lg max-w-2xl leading-relaxed">
+      Είμαστε εταιρεία R&amp;D. Αυτή είναι η πραγματική μας πορεία — τι έχει γίνει, πού είμαστε, τι έρχεται.
+    </p>
+
+    <!-- journey line: fills up to the current phase when the section enters view -->
+    <div id="phase-track" class="reveal mt-14 relative hidden md:block h-7" aria-hidden="true">
+      <div class="absolute left-0 right-0 top-[13px] h-[3px] bg-white/15 rounded-full"></div>
+      <div class="pt-fill absolute left-0 top-[13px] h-[3px] bg-leaf rounded-full shadow-[0_0_14px_#4CAF50]" style="width: 37.5%;"></div>
+      <span class="absolute top-[13px] -translate-x-1/2 -translate-y-1/2 w-[22px] h-[22px] rounded-full border-2 border-leaf bg-leaf flex items-center justify-center" style="left: 12.5%;">
+        <svg viewBox="0 0 24 24" class="w-3 h-3" fill="none"><path d="M5 13l4 4L19 7" stroke="#0A1628" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      <span class="absolute top-[13px] -translate-x-1/2 -translate-y-1/2 w-[22px] h-[22px] rounded-full border-2 border-leaf bg-navy" style="left: 37.5%;">
+        <span class="absolute inset-0 rounded-full bg-leaf/40 animate-ping"></span>
+        <span class="absolute inset-[5px] rounded-full bg-leaf"></span>
+      </span>
+      <span class="absolute top-[13px] -translate-x-1/2 -translate-y-1/2 w-[22px] h-[22px] rounded-full border-2 border-white/30 bg-navy/70" style="left: 62.5%;"></span>
+      <span class="absolute top-[13px] -translate-x-1/2 -translate-y-1/2 w-[22px] h-[22px] rounded-full border-2 border-white/30 bg-navy/70" style="left: 87.5%;"></span>
+    </div>
+
+    <!-- glass phase cards over the field -->
+    <ol class="mt-5 md:mt-4 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <li class="reveal rounded-3xl border border-white/15 bg-navy/25 backdrop-blur-md p-6 sm:p-7" style="transition-delay: 0.1s;">
+        <p class="font-mono text-[11px] text-leaf tracking-widest">ΟΛΟΚΛΗΡΩΘΗΚΕ ✓</p>
+        <h3 class="mt-3 text-white font-bold text-lg sm:text-xl tracking-tight">01. Σχεδιασμός &amp; Έρευνα</h3>
+        <p class="mt-2 text-white/70 text-sm leading-relaxed">
+          Μελέτη του προβλήματος στον κάμπο, αρχιτεκτονική συστήματος και
+          <span class="text-leaf font-semibold">1η θέση στο Ideathlon Accelerator</span>.
+        </p>
+      </li>
+      <li class="reveal rounded-3xl border border-leaf/60 bg-navy/30 backdrop-blur-md p-6 sm:p-7 shadow-[0_0_30px_rgba(76,175,80,0.18)]" style="transition-delay: 0.2s;">
+        <p class="font-mono text-[11px] text-leaf tracking-widest"><span class="hud-pulse-dot">●</span> ΕΔΩ ΕΙΜΑΣΤΕ</p>
+        <h3 class="mt-3 text-white font-bold text-lg sm:text-xl tracking-tight">02. Working Prototype</h3>
+        <p class="mt-2 text-white/70 text-sm leading-relaxed">
+          Λειτουργικό rover: αναγνώριση ζιζανίων με AI και εξουδετέρωση με laser
+          σε ελεγχόμενες συνθήκες. Επόμενο ορόσημο: ανοιχτό χωράφι.
+        </p>
+      </li>
+      <li class="reveal rounded-3xl border border-white/15 bg-navy/25 backdrop-blur-md p-6 sm:p-7" style="transition-delay: 0.3s;">
+        <p class="font-mono text-[11px] text-white/50 tracking-widest">ΕΠΟΜΕΝΟ ΒΗΜΑ</p>
+        <h3 class="mt-3 text-white font-bold text-lg sm:text-xl tracking-tight">03. Field Pilots στη Θεσσαλία</h3>
+        <p class="mt-2 text-white/70 text-sm leading-relaxed">
+          Δοκιμές σε πραγματικά χωράφια με πραγματικούς αγρότες. Μετράμε αποτέλεσμα
+          σε €/στρέμμα. <a href="#contact" class="text-leaf font-semibold underline underline-offset-4 hover:text-white transition-colors">Δήλωσε το χωράφι σου</a>
+        </p>
+      </li>
+      <li class="reveal rounded-3xl border border-white/15 bg-navy/25 backdrop-blur-md p-6 sm:p-7" style="transition-delay: 0.4s;">
+        <p class="font-mono text-[11px] text-white/50 tracking-widest">ΣΤΟΧΟΣ</p>
+        <h3 class="mt-3 text-white font-bold text-lg sm:text-xl tracking-tight">04. Πρώτες Μονάδες</h3>
+        <p class="mt-2 text-white/70 text-sm leading-relaxed">
+          Από prototype σε προϊόν: μικρή σειρά παραγωγής για τους πρώτους
+          συνεργάτες-αγρότες — πρώτα αξιόπιστο σε 10 χωράφια, μετά σε 10.000.
+        </p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ============ 7. CTA FIELD PILOT ============ -->
+<section id="contact" class="bg-white py-24 border-b border-navy/5 relative z-20">
+  <div class="mx-auto max-w-6xl px-6 sm:px-8">
+    <div class="reveal forest-band-bg grain relative overflow-hidden rounded-3xl px-6 py-20 sm:px-12 sm:py-24 text-center shadow-float">
+      <div class="relative max-w-2xl mx-auto space-y-6">
+        <p class="font-mono text-white/70 text-xs tracking-widest">[ FIELD PILOTS — ΑΝΟΙΧΤΗ ΛΙΣΤΑ ]</p>
+        <h2 class="font-bold text-white tracking-tight" style="font-size: clamp(28px, 4.5vw, 44px); line-height: 1.15;">
+          Θες το laser στο δικό σου&nbsp;χωράφι;
+        </h2>
+        <p class="text-white/75 text-base sm:text-lg leading-relaxed">
+          Ετοιμάζουμε τα πρώτα field pilots στη Θεσσαλία. Όσοι δηλώσουν νωρίς, μπαίνουν πρώτοι στη λίστα.
+        </p>
+        <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-6">
+          <a href="mailto:info@ceroviasystems.com?subject=Field pilot" class="btn-primary bg-leaf text-white font-semibold px-8 py-4 rounded-full text-base">
+            Ζήτησε field pilot
+          </a>
+          <a href="mailto:info@ceroviasystems.com?subject=Investor deck" class="link-secondary text-white/90 text-sm font-semibold">
+            Επενδυτές: ζητήστε το deck <span aria-hidden="true">→</span>
+          </a>
+        </div>
+        <a href="mailto:info@ceroviasystems.com" class="inline-block text-white/60 hover:text-white text-xs font-mono tracking-widest transition-colors">info@ceroviasystems.com</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 8. TEAM ============ -->
+<section id="team" class="bg-white py-20 relative z-20 border-b border-navy/5">
+  <div class="mx-auto max-w-6xl px-6 sm:px-8 space-y-12">
+    <div class="text-center space-y-2 max-w-2xl mx-auto">
+      <p class="font-mono text-forest text-xs tracking-widest">[ Η ΟΜΑΔΑ ]</p>
+      <h2 class="text-navy font-bold tracking-tight text-2xl sm:text-3xl">Μηχανικοί που μεγάλωσαν σε χωράφι.</h2>
+      <p class="text-muted text-sm leading-relaxed">Καταλαβαίνουμε και τον αγρότη και την τεχνολογία — γιατί ζούμε και τα δύο.</p>
+    </div>
+    
+    <div class="grid sm:grid-cols-2 gap-8 pt-4 max-w-2xl mx-auto">
+      <div class="bg-offwhite rounded-2xl p-6 border border-navy/5 text-center space-y-4 shadow-card">
+        <div class="w-24 h-24 rounded-full bg-navy mx-auto shadow-md border-2 border-white flex items-center justify-center">
+          <span class="font-mono font-bold text-leaf text-xl" aria-hidden="true">ΧΚ</span>
+        </div>
+        <div class="space-y-0.5">
+          <h3 class="text-navy font-bold text-base">
+            <a href="https://www.linkedin.com/in/charalampos-koukos-30b94a27a/" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 hover:text-forest underline-offset-4 hover:underline transition-colors">
+              Χαράλαμπος Κούκος
+              <svg viewBox="0 0 24 24" class="w-4 h-4 fill-current opacity-60" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>
+              <span class="sr-only">(LinkedIn)</span>
+            </a>
+          </h3>
+          <p class="text-muted font-mono text-[11px] uppercase tracking-wider">Founder · Mechanical Eng.</p>
+        </div>
+      </div>
+
+      <div class="bg-offwhite rounded-2xl p-6 border border-navy/5 text-center space-y-4 shadow-card">
+        <div class="w-24 h-24 rounded-full bg-forest mx-auto shadow-md border-2 border-white flex items-center justify-center">
+          <span class="font-mono font-bold text-white text-xl" aria-hidden="true">ΔΚ</span>
+        </div>
+        <div class="space-y-0.5">
+          <h3 class="text-navy font-bold text-base">
+            <a href="https://www.linkedin.com/in/dimitris-kafetzis-19560a328/" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 hover:text-forest underline-offset-4 hover:underline transition-colors">
+              Δημήτρης Καφετζής
+              <svg viewBox="0 0 24 24" class="w-4 h-4 fill-current opacity-60" aria-hidden="true"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>
+              <span class="sr-only">(LinkedIn)</span>
+            </a>
+          </h3>
+          <p class="text-muted font-mono text-[11px] uppercase tracking-wider">Co-founder · AI &amp; Vision</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer class="bg-navy border-t border-white/5 py-16 text-white/40 font-medium text-xs relative z-20">
+  <div class="mx-auto max-w-6xl px-6 sm:px-8 space-y-12">
+    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 border-b border-white/5 pb-10">
+      <a href="#top" class="text-white font-bold tracking-wide text-base">
+        CEROVIA<span class="text-leaf font-normal">SYSTEMS</span>
+      </a>
+      <div class="flex flex-wrap items-center gap-x-8 gap-y-2 uppercase tracking-wider text-[11px]">
+        <a href="#problem" class="hover:text-white transition-colors">Το πρόβλημα</a>
+        <a href="#rover" class="hover:text-white transition-colors">Η τεχνολογία</a>
+        <a href="#supporters" class="hover:text-white transition-colors">Υποστηρικτές</a>
+        <a href="#opportunity" class="hover:text-white transition-colors">Η ευκαιρία</a>
+      </div>
+    </div>
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 font-mono text-[10px] uppercase tracking-widest text-white/20">
+      <span>39.63°N 22.42°E · ΛΑΡΙΣΑ · GREECE</span>
+      <a href="mailto:info@ceroviasystems.com" class="hover:text-white/60 transition-colors">INFO@CEROVIASYSTEMS.COM</a>
+      <span>© 2026 CEROVIA SYSTEMS · R&amp;D PHASE</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Clean Fluid Scroll Reveals
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (prefersReducedMotion) {
+    document.querySelectorAll('model-viewer[auto-rotate]').forEach((mv) => mv.removeAttribute('auto-rotate'));
+  }
+  if (!prefersReducedMotion && 'IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.isIntersecting) { e.target.classList.add('is-visible'); io.unobserve(e.target); }
+      }
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  } else {
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('is-visible'));
+  }
+
+  // ---- SUPPORTERS MARQUEE: always-on auto-scroll + drag + wheel ----
+  (() => {
+    const track = document.querySelector('.animate-marquee');
+    if (!track) return;
+    const SPEED = 40; // px/s auto-advance
+    let offset = 0, dragging = false, startX = 0, startOffset = 0;
+    let last = performance.now();
+
+    const apply = () => {
+      const half = track.scrollWidth / 2;
+      if (half > 0) {
+        offset = ((offset % half) + half) % half; // seamless wrap in both directions
+        track.style.transform = `translateX(${-offset}px)`;
+      }
+    };
+    const tick = (now) => {
+      const dt = (now - last) / 1000;
+      last = now;
+      // keeps moving even on hover; pauses only while actively dragging
+      if (!dragging && !prefersReducedMotion) offset += SPEED * dt;
+      apply();
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+
+    track.addEventListener('pointerdown', (e) => {
+      dragging = true; startX = e.clientX; startOffset = offset;
+      track.setPointerCapture(e.pointerId);
+    });
+    track.addEventListener('pointermove', (e) => {
+      if (dragging) { offset = startOffset - (e.clientX - startX); apply(); }
+    });
+    const endDrag = () => { dragging = false; };
+    track.addEventListener('pointerup', endDrag);
+    track.addEventListener('pointercancel', endDrag);
+
+    // wheel over the strip browses the sponsors instead of scrolling the page
+    track.parentElement.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      offset += (e.deltaY || e.deltaX);
+      apply();
+    }, { passive: false });
+  })();
+
+  // ---- INTEGRATED SCROLL TIMELINE MANAGER ----
+  // skipped entirely under prefers-reduced-motion: the CSS fallback unpins the
+  // scenes and shows every step statically instead
+  if (!prefersReducedMotion) window.addEventListener('scroll', () => {
+    
+    // 1. HERO HORIZONTAL LASER BEAM — enters from the page's left edge; the word
+    // vanishes left-to-right as the beam tip passes through it
+    const topSection = document.getElementById('top');
+    const weedText = document.getElementById('hero-weed-text');
+    const heroBeam = document.getElementById('hero-beam');
+
+    if (topSection && weedText && heroBeam) {
+      const rectTop = topSection.getBoundingClientRect();
+      const scrollHeightTop = rectTop.height - window.innerHeight;
+      let progressTop = -rectTop.top / scrollHeightTop;
+      progressTop = Math.max(0, Math.min(1, progressTop));
+
+      const stickyBox = topSection.querySelector('.sticky');
+      const cb = stickyBox.getBoundingClientRect();
+      const wr = weedText.getBoundingClientRect();
+      // measure against the word's full width even while partly clipped
+      const wordLeft = wr.left, wordWidth = weedText.offsetWidth;
+      const targetW = wordLeft + wordWidth - cb.left; // page left edge -> end of the word
+      const beamW = progressTop * targetW;
+
+      if (progressTop > 0 && progressTop < 0.96) {
+        heroBeam.style.opacity = '1';
+        heroBeam.style.top = `${wr.top + wr.height / 2 - cb.top - 2}px`;
+        heroBeam.style.width = `${beamW}px`;
+        // wipe the word away from the left, in sync with the beam tip
+        const covered = Math.max(0, Math.min(1, (cb.left + beamW - wordLeft) / wordWidth));
+        weedText.style.clipPath = `inset(0 0 0 ${covered * 100}%)`;
+      } else if (progressTop >= 0.96) {
+        heroBeam.style.opacity = '0';
+        weedText.style.clipPath = 'inset(0 0 0 100%)';
+      } else {
+        heroBeam.style.opacity = '0';
+        weedText.style.clipPath = 'none';
+      }
+    }
+
+    // 2. BACKDROP CANVAS WIPE + FOREGROUND TEXT CROSSFADE
+    const roverSection = document.getElementById('rover');
+    if (!roverSection) return;
+
+    const layer2 = document.getElementById('img-layer-2');
+    const layer3 = document.getElementById('img-layer-3');
+    const layer4 = document.getElementById('img-layer-4');
+    const curtainLaser = document.getElementById('sweep-curtain-laser');
+
+    const desc1 = document.getElementById('text-desc-1');
+    const desc2 = document.getElementById('text-desc-2');
+    const desc3 = document.getElementById('text-desc-3');
+    const desc4 = document.getElementById('text-desc-4');
+
+    const rect = roverSection.getBoundingClientRect();
+    const scrollHeight = rect.height - window.innerHeight;
+    let progress = -rect.top / scrollHeight;
+    progress = Math.max(0, Math.min(1, progress));
+
+    // shows/hides a stage text as a whole; the CSS 300ms transition does the easing
+    const setStageText = (el, visible, hiddenShift) => {
+      el.style.opacity = visible ? '1' : '0';
+      el.style.transform = visible ? 'translateY(0)' : `translateY(${hiddenShift}px)`;
+    };
+
+    if (progress <= 0.25) {
+      layer2.style.clipPath = 'inset(0 0 0 100%)';
+      layer3.style.clipPath = 'inset(0 0 0 100%)';
+      layer4.style.clipPath = 'inset(0 0 0 100%)';
+      curtainLaser.style.opacity = '0';
+
+      setStageText(desc1, true, 0);
+      setStageText(desc2, false, 16); setStageText(desc3, false, 16); setStageText(desc4, false, 16);
+    }
+    else if (progress > 0.25 && progress <= 0.50) {
+      let p = (progress - 0.25) / 0.25;
+      let sweepX = 100 - (p * 100);
+      layer2.style.clipPath = `inset(0 0 0 ${sweepX}%)`;
+      layer3.style.clipPath = 'inset(0 0 0 100%)';
+      layer4.style.clipPath = 'inset(0 0 0 100%)';
+      curtainLaser.style.opacity = '1';
+      curtainLaser.style.left = `${sweepX}%`;
+
+      // sequential, not crossfade: old text is fully gone before the next appears
+      setStageText(desc1, p < 0.4, -10);
+      setStageText(desc2, p > 0.6, 10);
+      setStageText(desc3, false, 10); setStageText(desc4, false, 10);
+    }
+    else if (progress > 0.50 && progress <= 0.75) {
+      let p = (progress - 0.50) / 0.25;
+      let sweepX = 100 - (p * 100);
+      layer2.style.clipPath = 'inset(0 0 0 0%)';
+      layer3.style.clipPath = `inset(0 0 0 ${sweepX}%)`;
+      layer4.style.clipPath = 'inset(0 0 0 100%)';
+      curtainLaser.style.opacity = '1';
+      curtainLaser.style.left = `${sweepX}%`;
+
+      setStageText(desc1, false, -10);
+      setStageText(desc2, p < 0.4, -10);
+      setStageText(desc3, p > 0.6, 10);
+      setStageText(desc4, false, 10);
+    }
+    else {
+      let p = (progress - 0.75) / 0.25;
+      let sweepX = 100 - (p * 100);
+      layer2.style.clipPath = 'inset(0 0 0 0%)';
+      layer3.style.clipPath = 'inset(0 0 0 0%)';
+      layer4.style.clipPath = `inset(0 0 0 ${sweepX}%)`;
+      curtainLaser.style.opacity = p > 0.96 ? '0' : '1';
+      curtainLaser.style.left = `${sweepX}%`;
+
+      setStageText(desc1, false, -10); setStageText(desc2, false, -10);
+      setStageText(desc3, p < 0.4, -10);
+      setStageText(desc4, p > 0.6, 10);
+    }
+
+  });
+</script>
+</body>
+</html>
