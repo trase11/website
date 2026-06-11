@@ -168,8 +168,8 @@ tailwind.config = {
 <!-- ============ NAV ============ -->
 <header class="fixed top-0 inset-x-0 z-50 border-b border-white/5" style="background: rgba(10,22,40,0.85); backdrop-filter: blur(16px);">
   <nav class="mx-auto max-w-6xl px-6 sm:px-8 h-16 flex items-center justify-between" aria-label="Κύρια πλοήγηση">
-    <a href="#top" class="flex items-baseline gap-2 text-white font-bold tracking-wide text-sm sm:text-base" aria-label="Cerovia Systems — αρχή σελίδας">
-      CEROVIA<span class="text-leaf font-normal">SYSTEMS</span>
+    <a href="#top" class="flex items-center shrink-0" aria-label="Cerovia Systems — αρχή σελίδας">
+      <img src="brand_assets/logos/logo.png" alt="Cerovia Systems" class="h-32 w-auto -my-8 brightness-0 invert select-none" draggable="false">
     </a>
     <div class="hidden md:flex items-center gap-6 lg:gap-8 text-xs font-medium uppercase tracking-wider text-white/60">
       <a href="#problem" class="hover:text-white transition-colors whitespace-nowrap" data-i18n="nav.problem">Το πρόβλημα</a>
@@ -180,10 +180,13 @@ tailwind.config = {
       <a href="#traction" class="hover:text-white transition-colors whitespace-nowrap" data-i18n="nav.traction">Πορεία</a>
     </div>
     <div class="flex items-center gap-3 sm:gap-4">
-      <button type="button" id="lang-toggle" class="font-mono text-xs text-white/70 hover:text-white transition-colors px-2 py-1 cursor-pointer" aria-label="Switch language / Αλλαγή γλώσσας">EN</button>
       <a href="#contact" class="btn-primary bg-leaf text-white font-semibold text-sm px-5 py-2.5 rounded-full whitespace-nowrap" data-i18n="nav.cta">
         Ζήτησε field pilot
       </a>
+      <button type="button" id="lang-toggle" class="flex items-center gap-2 font-mono text-xs text-white/80 hover:text-white border border-white/25 hover:border-white/60 rounded-full px-3 py-1.5 transition-colors cursor-pointer shrink-0" aria-label="Switch language / Αλλαγή γλώσσας">
+        <svg viewBox="0 0 60 36" class="w-5 h-3.5 rounded-[2px]" aria-hidden="true"><rect width="60" height="36" fill="#012169"/><path d="M0,0 60,36 M60,0 0,36" stroke="#fff" stroke-width="7"/><path d="M0,0 60,36 M60,0 0,36" stroke="#C8102E" stroke-width="3"/><path d="M30,0 V36 M0,18 H60" stroke="#fff" stroke-width="12"/><path d="M30,0 V36 M0,18 H60" stroke="#C8102E" stroke-width="7"/></svg>
+        <span>EN</span>
+      </button>
     </div>
   </nav>
 </header>
@@ -781,6 +784,9 @@ tailwind.config = {
   const i18nEls = document.querySelectorAll('[data-i18n]');
   const i18nOriginal = {};
   i18nEls.forEach((el) => { i18nOriginal[el.dataset.i18n] = el.innerHTML; });
+  // the toggle shows the language you can switch TO: UK flag while in Greek, Greek flag while in English
+  const FLAG_GB = '<svg viewBox="0 0 60 36" class="w-5 h-3.5 rounded-[2px]" aria-hidden="true"><rect width="60" height="36" fill="#012169"/><path d="M0,0 60,36 M60,0 0,36" stroke="#fff" stroke-width="7"/><path d="M0,0 60,36 M60,0 0,36" stroke="#C8102E" stroke-width="3"/><path d="M30,0 V36 M0,18 H60" stroke="#fff" stroke-width="12"/><path d="M30,0 V36 M0,18 H60" stroke="#C8102E" stroke-width="7"/></svg>';
+  const FLAG_GR = '<svg viewBox="0 0 60 36" class="w-5 h-3.5 rounded-[2px]" aria-hidden="true"><rect width="60" height="36" fill="#0D5EAF"/><rect y="4" width="60" height="4" fill="#fff"/><rect y="12" width="60" height="4" fill="#fff"/><rect y="20" width="60" height="4" fill="#fff"/><rect y="28" width="60" height="4" fill="#fff"/><rect width="20" height="20" fill="#0D5EAF"/><rect x="8" width="4" height="20" fill="#fff"/><rect y="8" width="20" height="4" fill="#fff"/></svg>';
   function setLang(lang) {
     i18nEls.forEach((el) => {
       const k = el.dataset.i18n;
@@ -791,7 +797,7 @@ tailwind.config = {
     const md = document.querySelector('meta[name="description"]');
     if (md) md.setAttribute('content', PAGE_META[lang].desc);
     const btn = document.getElementById('lang-toggle');
-    if (btn) btn.textContent = lang === 'en' ? 'ΕΛ' : 'EN';
+    if (btn) btn.innerHTML = lang === 'en' ? FLAG_GR + '<span>ΕΛ</span>' : FLAG_GB + '<span>EN</span>';
     try { localStorage.setItem('cerovia-lang', lang); } catch (e) { /* private mode */ }
   }
   const langBtn = document.getElementById('lang-toggle');
