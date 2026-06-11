@@ -28,6 +28,12 @@ const browser = await puppeteer.launch();
 const page = await browser.newPage();
 const width = parseInt(process.env.SHOT_WIDTH || '1440', 10);
 await page.setViewport({ width, height: 900, deviceScaleFactor: 1 });
+// SHOT_LANG env: preset the site's language toggle before load
+if (process.env.SHOT_LANG) {
+  await page.evaluateOnNewDocument((l) => {
+    try { localStorage.setItem('cerovia-lang', l); } catch {}
+  }, process.env.SHOT_LANG);
+}
 await page.goto(url, { waitUntil: 'networkidle0', timeout: 60000 });
 
 // Scroll through the page so IntersectionObserver-based reveals trigger, then return to top

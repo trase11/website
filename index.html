@@ -171,17 +171,20 @@ tailwind.config = {
     <a href="#top" class="flex items-baseline gap-2 text-white font-bold tracking-wide text-sm sm:text-base" aria-label="Cerovia Systems — αρχή σελίδας">
       CEROVIA<span class="text-leaf font-normal">SYSTEMS</span>
     </a>
-    <div class="hidden md:flex items-center gap-8 text-xs font-medium uppercase tracking-wider text-white/60">
-      <a href="#problem" class="hover:text-white transition-colors">Το πρόβλημα</a>
-      <a href="#rover" class="hover:text-white transition-colors">Η τεχνολογία</a>
-      <a href="#supporters" class="hover:text-white transition-colors">Υποστηρικτές</a>
-      <a href="#opportunity" class="hover:text-white transition-colors">Η ευκαιρία</a>
-      <a href="#testimonials" class="hover:text-white transition-colors">Μαρτυρίες</a>
-      <a href="#traction" class="hover:text-white transition-colors">Πορεία</a>
+    <div class="hidden md:flex items-center gap-6 lg:gap-8 text-xs font-medium uppercase tracking-wider text-white/60">
+      <a href="#problem" class="hover:text-white transition-colors whitespace-nowrap" data-i18n="nav.problem">Το πρόβλημα</a>
+      <a href="#rover" class="hover:text-white transition-colors whitespace-nowrap" data-i18n="nav.tech">Η τεχνολογία</a>
+      <a href="#supporters" class="hover:text-white transition-colors whitespace-nowrap" data-i18n="nav.supporters">Υποστηρικτές</a>
+      <a href="#opportunity" class="hover:text-white transition-colors whitespace-nowrap" data-i18n="nav.opportunity">Η ευκαιρία</a>
+      <a href="#testimonials" class="hover:text-white transition-colors whitespace-nowrap" data-i18n="nav.testimonials">Μαρτυρίες</a>
+      <a href="#traction" class="hover:text-white transition-colors whitespace-nowrap" data-i18n="nav.traction">Πορεία</a>
     </div>
-    <a href="#contact" class="btn-primary bg-leaf text-white font-semibold text-sm px-5 py-2.5 rounded-full">
-      Ζήτησε field pilot
-    </a>
+    <div class="flex items-center gap-3 sm:gap-4">
+      <button type="button" id="lang-toggle" class="font-mono text-xs text-white/70 hover:text-white transition-colors px-2 py-1 cursor-pointer" aria-label="Switch language / Αλλαγή γλώσσας">EN</button>
+      <a href="#contact" class="btn-primary bg-leaf text-white font-semibold text-sm px-5 py-2.5 rounded-full whitespace-nowrap" data-i18n="nav.cta">
+        Ζήτησε field pilot
+      </a>
+    </div>
   </nav>
 </header>
 
@@ -199,21 +202,21 @@ tailwind.config = {
 
       <div class="max-w-3xl mx-auto text-center space-y-6" style="text-shadow: 0 1px 16px rgba(10,22,40,0.55), 0 1px 3px rgba(10,22,40,0.35);">
         <h1 class="hero-enter hero-enter-1 text-white font-bold leading-[1.12] tracking-tight text-[34px] sm:text-[52px] md:text-[64px]">
-          Στο χωράφι σου τα<br>
+          <span data-i18n="hero.l1">Στο χωράφι σου τα</span><br>
           <span class="relative inline-block">
-            <span id="hero-weed-text" class="inline-block text-white">ζιζάνια</span>
+            <span id="hero-weed-text" class="inline-block text-white" data-i18n="hero.word">ζιζάνια</span>
           </span><br>
-          απλώς εξαφανίζονται.
+          <span data-i18n="hero.l3">απλώς εξαφανίζονται.</span>
         </h1>
-        
-        <p class="hero-enter hero-enter-2 text-white/70 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+
+        <p class="hero-enter hero-enter-2 text-white/70 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed" data-i18n="hero.sub">
           Χτίζουμε ένα αυτόνομο rover που βλέπει κάθε φυτό στο χωράφι σου. Ό,τι είναι ζιζάνιο, δέχεται μια ριπή laser. Χωρίς ψεκασμό, χωρίς υπολείμματα, χωρίς εργατικά.
         </p>
         <div class="hero-enter hero-enter-2 pt-4 flex flex-col sm:flex-row items-center justify-center gap-6">
-          <a href="#contact" class="btn-primary bg-leaf text-white font-semibold px-8 py-4 rounded-full text-base tracking-wide">
+          <a href="#contact" class="btn-primary bg-leaf text-white font-semibold px-8 py-4 rounded-full text-base tracking-wide" data-i18n="hero.cta">
             Ζήτησε field pilot
           </a>
-          <a href="#opportunity" class="link-secondary inline-flex items-center gap-2 text-white/75 text-sm font-medium">
+          <a href="#opportunity" class="link-secondary inline-flex items-center gap-2 text-white/75 text-sm font-medium" data-i18n="hero.investor">
             Είσαι επενδυτής; Δες την ευκαιρία <span aria-hidden="true">→</span>
           </a>
         </div>
@@ -228,10 +231,10 @@ tailwind.config = {
   <div class="mx-auto max-w-6xl px-6 sm:px-8 space-y-16">
     <div class="grid lg:grid-cols-[1.2fr_0.8fr] gap-12 items-start">
       <div class="space-y-4">
-        <h2 class="text-navy font-bold tracking-tight" style="font-size: clamp(28px, 4.2vw, 42px); line-height: 1.15;">
+        <h2 class="text-navy font-bold tracking-tight" style="font-size: clamp(28px, 4.2vw, 42px); line-height: 1.15;" data-i18n="problem.h2">
           Το χωράφι σου πληρώνει τα ζιζάνια τρεις φορές.
         </h2>
-        <p class="text-muted text-base sm:text-lg leading-relaxed">
+        <p class="text-muted text-base sm:text-lg leading-relaxed" data-i18n="problem.sub">
           Στο ταμείο, στην απόδοση και στο μέλλον. Τρεις αριθμοί που τα λένε όλα:
         </p>
       </div>
@@ -239,7 +242,7 @@ tailwind.config = {
         <img src="brand_assets/spraying-new.jpg" alt="Τρακτέρ ψεκάζει χημικά σε καλλιέργεια — ο παραδοσιακός τρόπος ζιζανιοκτονίας" class="w-full h-48 object-cover" loading="lazy">
         <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none"></div>
         <div class="absolute inset-0 bg-forest/20 mix-blend-multiply pointer-events-none"></div>
-        <p class="absolute bottom-3 left-4 font-mono text-[10px] text-white/70 tracking-widest">Ο ΠΑΛΙΟΣ ΤΡΟΠΟΣ · ΨΕΚΑΣΜΟΣ <span class="text-white/40">· φωτ. geograph.org.uk (CC BY-SA)</span></p>
+        <p class="absolute bottom-3 left-4 font-mono text-[10px] text-white/70 tracking-widest" data-i18n="problem.caption">Ο ΠΑΛΙΟΣ ΤΡΟΠΟΣ · ΨΕΚΑΣΜΟΣ <span class="text-white/40">· φωτ. geograph.org.uk (CC BY-SA)</span></p>
       </div>
     </div>
 
@@ -249,8 +252,8 @@ tailwind.config = {
           €500<span style="font-size: 0.34em;">/στρ</span>
         </p>
         <div class="space-y-2">
-          <h3 class="text-navy font-bold text-lg sm:text-xl">Στο ταμείο — κάθε χρόνο, ξανά</h3>
-          <p class="text-muted text-base leading-relaxed">
+          <h3 class="text-navy font-bold text-lg sm:text-xl" data-i18n="problem.s1h">Στο ταμείο — κάθε χρόνο, ξανά</h3>
+          <p class="text-muted text-base leading-relaxed" data-i18n="problem.s1p">
             Τόσο μπορεί να φτάνει το συνολικό ετήσιο κόστος των ζιζανίων σε εντατικές καλλιέργειες — σκευάσματα, ψεκασμοί, εργατικά και χαμένη απόδοση μαζί.
           </p>
         </div>
@@ -260,8 +263,8 @@ tailwind.config = {
           270+
         </p>
         <div class="space-y-2">
-          <h3 class="text-navy font-bold text-lg sm:text-xl">Στην απόδοση — τα χημικά χάνουν</h3>
-          <p class="text-muted text-base leading-relaxed">
+          <h3 class="text-navy font-bold text-lg sm:text-xl" data-i18n="problem.s2h">Στην απόδοση — τα χημικά χάνουν</h3>
+          <p class="text-muted text-base leading-relaxed" data-i18n="problem.s2p">
             Τόσα είδη ζιζανίων παγκοσμίως αντέχουν πια τα ζιζανιοκτόνα που ήδη πληρώνεις. Όσα γλιτώνουν τον ψεκασμό, κλέβουν νερό, φως και θρεπτικά από την καλλιέργειά σου.
           </p>
         </div>
@@ -271,8 +274,8 @@ tailwind.config = {
           −50%
         </p>
         <div class="space-y-2">
-          <h3 class="text-navy font-bold text-lg sm:text-xl">Στο μέλλον — η ΕΕ κλείνει τη στρόφιγγα</h3>
-          <p class="text-muted text-base leading-relaxed">
+          <h3 class="text-navy font-bold text-lg sm:text-xl" data-i18n="problem.s3h">Στο μέλλον — η ΕΕ κλείνει τη στρόφιγγα</h3>
+          <p class="text-muted text-base leading-relaxed" data-i18n="problem.s3p">
             Ο στόχος της ΕΕ για τη χρήση χημικών φυτοφαρμάκων ως το 2030. Όσοι μείνουν στα χημικά, μένουν με λιγότερα εργαλεία και αυστηρότερους ελέγχους.
           </p>
         </div>
@@ -326,8 +329,8 @@ tailwind.config = {
             <path class="learn-curve" pathLength="1100" d="M12 92 C60 86, 80 56, 130 38 S 230 14, 268 9" stroke="#4CAF50" stroke-width="3" stroke-linecap="round"/>
           </svg>
           <div class="mt-3 flex items-center justify-between font-mono text-[10px] text-white/65 tracking-wider">
-            <span>ΑΚΡΙΒΕΙΑ <span class="text-leaf">↑</span></span>
-            <span>ΚΑΘΕ ΠΕΡΑΣΜΑ <span class="text-leaf">+DATA</span></span>
+            <span data-i18n="rover.acc">ΑΚΡΙΒΕΙΑ <span class="text-leaf">↑</span></span>
+            <span data-i18n="rover.pass">ΚΑΘΕ ΠΕΡΑΣΜΑ <span class="text-leaf">+DATA</span></span>
           </div>
         </div>
       </div>
@@ -339,32 +342,32 @@ tailwind.config = {
     <!-- Foreground narrative overlay dashboard UI -->
     <div class="relative z-10 mx-auto max-w-6xl w-full px-6 sm:px-8 h-full flex flex-col justify-between py-20 pointer-events-none">
       <div>
-        <h2 class="text-white font-bold tracking-tight text-2xl sm:text-4xl">Φτιαγμένο για πραγματική δουλειά στο χωράφι.</h2>
+        <h2 class="text-white font-bold tracking-tight text-2xl sm:text-4xl" data-i18n="rover.h2">Φτιαγμένο για πραγματική δουλειά στο χωράφι.</h2>
       </div>
 
       <div class="rm-static-parent w-full max-w-xl bg-navy/20 backdrop-blur-sm p-8 sm:p-10 rounded-3xl border border-white/10 relative min-h-[260px] sm:min-h-[230px] flex items-center">
         <div id="text-desc-1" class="absolute inset-x-8 sm:inset-x-10 space-y-3 transition-[opacity,transform] duration-300 opacity-100 transform translate-y-0">
-          <h3 class="text-white font-bold text-xl sm:text-2xl">01. Ανίχνευση</h3>
-          <p class="text-white/70 text-sm leading-relaxed">Οι κάμερες του rover σαρώνουν τις γραμμές φύτευσης εκατοστό προς εκατοστό, καταγράφοντας δεδομένα σε πραγματικό χρόνο, μέρα και νύχτα.</p>
+          <h3 class="text-white font-bold text-xl sm:text-2xl" data-i18n="rover.s1h">01. Ανίχνευση</h3>
+          <p class="text-white/70 text-sm leading-relaxed" data-i18n="rover.s1p">Οι κάμερες του rover σαρώνουν τις γραμμές φύτευσης εκατοστό προς εκατοστό, καταγράφοντας δεδομένα σε πραγματικό χρόνο, μέρα και νύχτα.</p>
         </div>
         <div id="text-desc-2" class="absolute inset-x-8 sm:inset-x-10 space-y-3 transition-[opacity,transform] duration-300 opacity-0 transform translate-y-4">
-          <h3 class="text-white font-bold text-xl sm:text-2xl">02. Στόχευση</h3>
-          <p class="text-white/70 text-sm leading-relaxed">Το ενσωματωμένο AI αναλύει το σχήμα των φύλλων, ξεχωρίζει ακαριαία την καλλιέργεια από τα ζιζάνια και κλειδώνει τη θέση του στόχου.</p>
+          <h3 class="text-white font-bold text-xl sm:text-2xl" data-i18n="rover.s2h">02. Στόχευση</h3>
+          <p class="text-white/70 text-sm leading-relaxed" data-i18n="rover.s2p">Το ενσωματωμένο AI αναλύει το σχήμα των φύλλων, ξεχωρίζει ακαριαία την καλλιέργεια από τα ζιζάνια και κλειδώνει τη θέση του στόχου.</p>
         </div>
         <div id="text-desc-3" class="absolute inset-x-8 sm:inset-x-10 space-y-3 transition-[opacity,transform] duration-300 opacity-0 transform translate-y-4">
-          <h3 class="text-white font-bold text-xl sm:text-2xl">03. Εξουδετέρωση</h3>
-          <p class="text-white/70 text-sm leading-relaxed">Μια στοχευμένη ριπή θερμικού laser χτυπά το κέντρο ανάπτυξης του ζιζανίου. Το χώμα και οι ρίζες της καλλιέργειας δεν αγγίζονται.</p>
+          <h3 class="text-white font-bold text-xl sm:text-2xl" data-i18n="rover.s3h">03. Εξουδετέρωση</h3>
+          <p class="text-white/70 text-sm leading-relaxed" data-i18n="rover.s3p">Μια στοχευμένη ριπή θερμικού laser χτυπά το κέντρο ανάπτυξης του ζιζανίου. Το χώμα και οι ρίζες της καλλιέργειας δεν αγγίζονται.</p>
         </div>
         <div id="text-desc-4" class="absolute inset-x-8 sm:inset-x-10 space-y-3 transition-[opacity,transform] duration-300 opacity-0 transform translate-y-4">
-          <h3 class="text-white font-bold text-xl sm:text-2xl">04. Μάθηση</h3>
-          <p class="text-white/70 text-sm leading-relaxed">Κάθε πέρασμα μαζεύει δεδομένα και εκπαιδεύει το μοντέλο. Όσο δουλεύει το rover στο χωράφι σου, τόσο καλύτερο και ταχύτερο γίνεται.</p>
+          <h3 class="text-white font-bold text-xl sm:text-2xl" data-i18n="rover.s4h">04. Μάθηση</h3>
+          <p class="text-white/70 text-sm leading-relaxed" data-i18n="rover.s4p">Κάθε πέρασμα μαζεύει δεδομένα και εκπαιδεύει το μοντέλο. Όσο δουλεύει το rover στο χωράφι σου, τόσο καλύτερο και ταχύτερο γίνεται.</p>
         </div>
       </div>
 
       <div class="flex flex-wrap items-center gap-x-8 gap-y-2 font-mono text-[10px] sm:text-xs text-white/40">
-        <a href="https://www.google.com/maps/search/?api=1&amp;query=%CE%92%CF%8C%CE%BB%CE%BF%CF%82" target="_blank" rel="noopener" class="pointer-events-auto hover:text-leaf transition-colors" aria-label="Άνοιγμα του Βόλου στον χάρτη">39.36°N 22.94°E · ΒΟΛΟΣ ↗</a>
+        <a href="https://www.google.com/maps/search/?api=1&amp;query=%CE%92%CF%8C%CE%BB%CE%BF%CF%82" target="_blank" rel="noopener" class="pointer-events-auto hover:text-leaf transition-colors" aria-label="Άνοιγμα του Βόλου στον χάρτη" data-i18n="rover.loc">39.36°N 22.94°E · ΒΟΛΟΣ ↗</a>
         <span>STATUS: <span class="text-leaf">R&amp;D PROTOTYPE</span></span>
-        <span>ΧΗΜΙΚΑ: <span class="text-leaf">0</span></span>
+        <span data-i18n="rover.chem">ΧΗΜΙΚΑ: <span class="text-leaf">0</span></span>
       </div>
     </div>
   </div>
@@ -373,7 +376,7 @@ tailwind.config = {
 <!-- ============ 3B. STRATEGIC SUPPORTERS (Infinite Film-Strip Marquee) ============ -->
 <section id="supporters" class="bg-white py-16 border-b border-navy/5 overflow-hidden relative z-10">
   <div class="mx-auto max-w-6xl px-6 sm:px-8 mb-10 text-center">
-    <h2 class="text-navy font-bold tracking-tight text-2xl sm:text-3xl">Χορηγοί &amp; οικοσύστημα</h2>
+    <h2 class="text-navy font-bold tracking-tight text-2xl sm:text-3xl" data-i18n="supporters.h2">Χορηγοί &amp; οικοσύστημα</h2>
   </div>
 
   <div class="w-full flex relative mask-gradient">
@@ -381,11 +384,11 @@ tailwind.config = {
       <!-- set A -->
       <div class="mx-6 px-10 group rounded-2xl border border-navy/10 bg-white shadow-card min-w-[240px] h-28 flex flex-col items-center justify-center gap-2.5">
         <img src="brand_assets/sponsors/uth.png" alt="Πανεπιστήμιο Θεσσαλίας" class="h-12 w-auto object-contain grayscale group-hover:grayscale-0 opacity-80 group-hover:opacity-100 transition-opacity duration-200" loading="lazy">
-        <span class="font-mono text-muted text-[10px] tracking-widest">ΠΑΝΕΠΙΣΤΗΜΙΟ ΘΕΣΣΑΛΙΑΣ</span>
+        <span class="font-mono text-muted text-[10px] tracking-widest" data-i18n="sp.uth">ΠΑΝΕΠΙΣΤΗΜΙΟ ΘΕΣΣΑΛΙΑΣ</span>
       </div>
       <div class="mx-6 px-10 group rounded-2xl border border-navy/10 bg-white shadow-card min-w-[240px] h-28 flex flex-col items-center justify-center gap-2.5">
         <img src="brand_assets/sponsors/innovent.svg" alt="Innovent Forum" class="h-7 w-auto object-contain grayscale group-hover:grayscale-0 opacity-80 group-hover:opacity-100 transition-opacity duration-200" loading="lazy">
-        <span class="font-mono text-muted text-[10px] tracking-widest">INNOVENT FORUM · ΛΑΡΙΣΑ</span>
+        <span class="font-mono text-muted text-[10px] tracking-widest" data-i18n="sp.innovent">INNOVENT FORUM · ΛΑΡΙΣΑ</span>
       </div>
       <div class="mx-6 px-10 group rounded-2xl border border-navy/10 bg-white shadow-card min-w-[240px] h-28 flex flex-col items-center justify-center gap-2.5">
         <img src="brand_assets/sponsors/piraeus.svg" alt="Piraeus" class="h-7 w-auto object-contain grayscale group-hover:grayscale-0 opacity-80 group-hover:opacity-100 transition-opacity duration-200" loading="lazy">
@@ -401,20 +404,20 @@ tailwind.config = {
       </div>
       <div class="mx-6 px-10 group rounded-2xl border border-navy/10 bg-white shadow-card min-w-[240px] h-28 flex flex-col items-center justify-center gap-2.5">
         <img src="brand_assets/sponsors/eu-flag.svg" alt="Ευρωπαϊκή Ένωση" class="h-9 w-auto object-contain rounded-sm grayscale group-hover:grayscale-0 opacity-80 group-hover:opacity-100 transition-opacity duration-200" loading="lazy">
-        <span class="font-mono text-muted text-[10px] tracking-widest">ΕΥΡΩΠΑΪΚΗ ΕΝΩΣΗ</span>
+        <span class="font-mono text-muted text-[10px] tracking-widest" data-i18n="sp.eu">ΕΥΡΩΠΑΪΚΗ ΕΝΩΣΗ</span>
       </div>
       <div class="mx-6 px-10 group rounded-2xl border border-navy/10 bg-white shadow-card min-w-[240px] h-28 flex flex-col items-center justify-center gap-2.5">
         <p class="font-bold text-forest text-lg tracking-tight leading-none">EU GREEN DEAL</p>
-        <span class="font-mono text-muted text-[10px] tracking-widest">FARM TO FORK · ΠΛΑΙΣΙΟ ΠΟΛΙΤΙΚΗΣ</span>
+        <span class="font-mono text-muted text-[10px] tracking-widest" data-i18n="sp.greendeal">FARM TO FORK · ΠΛΑΙΣΙΟ ΠΟΛΙΤΙΚΗΣ</span>
       </div>
       <!-- set B (identical copy so the 50% loop is seamless) -->
       <div class="mx-6 px-10 group rounded-2xl border border-navy/10 bg-white shadow-card min-w-[240px] h-28 flex flex-col items-center justify-center gap-2.5" aria-hidden="true">
         <img src="brand_assets/sponsors/uth.png" alt="" class="h-12 w-auto object-contain grayscale group-hover:grayscale-0 opacity-80 group-hover:opacity-100 transition-opacity duration-200" loading="lazy">
-        <span class="font-mono text-muted text-[10px] tracking-widest">ΠΑΝΕΠΙΣΤΗΜΙΟ ΘΕΣΣΑΛΙΑΣ</span>
+        <span class="font-mono text-muted text-[10px] tracking-widest" data-i18n="sp.uth">ΠΑΝΕΠΙΣΤΗΜΙΟ ΘΕΣΣΑΛΙΑΣ</span>
       </div>
       <div class="mx-6 px-10 group rounded-2xl border border-navy/10 bg-white shadow-card min-w-[240px] h-28 flex flex-col items-center justify-center gap-2.5" aria-hidden="true">
         <img src="brand_assets/sponsors/innovent.svg" alt="" class="h-7 w-auto object-contain grayscale group-hover:grayscale-0 opacity-80 group-hover:opacity-100 transition-opacity duration-200" loading="lazy">
-        <span class="font-mono text-muted text-[10px] tracking-widest">INNOVENT FORUM · ΛΑΡΙΣΑ</span>
+        <span class="font-mono text-muted text-[10px] tracking-widest" data-i18n="sp.innovent">INNOVENT FORUM · ΛΑΡΙΣΑ</span>
       </div>
       <div class="mx-6 px-10 group rounded-2xl border border-navy/10 bg-white shadow-card min-w-[240px] h-28 flex flex-col items-center justify-center gap-2.5" aria-hidden="true">
         <img src="brand_assets/sponsors/piraeus.svg" alt="" class="h-7 w-auto object-contain grayscale group-hover:grayscale-0 opacity-80 group-hover:opacity-100 transition-opacity duration-200" loading="lazy">
@@ -430,11 +433,11 @@ tailwind.config = {
       </div>
       <div class="mx-6 px-10 group rounded-2xl border border-navy/10 bg-white shadow-card min-w-[240px] h-28 flex flex-col items-center justify-center gap-2.5" aria-hidden="true">
         <img src="brand_assets/sponsors/eu-flag.svg" alt="" class="h-9 w-auto object-contain rounded-sm grayscale group-hover:grayscale-0 opacity-80 group-hover:opacity-100 transition-opacity duration-200" loading="lazy">
-        <span class="font-mono text-muted text-[10px] tracking-widest">ΕΥΡΩΠΑΪΚΗ ΕΝΩΣΗ</span>
+        <span class="font-mono text-muted text-[10px] tracking-widest" data-i18n="sp.eu">ΕΥΡΩΠΑΪΚΗ ΕΝΩΣΗ</span>
       </div>
       <div class="mx-6 px-10 group rounded-2xl border border-navy/10 bg-white shadow-card min-w-[240px] h-28 flex flex-col items-center justify-center gap-2.5" aria-hidden="true">
         <p class="font-bold text-forest text-lg tracking-tight leading-none">EU GREEN DEAL</p>
-        <span class="font-mono text-muted text-[10px] tracking-widest">FARM TO FORK · ΠΛΑΙΣΙΟ ΠΟΛΙΤΙΚΗΣ</span>
+        <span class="font-mono text-muted text-[10px] tracking-widest" data-i18n="sp.greendeal">FARM TO FORK · ΠΛΑΙΣΙΟ ΠΟΛΙΤΙΚΗΣ</span>
       </div>
     </div>
   </div>
@@ -445,38 +448,38 @@ tailwind.config = {
   <div class="mx-auto max-w-6xl px-6 sm:px-8 space-y-16">
     <div class="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 items-start">
       <div>
-        <h2 class="text-navy font-bold tracking-tight" style="font-size: clamp(28px, 4vw, 42px); line-height: 1.15;">
+        <h2 class="text-navy font-bold tracking-tight" style="font-size: clamp(28px, 4vw, 42px); line-height: 1.15;" data-i18n="opp.h2">
           Precision farming για τον αγρότη με 80 στρέμματα — όχι μόνο για τον&nbsp;με&nbsp;8.000.
         </h2>
       </div>
-      <p class="text-muted text-base leading-relaxed lg:pt-8">
+      <p class="text-muted text-base leading-relaxed lg:pt-8" data-i18n="opp.sub">
         Τα σημερινά agri-robotics σχεδιάζονται για mega-farms. Όμως η ευρωπαϊκή γεωργία είναι μικρομεσαία — και μένει χωρίς λύση τη στιγμή που τα χημικά ακριβαίνουν και περιορίζονται θεσμικά. Αυτό το κενό χτίζουμε να καλύψουμε, με βάση τον Βόλο.
       </p>
     </div>
 
     <div class="grid md:grid-cols-3 gap-6">
       <div class="rounded-2xl bg-offwhite p-8 space-y-4 shadow-card border border-navy/5">
-        <p class="font-mono font-bold text-forest text-4xl">~6 στα 10</p>
-        <p class="text-charcoal font-semibold text-sm">Μικρομεσαία γεωργία</p>
-        <p class="text-muted text-sm leading-relaxed">Αγροκτήματα της ΕΕ είναι κάτω από 50 στρέμματα — η τεράστια αγορά που όλοι οι άλλοι προσπερνούν.</p>
+        <p class="font-mono font-bold text-forest text-4xl" data-i18n="opp.c1n">~6 στα 10</p>
+        <p class="text-charcoal font-semibold text-sm" data-i18n="opp.c1h">Μικρομεσαία γεωργία</p>
+        <p class="text-muted text-sm leading-relaxed" data-i18n="opp.c1p">Αγροκτήματα της ΕΕ είναι κάτω από 50 στρέμματα — η τεράστια αγορά που όλοι οι άλλοι προσπερνούν.</p>
       </div>
       <div class="rounded-2xl bg-offwhite p-8 space-y-4 shadow-card border border-navy/5">
         <p class="font-mono font-bold text-forest text-4xl">2030</p>
-        <p class="text-charcoal font-semibold text-sm">Θεσμική αναγκαιότητα</p>
-        <p class="text-muted text-sm leading-relaxed">Ο επίσημος στόχος της ΕΕ για −50% χρήση φυτοφαρμάκων. Η ζήτηση για μη-χημική ζιζανιοκτονία είναι εγγυημένη.</p>
+        <p class="text-charcoal font-semibold text-sm" data-i18n="opp.c2h">Θεσμική αναγκαιότητα</p>
+        <p class="text-muted text-sm leading-relaxed" data-i18n="opp.c2p">Ο επίσημος στόχος της ΕΕ για −50% χρήση φυτοφαρμάκων. Η ζήτηση για μη-χημική ζιζανιοκτονία είναι εγγυημένη.</p>
       </div>
       <div class="rounded-2xl bg-offwhite p-8 space-y-4 shadow-card border border-navy/5">
-        <p class="font-mono font-bold text-forest text-4xl">1η</p>
-        <p class="text-charcoal font-semibold text-sm">Στρατηγική έδρα</p>
-        <p class="text-muted text-sm leading-relaxed">Η πρώτη ελληνική πλατφόρμα laser weeding, χτισμένη μέσα στον θεσσαλικό κάμπο — δίπλα στους αγρότες.</p>
+        <p class="font-mono font-bold text-forest text-4xl" data-i18n="opp.c3n">1η</p>
+        <p class="text-charcoal font-semibold text-sm" data-i18n="opp.c3h">Στρατηγική έδρα</p>
+        <p class="text-muted text-sm leading-relaxed" data-i18n="opp.c3p">Η πρώτη ελληνική πλατφόρμα laser weeding, χτισμένη μέσα στον θεσσαλικό κάμπο — δίπλα στους αγρότες.</p>
       </div>
     </div>
 
     <div class="reveal border-l-4 border-leaf pl-6 sm:pl-8 max-w-3xl space-y-4">
-      <p class="text-navy font-bold font-sans text-xl sm:text-2xl leading-relaxed">
+      <p class="text-navy font-bold font-sans text-xl sm:text-2xl leading-relaxed" data-i18n="opp.quote">
         "Να γίνουμε το standard της νέας γενιάς γεωργίας στην Ευρώπη — αποδεικνύοντας ότι η τεχνολογία αιχμής δεν ανήκει μόνο στις μεγάλες εκμεταλλεύσεις."
       </p>
-      <a href="#contact" class="link-secondary inline-flex items-center gap-2 text-forest text-xs font-bold uppercase tracking-wider">
+      <a href="#contact" class="link-secondary inline-flex items-center gap-2 text-forest text-xs font-bold uppercase tracking-wider" data-i18n="opp.deck">
         Ζήτησε το investor deck <span aria-hidden="true">→</span>
       </a>
     </div>
@@ -486,31 +489,31 @@ tailwind.config = {
 <!-- ============ 5. TESTIMONIALS ============ -->
 <section id="testimonials" class="forest-band-bg grain py-28 border-t border-b border-white/5 relative z-10 overflow-hidden">
   <div class="relative mx-auto max-w-6xl px-6 sm:px-8 space-y-12">
-    <h2 class="text-white font-bold tracking-tight text-2xl sm:text-3xl">Τι λένε για εμάς</h2>
+    <h2 class="text-white font-bold tracking-tight text-2xl sm:text-3xl" data-i18n="testi.h2">Τι λένε για εμάς</h2>
     
     <div class="grid md:grid-cols-2 gap-8">
       <div class="bg-white p-8 sm:p-10 rounded-2xl border border-navy/10 shadow-card flex flex-col justify-between space-y-6">
-        <p class="text-charcoal text-base italic leading-relaxed">
+        <p class="text-charcoal text-base italic leading-relaxed" data-i18n="testi.q1">
           "Το κόστος των ζιζανιοκτόνων έχει διπλασιαστεί τα τελευταία χρόνια, ενώ πολλά αγριόχορτα δεν πεθαίνουν πια με τον ψεκασμό. Μια αυτόνομη λύση laser, προσαρμοσμένη στα δικά μας στρέμματα στη Θεσσαλία, θα άλλαζε ριζικά τα οικονομικά του χωραφιού μας."
         </p>
         <div class="pt-6 border-t border-navy/5 flex items-center gap-3">
           <div class="w-9 h-9 rounded-full bg-forest text-white flex items-center justify-center font-bold text-xs">ΓΚ</div>
           <div>
             <h4 class="text-navy font-bold text-sm">Γιώργος Κ.</h4>
-            <p class="text-muted text-xs font-medium">Παραγωγός Βαμβακιού · Λάρισα (Early Pilot Applicant)</p>
+            <p class="text-muted text-xs font-medium" data-i18n="testi.r1">Παραγωγός Βαμβακιού · Λάρισα (Early Pilot Applicant)</p>
           </div>
         </div>
       </div>
 
       <div class="bg-white p-8 sm:p-10 rounded-2xl border border-navy/10 shadow-card flex flex-col justify-between space-y-6">
-        <p class="text-charcoal text-base italic leading-relaxed">
+        <p class="text-charcoal text-base italic leading-relaxed" data-i18n="testi.q2">
           "Η προσέγγιση της Cerovia λύνει ένα τεράστιο κενό στην ευρωπαϊκή αγορά αγροτεχνολογίας. Σχεδιάζουν ρομποτική πλατφόρμα με βάση τα πραγματικά δεδομένα της μικρομεσαίας γεωργίας. Η διάκρισή τους στο Ideathlon επιβεβαιώνει την τεχνική και επιχειρηματική τους εγκυρότητα."
         </p>
         <div class="pt-6 border-t border-navy/5 flex items-center gap-3">
           <div class="w-9 h-9 rounded-full bg-navy text-white flex items-center justify-center font-bold text-xs">ΣΑ</div>
           <div>
-            <h4 class="text-navy font-bold text-sm">Σύμβουλος Καινοτομίας</h4>
-            <p class="text-muted text-xs font-medium">Κριτική Επιτροπή · Ideathlon Accelerator</p>
+            <h4 class="text-navy font-bold text-sm" data-i18n="testi.n2">Σύμβουλος Καινοτομίας</h4>
+            <p class="text-muted text-xs font-medium" data-i18n="testi.r2">Κριτική Επιτροπή · Ideathlon Accelerator</p>
           </div>
         </div>
       </div>
@@ -527,8 +530,8 @@ tailwind.config = {
   </div>
 
   <div class="relative mx-auto max-w-6xl px-6 sm:px-8" style="text-shadow: 0 1px 10px rgba(10,22,40,0.45);">
-    <h2 class="reveal text-white font-bold tracking-tight text-2xl sm:text-4xl">Χωρίς υποσχέσεις. Μόνο βήματα.</h2>
-    <p class="reveal mt-4 text-white/75 text-base sm:text-lg max-w-2xl leading-relaxed">
+    <h2 class="reveal text-white font-bold tracking-tight text-2xl sm:text-4xl" data-i18n="road.h2">Χωρίς υποσχέσεις. Μόνο βήματα.</h2>
+    <p class="reveal mt-4 text-white/75 text-base sm:text-lg max-w-2xl leading-relaxed" data-i18n="road.sub">
       Είμαστε εταιρεία R&amp;D. Αυτή είναι η πραγματική μας πορεία — τι έχει γίνει, πού είμαστε, τι έρχεται.
     </p>
 
@@ -550,33 +553,33 @@ tailwind.config = {
     <!-- glass phase cards over the field -->
     <ol class="mt-5 md:mt-4 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
       <li class="reveal rounded-3xl border border-white/15 bg-navy/25 backdrop-blur-md p-6 sm:p-7" style="transition-delay: 0.1s;">
-        <p class="font-mono text-[11px] text-leaf tracking-widest">ΟΛΟΚΛΗΡΩΘΗΚΕ ✓</p>
-        <h3 class="mt-3 text-white font-bold text-lg sm:text-xl tracking-tight">01. Σχεδιασμός &amp; Έρευνα</h3>
-        <p class="mt-2 text-white/70 text-sm leading-relaxed">
+        <p class="font-mono text-[11px] text-leaf tracking-widest" data-i18n="road.c1s">ΟΛΟΚΛΗΡΩΘΗΚΕ ✓</p>
+        <h3 class="mt-3 text-white font-bold text-lg sm:text-xl tracking-tight" data-i18n="road.c1h">01. Σχεδιασμός &amp; Έρευνα</h3>
+        <p class="mt-2 text-white/70 text-sm leading-relaxed" data-i18n="road.c1p">
           Μελέτη του προβλήματος στον κάμπο, αρχιτεκτονική συστήματος και
           <span class="text-leaf font-semibold">1η θέση στο Ideathlon Accelerator</span>.
         </p>
       </li>
       <li class="reveal rounded-3xl border border-leaf/60 bg-navy/30 backdrop-blur-md p-6 sm:p-7 shadow-[0_0_30px_rgba(76,175,80,0.18)]" style="transition-delay: 0.2s;">
-        <p class="font-mono text-[11px] text-leaf tracking-widest"><span class="hud-pulse-dot">●</span> ΕΔΩ ΕΙΜΑΣΤΕ</p>
+        <p class="font-mono text-[11px] text-leaf tracking-widest" data-i18n="road.c2s"><span class="hud-pulse-dot">●</span> ΕΔΩ ΕΙΜΑΣΤΕ</p>
         <h3 class="mt-3 text-white font-bold text-lg sm:text-xl tracking-tight">02. Working Prototype</h3>
-        <p class="mt-2 text-white/70 text-sm leading-relaxed">
+        <p class="mt-2 text-white/70 text-sm leading-relaxed" data-i18n="road.c2p">
           Λειτουργικό rover: αναγνώριση ζιζανίων με AI και εξουδετέρωση με laser
           σε ελεγχόμενες συνθήκες. Επόμενο ορόσημο: ανοιχτό χωράφι.
         </p>
       </li>
       <li class="reveal rounded-3xl border border-white/15 bg-navy/25 backdrop-blur-md p-6 sm:p-7" style="transition-delay: 0.3s;">
-        <p class="font-mono text-[11px] text-white/50 tracking-widest">ΕΠΟΜΕΝΟ ΒΗΜΑ</p>
-        <h3 class="mt-3 text-white font-bold text-lg sm:text-xl tracking-tight">03. Field Pilots στη Θεσσαλία</h3>
-        <p class="mt-2 text-white/70 text-sm leading-relaxed">
+        <p class="font-mono text-[11px] text-white/50 tracking-widest" data-i18n="road.c3s">ΕΠΟΜΕΝΟ ΒΗΜΑ</p>
+        <h3 class="mt-3 text-white font-bold text-lg sm:text-xl tracking-tight" data-i18n="road.c3h">03. Field Pilots στη Θεσσαλία</h3>
+        <p class="mt-2 text-white/70 text-sm leading-relaxed" data-i18n="road.c3p">
           Δοκιμές σε πραγματικά χωράφια με πραγματικούς αγρότες. Μετράμε αποτέλεσμα
           σε €/στρέμμα. <a href="#contact" class="text-leaf font-semibold underline underline-offset-4 hover:text-white transition-colors">Δήλωσε το χωράφι σου</a>
         </p>
       </li>
       <li class="reveal rounded-3xl border border-white/15 bg-navy/25 backdrop-blur-md p-6 sm:p-7" style="transition-delay: 0.4s;">
-        <p class="font-mono text-[11px] text-white/50 tracking-widest">ΣΤΟΧΟΣ</p>
-        <h3 class="mt-3 text-white font-bold text-lg sm:text-xl tracking-tight">04. Πρώτες Μονάδες</h3>
-        <p class="mt-2 text-white/70 text-sm leading-relaxed">
+        <p class="font-mono text-[11px] text-white/50 tracking-widest" data-i18n="road.c4s">ΣΤΟΧΟΣ</p>
+        <h3 class="mt-3 text-white font-bold text-lg sm:text-xl tracking-tight" data-i18n="road.c4h">04. Πρώτες Μονάδες</h3>
+        <p class="mt-2 text-white/70 text-sm leading-relaxed" data-i18n="road.c4p">
           Από prototype σε προϊόν: μικρή σειρά παραγωγής για τους πρώτους
           συνεργάτες-αγρότες — πρώτα αξιόπιστο σε 10 χωράφια, μετά σε 10.000.
         </p>
@@ -590,17 +593,17 @@ tailwind.config = {
   <div class="mx-auto max-w-6xl px-6 sm:px-8">
     <div class="reveal forest-band-bg grain relative overflow-hidden rounded-3xl px-6 py-20 sm:px-12 sm:py-24 text-center shadow-float">
       <div class="relative max-w-2xl mx-auto space-y-6">
-        <h2 class="font-bold text-white tracking-tight" style="font-size: clamp(28px, 4.5vw, 44px); line-height: 1.15;">
+        <h2 class="font-bold text-white tracking-tight" style="font-size: clamp(28px, 4.5vw, 44px); line-height: 1.15;" data-i18n="cta.h2">
           Θες το laser στο δικό σου&nbsp;χωράφι;
         </h2>
-        <p class="text-white/75 text-base sm:text-lg leading-relaxed">
+        <p class="text-white/75 text-base sm:text-lg leading-relaxed" data-i18n="cta.sub">
           Ετοιμάζουμε τα πρώτα field pilots στη Θεσσαλία. Όσοι δηλώσουν νωρίς, μπαίνουν πρώτοι στη λίστα.
         </p>
         <div class="pt-4 flex flex-col sm:flex-row items-center justify-center gap-6">
-          <a href="mailto:info@ceroviasystems.com?subject=Field pilot" class="btn-primary bg-leaf text-white font-semibold px-8 py-4 rounded-full text-base">
+          <a href="mailto:info@ceroviasystems.com?subject=Field pilot" class="btn-primary bg-leaf text-white font-semibold px-8 py-4 rounded-full text-base" data-i18n="cta.btn">
             Ζήτησε field pilot
           </a>
-          <a href="mailto:info@ceroviasystems.com?subject=Investor deck" class="link-secondary text-white/90 text-sm font-semibold">
+          <a href="mailto:info@ceroviasystems.com?subject=Investor deck" class="link-secondary text-white/90 text-sm font-semibold" data-i18n="cta.deck">
             Επενδυτές: ζητήστε το deck <span aria-hidden="true">→</span>
           </a>
         </div>
@@ -614,8 +617,8 @@ tailwind.config = {
 <section id="team" class="bg-white py-20 relative z-20 border-b border-navy/5">
   <div class="mx-auto max-w-6xl px-6 sm:px-8 space-y-12">
     <div class="text-center space-y-2 max-w-2xl mx-auto">
-      <h2 class="text-navy font-bold tracking-tight text-2xl sm:text-3xl">Η ομάδα πίσω από το laser.</h2>
-      <p class="text-muted text-sm leading-relaxed">Σχεδιάζουμε, κολλάμε, δοκιμάζουμε και ξαναδοκιμάζουμε — οι ίδιοι, στο ίδιο χωράφι.</p>
+      <h2 class="text-navy font-bold tracking-tight text-2xl sm:text-3xl" data-i18n="team.h2">Η ομάδα πίσω από το laser.</h2>
+      <p class="text-muted text-sm leading-relaxed" data-i18n="team.sub">Σχεδιάζουμε, κολλάμε, δοκιμάζουμε και ξαναδοκιμάζουμε — οι ίδιοι, στο ίδιο χωράφι.</p>
     </div>
     
     <div class="grid sm:grid-cols-2 gap-8 pt-4 max-w-2xl mx-auto">
@@ -662,11 +665,11 @@ tailwind.config = {
         CEROVIA<span class="text-leaf font-normal">SYSTEMS</span>
       </a>
       <div class="flex flex-wrap items-center gap-x-8 gap-y-2 uppercase tracking-wider text-[11px]">
-        <a href="#problem" class="hover:text-white transition-colors">Το πρόβλημα</a>
-        <a href="#rover" class="hover:text-white transition-colors">Η τεχνολογία</a>
-        <a href="#supporters" class="hover:text-white transition-colors">Υποστηρικτές</a>
-        <a href="#opportunity" class="hover:text-white transition-colors">Η ευκαιρία</a>
-        <a href="#team" class="hover:text-white transition-colors">Η ομάδα</a>
+        <a href="#problem" class="hover:text-white transition-colors" data-i18n="nav.problem2">Το πρόβλημα</a>
+        <a href="#rover" class="hover:text-white transition-colors" data-i18n="nav.tech2">Η τεχνολογία</a>
+        <a href="#supporters" class="hover:text-white transition-colors" data-i18n="nav.supporters2">Υποστηρικτές</a>
+        <a href="#opportunity" class="hover:text-white transition-colors" data-i18n="nav.opportunity2">Η ευκαιρία</a>
+        <a href="#team" class="hover:text-white transition-colors" data-i18n="nav.team2">Η ομάδα</a>
       </div>
     </div>
     <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
@@ -676,7 +679,7 @@ tailwind.config = {
       <a href="mailto:info@ceroviasystems.com" class="font-mono text-[11px] tracking-widest text-white/50 hover:text-white transition-colors whitespace-nowrap">INFO@CEROVIASYSTEMS.COM</a>
     </div>
     <div class="flex flex-col sm:flex-row items-center justify-between gap-2 font-mono text-[10px] uppercase tracking-widest text-white/25">
-      <a href="https://www.google.com/maps/search/?api=1&amp;query=%CE%92%CF%8C%CE%BB%CE%BF%CF%82" target="_blank" rel="noopener" class="hover:text-leaf transition-colors" aria-label="Άνοιγμα του Βόλου στον χάρτη">
+      <a href="https://www.google.com/maps/search/?api=1&amp;query=%CE%92%CF%8C%CE%BB%CE%BF%CF%82" target="_blank" rel="noopener" class="hover:text-leaf transition-colors" aria-label="Άνοιγμα του Βόλου στον χάρτη" data-i18n="footer.loc">
         39.36°N 22.94°E · ΒΟΛΟΣ · GREECE ↗
       </a>
       <span>© 2026 CEROVIA SYSTEMS · R&amp;D PHASE</span>
@@ -700,6 +703,102 @@ tailwind.config = {
   } else {
     document.querySelectorAll('.reveal').forEach(el => el.classList.add('is-visible'));
   }
+
+  // ---- LANGUAGE TOGGLE (ΕΛ / EN) ----
+  // Greek lives in the markup; English lives here. Switching swaps innerHTML per data-i18n key.
+  const I18N_EN = {
+    'nav.problem': 'Problem', 'nav.tech': 'Technology', 'nav.supporters': 'Supporters',
+    'nav.opportunity': 'Opportunity', 'nav.testimonials': 'Testimonials', 'nav.traction': 'Roadmap',
+    'nav.cta': 'Request a field pilot',
+    'hero.l1': 'On your field, the', 'hero.word': 'weeds', 'hero.l3': 'simply disappear.',
+    'hero.sub': "We're building an autonomous rover that sees every plant on your field. Anything that's a weed gets a laser burst. No spraying, no residues, no labor costs.",
+    'hero.cta': 'Request a field pilot',
+    'hero.investor': 'Are you an investor? See the opportunity <span aria-hidden="true">→</span>',
+    'problem.h2': 'Your field pays for weeds three times.',
+    'problem.sub': 'At the bank, in yield, and in the future. Three numbers that say it all:',
+    'problem.s1h': 'At the bank — every year, again',
+    'problem.s1p': "That's how high the total annual cost of weeds can run in intensive crops — herbicides, spraying, labor and lost yield combined.",
+    'problem.s2h': 'In yield — chemicals are losing',
+    'problem.s2p': "That many weed species worldwide now resist the herbicides you're already paying for. The ones that survive spraying steal water, light and nutrients from your crop.",
+    'problem.s3h': 'In the future — the EU is closing the tap',
+    'problem.s3p': 'The EU target for chemical pesticide use by 2030. Whoever stays on chemicals is left with fewer tools and stricter controls.',
+    'problem.caption': 'THE OLD WAY · SPRAYING <span class="text-white/40">· photo geograph.org.uk (CC BY-SA)</span>',
+    'rover.h2': 'Built for real work in the field.',
+    'rover.s1h': '01. Detect',
+    'rover.s1p': "The rover's cameras scan the crop rows inch by inch, capturing data in real time, day and night.",
+    'rover.s2h': '02. Target',
+    'rover.s2p': 'The onboard AI reads leaf shapes, instantly separates crop from weed and locks the target’s position.',
+    'rover.s3h': '03. Eliminate',
+    'rover.s3p': "A focused thermal laser burst hits the weed's growth center. The soil and the crop's roots are never touched.",
+    'rover.s4h': '04. Learn',
+    'rover.s4p': 'Every pass collects data and trains the model. The longer the rover works your field, the better and faster it gets.',
+    'rover.loc': '39.36°N 22.94°E · VOLOS ↗',
+    'rover.chem': 'CHEMICALS: <span class="text-leaf">0</span>',
+    'rover.acc': 'ACCURACY <span class="text-leaf">↑</span>',
+    'rover.pass': 'EVERY PASS <span class="text-leaf">+DATA</span>',
+    'supporters.h2': 'Sponsors &amp; ecosystem',
+    'sp.uth': 'UNIVERSITY OF THESSALY', 'sp.innovent': 'INNOVENT FORUM · LARISSA',
+    'sp.eu': 'EUROPEAN UNION', 'sp.greendeal': 'FARM TO FORK · POLICY FRAMEWORK',
+    'opp.h2': 'Precision farming for the 8-hectare farmer — not just the&nbsp;800-hectare&nbsp;one.',
+    'opp.sub': "Today's agri-robotics are designed for mega-farms. But European farming is small and mid-sized — left without a solution just as chemicals get pricier and more tightly regulated. That's the gap we're building to close, based in Volos, Greece.",
+    'opp.c1n': '~6 in 10', 'opp.c1h': 'Small &amp; mid-sized farms',
+    'opp.c1p': 'of EU farms are under 5 hectares — the huge market everyone else walks past.',
+    'opp.c2h': 'Regulatory certainty',
+    'opp.c2p': "The EU's official target of −50% pesticide use. Demand for non-chemical weeding is guaranteed.",
+    'opp.c3n': '1st', 'opp.c3h': 'Strategic base',
+    'opp.c3p': 'The first Greek laser-weeding platform, built inside the Thessalian plain — right next to the farmers.',
+    'opp.quote': '"To become the standard for the next generation of farming in Europe — proving that advanced technology doesn’t belong only to the big estates."',
+    'opp.deck': 'Request the investor deck <span aria-hidden="true">→</span>',
+    'testi.h2': 'What people say about us',
+    'testi.q1': '"Herbicide costs have doubled in recent years, and many weeds no longer die from spraying. An autonomous laser solution, adapted to our own fields in Thessaly, would radically change our farm’s economics."',
+    'testi.r1': 'Cotton grower · Larissa (early pilot applicant)',
+    'testi.q2': '"Cerovia’s approach fills a huge gap in the European agri-tech market. They design a robotic platform around the real data of small and mid-sized farming. Their distinction at Ideathlon confirms their technical and business credibility."',
+    'testi.n2': 'Innovation Consultant', 'testi.r2': 'Judging Panel · Ideathlon Accelerator',
+    'road.h2': 'No promises. Just steps.',
+    'road.sub': "We are an R&amp;D company. This is our real journey — what's done, where we are, what's next.",
+    'road.c1s': 'COMPLETED ✓', 'road.c1h': '01. Design &amp; Research',
+    'road.c1p': 'Studying the problem in the field, system architecture and <span class="text-leaf font-semibold">1st place at the Ideathlon Accelerator</span>.',
+    'road.c2s': '<span class="hud-pulse-dot">●</span> WE ARE HERE',
+    'road.c2p': 'A working rover: AI weed recognition and laser elimination under controlled conditions. Next milestone: the open field.',
+    'road.c3s': 'NEXT STEP', 'road.c3h': '03. Field pilots in Thessaly',
+    'road.c3p': 'Trials on real fields with real farmers. We measure results in € per 0.1 ha. <a href="#contact" class="text-leaf font-semibold underline underline-offset-4 hover:text-white transition-colors">Sign your field up</a>',
+    'road.c4s': 'GOAL', 'road.c4h': '04. First units',
+    'road.c4p': 'From prototype to product: a small production run for our first partner farmers — reliable on 10 fields first, then on 10,000.',
+    'cta.h2': 'Want the laser on your own&nbsp;field?',
+    'cta.sub': "We're preparing the first field pilots in Thessaly. Early sign-ups go first on the list.",
+    'cta.btn': 'Request a field pilot',
+    'cta.deck': 'Investors: request the deck <span aria-hidden="true">→</span>',
+    'team.h2': 'The team behind the laser.',
+    'team.sub': 'We design, weld, test and re-test — ourselves, on the same field.',
+    'nav.problem2': 'The problem', 'nav.tech2': 'The technology', 'nav.supporters2': 'Supporters',
+    'nav.opportunity2': 'The opportunity', 'nav.team2': 'The team',
+    'footer.loc': '39.36°N 22.94°E · VOLOS · GREECE ↗'
+  };
+  const PAGE_META = {
+    el: { title: 'Cerovia Systems — Laser weeding χωρίς χημικά', desc: 'Η Cerovia Systems χτίζει αυτόνομα laser-weeding rovers για τον μικρομεσαίο αγρότη. R&D stage — working prototype, Βόλος.' },
+    en: { title: 'Cerovia Systems — Laser weeding without chemicals', desc: 'Cerovia Systems builds autonomous laser-weeding rovers for small and mid-sized farms. R&D stage — working prototype, Volos, Greece.' }
+  };
+  const i18nEls = document.querySelectorAll('[data-i18n]');
+  const i18nOriginal = {};
+  i18nEls.forEach((el) => { i18nOriginal[el.dataset.i18n] = el.innerHTML; });
+  function setLang(lang) {
+    i18nEls.forEach((el) => {
+      const k = el.dataset.i18n;
+      el.innerHTML = (lang === 'en' && I18N_EN[k] !== undefined) ? I18N_EN[k] : i18nOriginal[k];
+    });
+    document.documentElement.lang = lang;
+    document.title = PAGE_META[lang].title;
+    const md = document.querySelector('meta[name="description"]');
+    if (md) md.setAttribute('content', PAGE_META[lang].desc);
+    const btn = document.getElementById('lang-toggle');
+    if (btn) btn.textContent = lang === 'en' ? 'ΕΛ' : 'EN';
+    try { localStorage.setItem('cerovia-lang', lang); } catch (e) { /* private mode */ }
+  }
+  const langBtn = document.getElementById('lang-toggle');
+  if (langBtn) langBtn.addEventListener('click', () => setLang(document.documentElement.lang === 'en' ? 'el' : 'en'));
+  let savedLang = 'el';
+  try { savedLang = localStorage.getItem('cerovia-lang') || 'el'; } catch (e) { /* private mode */ }
+  if (savedLang === 'en') setLang('en');
 
   // ---- SUPPORTERS MARQUEE: always-on auto-scroll + drag + wheel ----
   (() => {
