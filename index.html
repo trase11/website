@@ -167,11 +167,11 @@ tailwind.config = {
 
 <!-- ============ NAV ============ -->
 <header class="fixed top-0 inset-x-0 z-50 border-b border-white/5" style="background: rgba(10,22,40,0.85); backdrop-filter: blur(16px);">
-  <nav class="mx-auto max-w-6xl px-6 sm:px-8 h-16 flex items-center justify-between" aria-label="Κύρια πλοήγηση">
+  <nav class="w-full px-4 sm:px-6 lg:px-10 h-16 flex items-center justify-between" aria-label="Κύρια πλοήγηση">
     <a href="#top" class="flex items-center shrink-0" aria-label="Cerovia Systems — αρχή σελίδας">
       <img src="brand_assets/logos/logo.png" alt="Cerovia Systems" class="h-32 w-auto -my-8 brightness-0 invert select-none" draggable="false">
     </a>
-    <div class="hidden md:flex items-center gap-6 lg:gap-8 text-xs font-medium uppercase tracking-wider text-white/60">
+    <div class="hidden md:flex items-center gap-8 lg:gap-12 text-xs font-medium uppercase tracking-wider text-white/60">
       <a href="#problem" class="hover:text-white transition-colors whitespace-nowrap" data-i18n="nav.problem">Το πρόβλημα</a>
       <a href="#rover" class="hover:text-white transition-colors whitespace-nowrap" data-i18n="nav.tech">Η τεχνολογία</a>
       <a href="#supporters" class="hover:text-white transition-colors whitespace-nowrap" data-i18n="nav.supporters">Υποστηρικτές</a>
@@ -179,7 +179,7 @@ tailwind.config = {
       <a href="#testimonials" class="hover:text-white transition-colors whitespace-nowrap" data-i18n="nav.testimonials">Μαρτυρίες</a>
       <a href="#traction" class="hover:text-white transition-colors whitespace-nowrap" data-i18n="nav.traction">Πορεία</a>
     </div>
-    <div class="flex items-center gap-3 sm:gap-4">
+    <div class="flex items-center gap-4 sm:gap-7">
       <a href="#contact" class="btn-primary bg-leaf text-white font-semibold text-sm px-5 py-2.5 rounded-full whitespace-nowrap" data-i18n="nav.cta">
         Ζήτησε field pilot
       </a>
@@ -212,14 +212,14 @@ tailwind.config = {
           <span data-i18n="hero.l3">απλώς εξαφανίζονται.</span>
         </h1>
 
-        <p class="hero-enter hero-enter-2 text-white/70 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed" data-i18n="hero.sub">
+        <p class="hero-enter hero-enter-2 text-white font-medium text-base sm:text-lg max-w-2xl mx-auto leading-relaxed" style="text-shadow: 0 1px 14px rgba(10,22,40,0.85), 0 1px 4px rgba(10,22,40,0.6);" data-i18n="hero.sub">
           Χτίζουμε ένα αυτόνομο rover που βλέπει κάθε φυτό στο χωράφι σου. Ό,τι είναι ζιζάνιο, δέχεται μια ριπή laser. Χωρίς ψεκασμό, χωρίς υπολείμματα, χωρίς εργατικά.
         </p>
         <div class="hero-enter hero-enter-2 pt-4 flex flex-col sm:flex-row items-center justify-center gap-6">
           <a href="#contact" class="btn-primary bg-leaf text-white font-semibold px-8 py-4 rounded-full text-base tracking-wide" data-i18n="hero.cta">
             Ζήτησε field pilot
           </a>
-          <a href="#opportunity" class="link-secondary inline-flex items-center gap-2 text-white/75 text-sm font-medium" data-i18n="hero.investor">
+          <a href="#opportunity" class="link-secondary inline-flex items-center gap-2 text-white text-sm font-semibold" style="text-shadow: 0 1px 10px rgba(10,22,40,0.8);" data-i18n="hero.investor">
             Είσαι επενδυτής; Δες την ευκαιρία <span aria-hidden="true">→</span>
           </a>
         </div>
@@ -661,13 +661,13 @@ tailwind.config = {
 </section>
 
 <!-- ============ FOOTER ============ -->
-<footer class="bg-navy border-t border-white/5 py-8 text-white/40 font-medium text-xs relative z-20">
-  <div class="mx-auto max-w-6xl px-6 sm:px-8 space-y-6">
-    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-5 border-b border-white/5 pb-6">
+<footer class="bg-navy border-t border-white/5 py-8 text-white/70 font-medium text-xs relative z-20">
+  <div class="w-full px-4 sm:px-6 lg:px-10 space-y-6">
+    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-5 border-b border-white/10 pb-6">
       <a href="#top" class="text-white font-bold tracking-wide text-base">
         CEROVIA<span class="text-leaf font-normal">SYSTEMS</span>
       </a>
-      <div class="flex flex-wrap items-center gap-x-8 gap-y-2 uppercase tracking-wider text-[11px]">
+      <div class="flex flex-wrap items-center gap-x-10 gap-y-2 uppercase tracking-wider text-[11px]">
         <a href="#problem" class="hover:text-white transition-colors" data-i18n="nav.problem2">Το πρόβλημα</a>
         <a href="#rover" class="hover:text-white transition-colors" data-i18n="nav.tech2">Η τεχνολογία</a>
         <a href="#supporters" class="hover:text-white transition-colors" data-i18n="nav.supporters2">Υποστηρικτές</a>
@@ -676,12 +676,12 @@ tailwind.config = {
       </div>
     </div>
     <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
-      <p class="italic text-white/50 text-sm text-center sm:text-left" style="line-height: 1.6;">
+      <p class="italic text-white/80 text-sm text-center sm:text-left" style="line-height: 1.6;">
         "We aren't just building a robot — we are engineering the next generation of farming."
       </p>
-      <a href="mailto:info@ceroviasystems.com" class="font-mono text-[11px] tracking-widest text-white/50 hover:text-white transition-colors whitespace-nowrap">INFO@CEROVIASYSTEMS.COM</a>
+      <a href="mailto:info@ceroviasystems.com" class="font-mono text-[11px] tracking-widest text-white/80 hover:text-white transition-colors whitespace-nowrap">INFO@CEROVIASYSTEMS.COM</a>
     </div>
-    <div class="flex flex-col sm:flex-row items-center justify-between gap-2 font-mono text-[10px] uppercase tracking-widest text-white/25">
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-2 font-mono text-[10px] uppercase tracking-widest text-white/55">
       <a href="https://www.google.com/maps/search/?api=1&amp;query=%CE%92%CF%8C%CE%BB%CE%BF%CF%82" target="_blank" rel="noopener" class="hover:text-leaf transition-colors" aria-label="Άνοιγμα του Βόλου στον χάρτη" data-i18n="footer.loc">
         39.36°N 22.94°E · ΒΟΛΟΣ · GREECE ↗
       </a>
