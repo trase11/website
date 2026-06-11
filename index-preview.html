@@ -176,7 +176,6 @@ tailwind.config = {
       <a href="#rover" class="hover:text-white transition-colors whitespace-nowrap" data-i18n="nav.tech">Η τεχνολογία</a>
       <a href="#supporters" class="hover:text-white transition-colors whitespace-nowrap" data-i18n="nav.supporters">Υποστηρικτές</a>
       <a href="#opportunity" class="hover:text-white transition-colors whitespace-nowrap" data-i18n="nav.opportunity">Η ευκαιρία</a>
-      <a href="#testimonials" class="hover:text-white transition-colors whitespace-nowrap" data-i18n="nav.testimonials">Μαρτυρίες</a>
       <a href="#traction" class="hover:text-white transition-colors whitespace-nowrap" data-i18n="nav.traction">Πορεία</a>
     </div>
     <div class="flex items-center gap-4 sm:gap-7">
@@ -205,11 +204,11 @@ tailwind.config = {
 
       <div class="max-w-3xl mx-auto text-center space-y-6" style="text-shadow: 0 1px 16px rgba(10,22,40,0.55), 0 1px 3px rgba(10,22,40,0.35);">
         <h1 class="hero-enter hero-enter-1 text-white font-bold leading-[1.12] tracking-tight text-[34px] sm:text-[52px] md:text-[64px]">
-          <span data-i18n="hero.l1">Στο χωράφι σου τα</span><br>
+          <span data-i18n="hero.l1">Το χωράφι σου βγάζει</span><br>
           <span class="relative inline-block">
-            <span id="hero-weed-text" class="inline-block text-white" data-i18n="hero.word">ζιζάνια</span>
+            <span id="hero-weed-text" class="inline-block text-white" data-i18n="hero.word">ζιζάνια και</span>
           </span><br>
-          <span data-i18n="hero.l3">απλώς εξαφανίζονται.</span>
+          <span data-i18n="hero.l3">σοδειά.</span>
         </h1>
 
         <p class="hero-enter hero-enter-2 text-white font-medium text-base sm:text-lg max-w-2xl mx-auto leading-relaxed" style="text-shadow: 0 1px 14px rgba(10,22,40,0.85), 0 1px 4px rgba(10,22,40,0.6);" data-i18n="hero.sub">
@@ -345,7 +344,7 @@ tailwind.config = {
     <!-- Foreground narrative overlay dashboard UI -->
     <div class="relative z-10 mx-auto max-w-6xl w-full px-6 sm:px-8 h-full flex flex-col justify-between py-20 pointer-events-none">
       <div>
-        <h2 class="text-white font-bold tracking-tight text-2xl sm:text-4xl" data-i18n="rover.h2">Φτιαγμένο για πραγματική δουλειά στο χωράφι.</h2>
+        <h2 id="rover-title" class="text-white font-bold tracking-tight text-2xl sm:text-4xl transition-[opacity,transform] duration-500" data-i18n="rover.h2">Φτιαγμένο για πραγματική δουλειά στο χωράφι.</h2>
       </div>
 
       <div class="rm-static-parent w-full max-w-xl bg-navy/20 backdrop-blur-sm p-8 sm:p-10 rounded-3xl border border-white/10 relative min-h-[260px] sm:min-h-[230px] flex items-center">
@@ -627,7 +626,7 @@ tailwind.config = {
     <div class="grid sm:grid-cols-2 gap-8 pt-4 max-w-2xl mx-auto">
       <div class="bg-offwhite rounded-2xl p-6 border border-navy/5 text-center space-y-4 shadow-card">
         <div class="w-24 h-24 rounded-full bg-navy mx-auto shadow-md border-2 border-white overflow-hidden">
-          <img src="brand_assets/founders/koukos.jpg" alt="Πορτραίτο του Χαράλαμπου Κούκου" class="w-full h-full object-cover" width="400" height="400" loading="lazy">
+          <img src="brand_assets/founders/koukos.jpg" alt="Πορτραίτο του Χαράλαμπου Κούκου" class="w-full h-full object-cover grayscale" width="400" height="400" loading="lazy">
         </div>
         <div class="space-y-0.5">
           <h3 class="text-navy font-bold text-base">
@@ -643,7 +642,7 @@ tailwind.config = {
 
       <div class="bg-offwhite rounded-2xl p-6 border border-navy/5 text-center space-y-4 shadow-card">
         <div class="w-24 h-24 rounded-full bg-forest mx-auto shadow-md border-2 border-white overflow-hidden">
-          <img src="brand_assets/founders/kafetzis.jpg" alt="Πορτραίτο του Δημήτρη Καφετζή" class="w-full h-full object-cover" width="400" height="400" loading="lazy">
+          <img src="brand_assets/founders/kafetzis.jpg" alt="Πορτραίτο του Δημήτρη Καφετζή" class="w-full h-full object-cover grayscale" width="400" height="400" loading="lazy">
         </div>
         <div class="space-y-0.5">
           <h3 class="text-navy font-bold text-base">
@@ -711,9 +710,9 @@ tailwind.config = {
   // Greek lives in the markup; English lives here. Switching swaps innerHTML per data-i18n key.
   const I18N_EN = {
     'nav.problem': 'Problem', 'nav.tech': 'Technology', 'nav.supporters': 'Supporters',
-    'nav.opportunity': 'Opportunity', 'nav.testimonials': 'Testimonials', 'nav.traction': 'Roadmap',
+    'nav.opportunity': 'Opportunity', 'nav.traction': 'Roadmap',
     'nav.cta': 'Request a field pilot',
-    'hero.l1': 'On your field, the', 'hero.word': 'weeds', 'hero.l3': 'simply disappear.',
+    'hero.l1': 'Your field grows', 'hero.word': 'weeds and', 'hero.l3': 'crops.',
     'hero.sub': "We're building an autonomous rover that sees every plant on your field. Anything that's a weed gets a laser burst. No spraying, no residues, no labor costs.",
     'hero.cta': 'Request a field pilot',
     'hero.investor': 'Are you an investor? See the opportunity <span aria-hidden="true">→</span>',
@@ -909,6 +908,15 @@ tailwind.config = {
     const scrollHeight = rect.height - window.innerHeight;
     let progress = -rect.top / scrollHeight;
     progress = Math.max(0, Math.min(1, progress));
+
+    // the section title belongs to phase 01 only — it leaves before the HUD
+    // overlays (phase 02+) reach the top of the frame and collide with it
+    const roverTitle = document.getElementById('rover-title');
+    if (roverTitle) {
+      const titleVisible = progress <= 0.25;
+      roverTitle.style.opacity = titleVisible ? '1' : '0';
+      roverTitle.style.transform = titleVisible ? 'translateY(0)' : 'translateY(-16px)';
+    }
 
     // shows/hides a stage text as a whole; the CSS 300ms transition does the easing
     const setStageText = (el, visible, hiddenShift) => {
