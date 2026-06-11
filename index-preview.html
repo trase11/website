@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cerovia Systems — Laser weeding χωρίς χημικά</title>
-<meta name="description" content="Η Cerovia Systems χτίζει αυτόνομα laser-weeding rovers για τον μικρομεσαίο αγρότη. R&D stage — working prototype, Λάρισα.">
+<meta name="description" content="Η Cerovia Systems χτίζει αυτόνομα laser-weeding rovers για τον μικρομεσαίο αγρότη. R&D stage — working prototype, Βόλος.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -199,11 +199,11 @@ tailwind.config = {
 
       <div class="max-w-3xl mx-auto text-center space-y-6" style="text-shadow: 0 1px 16px rgba(10,22,40,0.55), 0 1px 3px rgba(10,22,40,0.35);">
         <h1 class="hero-enter hero-enter-1 text-white font-bold leading-[1.12] tracking-tight text-[34px] sm:text-[52px] md:text-[64px]">
-          Laser που σκοτώνει<br>
+          Στο χωράφι σου τα<br>
           <span class="relative inline-block">
             <span id="hero-weed-text" class="inline-block text-white">ζιζάνια</span>
           </span><br>
-          όχι καλλιέργειες.
+          απλώς εξαφανίζονται.
         </h1>
         
         <p class="hero-enter hero-enter-2 text-white/70 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
@@ -228,12 +228,11 @@ tailwind.config = {
   <div class="mx-auto max-w-6xl px-6 sm:px-8 space-y-16">
     <div class="grid lg:grid-cols-[1.2fr_0.8fr] gap-12 items-start">
       <div class="space-y-4">
-        <p class="font-mono text-forest text-xs tracking-widest">[ ΤΟ ΠΡΟΒΛΗΜΑ ]</p>
         <h2 class="text-navy font-bold tracking-tight" style="font-size: clamp(28px, 4.2vw, 42px); line-height: 1.15;">
           Το χωράφι σου πληρώνει τα ζιζάνια τρεις φορές.
         </h2>
         <p class="text-muted text-base sm:text-lg leading-relaxed">
-          Στο ταμείο, στην απόδοση και στο μέλλον. Τρεις ξεκάθαροι αριθμοί που αποδεικνύουν την ανάγκη για άμεση αλλαγή:
+          Στο ταμείο, στην απόδοση και στο μέλλον. Τρεις αριθμοί που τα λένε όλα:
         </p>
       </div>
       <div class="relative rounded-2xl overflow-hidden shadow-card border border-navy/5 hidden lg:block">
@@ -298,43 +297,39 @@ tailwind.config = {
         <img src="brand_assets/plants/Screenshot_1.png" alt="" class="w-full h-full object-cover">
       </div>
       <div id="img-layer-4" class="absolute inset-0 w-full h-full bg-navy overflow-hidden" style="clip-path: inset(0 0 0 100%);">
-        <!-- ΜΑΘΗΣΗ: the same field, now understood as data — photo behind, stats on top -->
-        <img src="brand_assets/plants/scene03371.png" alt="" class="absolute inset-0 w-full h-full object-cover opacity-50">
-        <div class="absolute inset-0 bg-navy/70"></div>
+        <!-- ΜΑΘΗΣΗ: the same camera frame, now fully understood — learned detections + training report -->
+        <img src="brand_assets/plants/scene03371.png" alt="" class="absolute inset-0 w-full h-full object-cover">
         <svg viewBox="0 0 1440 810" preserveAspectRatio="xMidYMid slice" class="relative w-full h-full" fill="none" aria-hidden="true">
-          <g stroke="rgba(247,249,247,0.13)" stroke-width="1.5">
-            <path d="M720 150 L-320 810"/><path d="M720 150 L170 810"/><path d="M720 150 L720 810"/><path d="M720 150 L1270 810"/><path d="M720 150 L1760 810"/>
-          </g>
-          <path d="M0 150 H1440" stroke="rgba(247,249,247,0.08)"/>
-          <g fill="rgba(76,175,80,0.5)">
-            <circle cx="560" cy="300" r="5"/><circle cx="455" cy="430" r="6"/><circle cx="320" cy="600" r="8"/>
-            <circle cx="723" cy="300" r="5"/><circle cx="726" cy="430" r="6"/><circle cx="730" cy="600" r="8"/>
-            <circle cx="885" cy="300" r="5"/><circle cx="995" cy="430" r="6"/><circle cx="1135" cy="600" r="8"/>
-          </g>
-          <!-- detections learned over passes -->
           <g class="learn-pulse" style="animation-delay: 0s;">
-            <path d="M420 400 h-16 v16 M490 400 h16 v16 M420 462 h-16 v-16 M490 462 h16 v-16" stroke="#4CAF50" stroke-width="2.5"/>
-            <text x="404" y="388" font-family="'Space Mono', monospace" font-size="15" fill="#4CAF50">plant 0.98</text>
+            <path d="M250 140 h-18 v18 M400 140 h18 v18 M250 330 h-18 v-18 M400 330 h18 v-18" stroke="#4CAF50" stroke-width="3"/>
+            <text x="232" y="124" font-family="'Space Mono', monospace" font-size="17" fill="#4CAF50">plant 0.98</text>
           </g>
           <g class="learn-pulse" style="animation-delay: 1.2s;">
-            <path d="M940 560 h-16 v16 M1010 560 h16 v16 M940 640 h-16 v-16 M1010 640 h16 v-16" stroke="#F7F9F7" stroke-width="2.5"/>
-            <text x="924" y="548" font-family="'Space Mono', monospace" font-size="15" fill="#F7F9F7">weed 0.91</text>
+            <path d="M790 60 h-18 v18 M960 60 h18 v18 M790 240 h-18 v-18 M960 240 h18 v-18" stroke="#4CAF50" stroke-width="3"/>
+            <text x="772" y="44" font-family="'Space Mono', monospace" font-size="17" fill="#4CAF50">plant 0.99</text>
           </g>
           <g class="learn-pulse" style="animation-delay: 2.4s;">
-            <path d="M680 270 h-13 v13 M740 270 h13 v13 M680 326 h-13 v-13 M740 326 h13 v-13" stroke="#4CAF50" stroke-width="2.5"/>
-            <text x="667" y="258" font-family="'Space Mono', monospace" font-size="15" fill="#4CAF50">plant 0.99</text>
+            <path d="M880 470 h-18 v18 M1060 470 h18 v18 M880 660 h-18 v-18 M1060 660 h18 v-18" stroke="#F7F9F7" stroke-width="3"/>
+            <path d="M970 545 v-18 M970 583 v18 M951 564 h-18 M989 564 h18" stroke="#F7F9F7" stroke-width="2"/>
+            <text x="862" y="454" font-family="'Space Mono', monospace" font-size="17" fill="#F7F9F7">weed 0.91</text>
           </g>
           <g class="learn-pulse" style="animation-delay: 3.6s;">
-            <path d="M230 540 h-16 v16 M300 540 h16 v16 M230 620 h-16 v-16 M300 620 h16 v-16" stroke="#F7F9F7" stroke-width="2.5"/>
-            <text x="214" y="528" font-family="'Space Mono', monospace" font-size="15" fill="#F7F9F7">weed 0.87</text>
-          </g>
-          <!-- accuracy curve climbing, pass after pass -->
-          <g transform="translate(1010, 130)">
-            <path d="M0 170 V0 M0 170 H340" stroke="rgba(247,249,247,0.25)" stroke-width="1.5"/>
-            <path class="learn-curve" d="M8 160 C70 150, 95 105, 150 75 S 270 28, 332 18" stroke="#4CAF50" stroke-width="3" stroke-linecap="round"/>
-            <text x="0" y="-14" font-family="'Space Mono', monospace" font-size="14" fill="rgba(247,249,247,0.55)">ΑΚΡΙΒΕΙΑ ΑΝΑ ΠΕΡΑΣΜΑ ↑</text>
+            <path d="M300 560 h-18 v18 M470 560 h18 v18 M300 760 h-18 v-18 M470 760 h18 v-18" stroke="#4CAF50" stroke-width="3"/>
+            <text x="282" y="544" font-family="'Space Mono', monospace" font-size="17" fill="#4CAF50">plant 0.97</text>
           </g>
         </svg>
+        <!-- training report: glass card, same language as the roadmap -->
+        <div class="hidden sm:block absolute bottom-16 right-8 lg:right-12 w-[300px] rounded-2xl border border-white/15 bg-navy/35 backdrop-blur-md p-5">
+          <p class="font-mono text-[10px] text-leaf tracking-widest">[ TRAINING REPORT ]</p>
+          <svg viewBox="0 0 280 110" class="mt-3 w-full" fill="none" aria-hidden="true">
+            <path d="M6 100 V6 M6 100 H274" stroke="rgba(247,249,247,0.3)" stroke-width="1.5"/>
+            <path class="learn-curve" pathLength="1100" d="M12 92 C60 86, 80 56, 130 38 S 230 14, 268 9" stroke="#4CAF50" stroke-width="3" stroke-linecap="round"/>
+          </svg>
+          <div class="mt-3 flex items-center justify-between font-mono text-[10px] text-white/65 tracking-wider">
+            <span>ΑΚΡΙΒΕΙΑ <span class="text-leaf">↑</span></span>
+            <span>ΚΑΘΕ ΠΕΡΑΣΜΑ <span class="text-leaf">+DATA</span></span>
+          </div>
+        </div>
       </div>
       <!-- uniform darkening so the overlay text stays readable on the bright frames -->
       <div class="absolute inset-0 bg-navy/35 pointer-events-none"></div>
@@ -343,36 +338,31 @@ tailwind.config = {
 
     <!-- Foreground narrative overlay dashboard UI -->
     <div class="relative z-10 mx-auto max-w-6xl w-full px-6 sm:px-8 h-full flex flex-col justify-between py-20 pointer-events-none">
-      <div class="space-y-2">
-        <p class="font-mono text-leaf text-xs tracking-widest">[ SYSTEM OPERATION · LIVE DEV ]</p>
+      <div>
         <h2 class="text-white font-bold tracking-tight text-2xl sm:text-4xl">Φτιαγμένο για πραγματική δουλειά στο χωράφι.</h2>
       </div>
 
       <div class="rm-static-parent w-full max-w-xl bg-navy/20 backdrop-blur-sm p-8 sm:p-10 rounded-3xl border border-white/10 relative min-h-[260px] sm:min-h-[230px] flex items-center">
         <div id="text-desc-1" class="absolute inset-x-8 sm:inset-x-10 space-y-3 transition-[opacity,transform] duration-300 opacity-100 transform translate-y-0">
-          <span class="inline-block text-[10px] font-bold text-leaf bg-leaf/10 border border-leaf/20 px-2.5 py-0.5 rounded font-mono uppercase">STAGE_01 // DETECT</span>
           <h3 class="text-white font-bold text-xl sm:text-2xl">01. Ανίχνευση</h3>
           <p class="text-white/70 text-sm leading-relaxed">Οι κάμερες του rover σαρώνουν τις γραμμές φύτευσης εκατοστό προς εκατοστό, καταγράφοντας δεδομένα σε πραγματικό χρόνο, μέρα και νύχτα.</p>
         </div>
         <div id="text-desc-2" class="absolute inset-x-8 sm:inset-x-10 space-y-3 transition-[opacity,transform] duration-300 opacity-0 transform translate-y-4">
-          <span class="inline-block text-[10px] font-bold text-leaf bg-leaf/10 border border-leaf/20 px-2.5 py-0.5 rounded font-mono uppercase">STAGE_02 // TARGET</span>
           <h3 class="text-white font-bold text-xl sm:text-2xl">02. Στόχευση</h3>
           <p class="text-white/70 text-sm leading-relaxed">Το ενσωματωμένο AI αναλύει το σχήμα των φύλλων, ξεχωρίζει ακαριαία την καλλιέργεια από τα ζιζάνια και κλειδώνει τη θέση του στόχου.</p>
         </div>
         <div id="text-desc-3" class="absolute inset-x-8 sm:inset-x-10 space-y-3 transition-[opacity,transform] duration-300 opacity-0 transform translate-y-4">
-          <span class="inline-block text-[10px] font-bold text-leaf bg-leaf/10 border border-leaf/20 px-2.5 py-0.5 rounded font-mono uppercase">STAGE_03 // ELIMINATE</span>
           <h3 class="text-white font-bold text-xl sm:text-2xl">03. Εξουδετέρωση</h3>
           <p class="text-white/70 text-sm leading-relaxed">Μια στοχευμένη ριπή θερμικού laser χτυπά το κέντρο ανάπτυξης του ζιζανίου. Το χώμα και οι ρίζες της καλλιέργειας δεν αγγίζονται.</p>
         </div>
         <div id="text-desc-4" class="absolute inset-x-8 sm:inset-x-10 space-y-3 transition-[opacity,transform] duration-300 opacity-0 transform translate-y-4">
-          <span class="inline-block text-[10px] font-bold text-leaf bg-leaf/10 border border-leaf/20 px-2.5 py-0.5 rounded font-mono uppercase">STAGE_04 // LEARN</span>
           <h3 class="text-white font-bold text-xl sm:text-2xl">04. Μάθηση</h3>
           <p class="text-white/70 text-sm leading-relaxed">Κάθε πέρασμα μαζεύει δεδομένα και εκπαιδεύει το μοντέλο. Όσο δουλεύει το rover στο χωράφι σου, τόσο καλύτερο και ταχύτερο γίνεται.</p>
         </div>
       </div>
 
       <div class="flex flex-wrap items-center gap-x-8 gap-y-2 font-mono text-[10px] sm:text-xs text-white/40">
-        <span>39.63°N 22.42°E · ΛΑΡΙΣΑ</span>
+        <a href="https://www.google.com/maps/search/?api=1&amp;query=%CE%92%CF%8C%CE%BB%CE%BF%CF%82" target="_blank" rel="noopener" class="pointer-events-auto hover:text-leaf transition-colors" aria-label="Άνοιγμα του Βόλου στον χάρτη">39.36°N 22.94°E · ΒΟΛΟΣ ↗</a>
         <span>STATUS: <span class="text-leaf">R&amp;D PROTOTYPE</span></span>
         <span>ΧΗΜΙΚΑ: <span class="text-leaf">0</span></span>
       </div>
@@ -383,7 +373,7 @@ tailwind.config = {
 <!-- ============ 3B. STRATEGIC SUPPORTERS (Infinite Film-Strip Marquee) ============ -->
 <section id="supporters" class="bg-white py-16 border-b border-navy/5 overflow-hidden relative z-10">
   <div class="mx-auto max-w-6xl px-6 sm:px-8 mb-10 text-center">
-    <p class="font-mono text-forest text-xs tracking-widest">[ ΧΟΡΗΓΟΙ &amp; ΟΙΚΟΣΥΣΤΗΜΑ ]</p>
+    <h2 class="text-navy font-bold tracking-tight text-2xl sm:text-3xl">Χορηγοί &amp; οικοσύστημα</h2>
   </div>
 
   <div class="w-full flex relative mask-gradient">
@@ -455,13 +445,12 @@ tailwind.config = {
   <div class="mx-auto max-w-6xl px-6 sm:px-8 space-y-16">
     <div class="grid lg:grid-cols-[1.1fr_0.9fr] gap-12 items-start">
       <div>
-        <p class="font-mono text-forest text-xs tracking-widest">[ Η ΕΥΚΑΙΡΙΑ · ΓΙΑ ΕΠΕΝΔΥΤΕΣ ]</p>
-        <h2 class="text-navy font-bold tracking-tight mt-2" style="font-size: clamp(28px, 4vw, 42px); line-height: 1.15;">
+        <h2 class="text-navy font-bold tracking-tight" style="font-size: clamp(28px, 4vw, 42px); line-height: 1.15;">
           Precision farming για τον αγρότη με 80 στρέμματα — όχι μόνο για τον&nbsp;με&nbsp;8.000.
         </h2>
       </div>
       <p class="text-muted text-base leading-relaxed lg:pt-8">
-        Τα σημερινά agri-robotics σχεδιάζονται για mega-farms. Όμως η ευρωπαϊκή γεωργία είναι μικρομεσαία — και μένει χωρίς λύση τη στιγμή που τα χημικά ακριβαίνουν και περιορίζονται θεσμικά. Αυτό το κενό χτίζουμε να καλύψουμε, με βάση τη Λάρισα.
+        Τα σημερινά agri-robotics σχεδιάζονται για mega-farms. Όμως η ευρωπαϊκή γεωργία είναι μικρομεσαία — και μένει χωρίς λύση τη στιγμή που τα χημικά ακριβαίνουν και περιορίζονται θεσμικά. Αυτό το κενό χτίζουμε να καλύψουμε, με βάση τον Βόλο.
       </p>
     </div>
 
@@ -495,12 +484,9 @@ tailwind.config = {
 </section>
 
 <!-- ============ 5. TESTIMONIALS ============ -->
-<section id="testimonials" class="bg-offwhite py-28 border-t border-b border-navy/5 relative z-10">
-  <div class="mx-auto max-w-6xl px-6 sm:px-8 space-y-12">
-    <div class="space-y-3">
-      <p class="font-mono text-forest text-xs tracking-widest">[ ΜΑΡΤΥΡΙΕΣ &amp; FEEDBACK ]</p>
-      <h2 class="text-navy font-bold tracking-tight text-2xl sm:text-3xl">Τι λένε για το όραμα της Cerovia Systems</h2>
-    </div>
+<section id="testimonials" class="forest-band-bg grain py-28 border-t border-b border-white/5 relative z-10 overflow-hidden">
+  <div class="relative mx-auto max-w-6xl px-6 sm:px-8 space-y-12">
+    <h2 class="text-white font-bold tracking-tight text-2xl sm:text-3xl">Τι λένε για εμάς</h2>
     
     <div class="grid md:grid-cols-2 gap-8">
       <div class="bg-white p-8 sm:p-10 rounded-2xl border border-navy/10 shadow-card flex flex-col justify-between space-y-6">
@@ -541,8 +527,7 @@ tailwind.config = {
   </div>
 
   <div class="relative mx-auto max-w-6xl px-6 sm:px-8" style="text-shadow: 0 1px 10px rgba(10,22,40,0.45);">
-    <p class="reveal font-mono text-leaf text-xs tracking-widest">[ ΠΟΥ ΒΡΙΣΚΟΜΑΣΤΕ ]</p>
-    <h2 class="reveal mt-3 text-white font-bold tracking-tight text-2xl sm:text-4xl">Χωρίς υποσχέσεις. Μόνο βήματα.</h2>
+    <h2 class="reveal text-white font-bold tracking-tight text-2xl sm:text-4xl">Χωρίς υποσχέσεις. Μόνο βήματα.</h2>
     <p class="reveal mt-4 text-white/75 text-base sm:text-lg max-w-2xl leading-relaxed">
       Είμαστε εταιρεία R&amp;D. Αυτή είναι η πραγματική μας πορεία — τι έχει γίνει, πού είμαστε, τι έρχεται.
     </p>
@@ -605,7 +590,6 @@ tailwind.config = {
   <div class="mx-auto max-w-6xl px-6 sm:px-8">
     <div class="reveal forest-band-bg grain relative overflow-hidden rounded-3xl px-6 py-20 sm:px-12 sm:py-24 text-center shadow-float">
       <div class="relative max-w-2xl mx-auto space-y-6">
-        <p class="font-mono text-white/70 text-xs tracking-widest">[ FIELD PILOTS — ΑΝΟΙΧΤΗ ΛΙΣΤΑ ]</p>
         <h2 class="font-bold text-white tracking-tight" style="font-size: clamp(28px, 4.5vw, 44px); line-height: 1.15;">
           Θες το laser στο δικό σου&nbsp;χωράφι;
         </h2>
@@ -630,9 +614,8 @@ tailwind.config = {
 <section id="team" class="bg-white py-20 relative z-20 border-b border-navy/5">
   <div class="mx-auto max-w-6xl px-6 sm:px-8 space-y-12">
     <div class="text-center space-y-2 max-w-2xl mx-auto">
-      <p class="font-mono text-forest text-xs tracking-widest">[ Η ΟΜΑΔΑ ]</p>
-      <h2 class="text-navy font-bold tracking-tight text-2xl sm:text-3xl">Μηχανικοί που μεγάλωσαν σε χωράφι.</h2>
-      <p class="text-muted text-sm leading-relaxed">Καταλαβαίνουμε και τον αγρότη και την τεχνολογία — γιατί ζούμε και τα δύο.</p>
+      <h2 class="text-navy font-bold tracking-tight text-2xl sm:text-3xl">Η ομάδα πίσω από το laser.</h2>
+      <p class="text-muted text-sm leading-relaxed">Σχεδιάζουμε, κολλάμε, δοκιμάζουμε και ξαναδοκιμάζουμε — οι ίδιοι, στο ίδιο χωράφι.</p>
     </div>
     
     <div class="grid sm:grid-cols-2 gap-8 pt-4 max-w-2xl mx-auto">
@@ -672,9 +655,9 @@ tailwind.config = {
 </section>
 
 <!-- ============ FOOTER ============ -->
-<footer class="bg-navy border-t border-white/5 py-16 text-white/40 font-medium text-xs relative z-20">
-  <div class="mx-auto max-w-6xl px-6 sm:px-8 space-y-12">
-    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 border-b border-white/5 pb-10">
+<footer class="bg-navy border-t border-white/5 py-8 text-white/40 font-medium text-xs relative z-20">
+  <div class="mx-auto max-w-6xl px-6 sm:px-8 space-y-6">
+    <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-5 border-b border-white/5 pb-6">
       <a href="#top" class="text-white font-bold tracking-wide text-base">
         CEROVIA<span class="text-leaf font-normal">SYSTEMS</span>
       </a>
@@ -683,11 +666,19 @@ tailwind.config = {
         <a href="#rover" class="hover:text-white transition-colors">Η τεχνολογία</a>
         <a href="#supporters" class="hover:text-white transition-colors">Υποστηρικτές</a>
         <a href="#opportunity" class="hover:text-white transition-colors">Η ευκαιρία</a>
+        <a href="#team" class="hover:text-white transition-colors">Η ομάδα</a>
       </div>
     </div>
-    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 font-mono text-[10px] uppercase tracking-widest text-white/20">
-      <span>39.63°N 22.42°E · ΛΑΡΙΣΑ · GREECE</span>
-      <a href="mailto:info@ceroviasystems.com" class="hover:text-white/60 transition-colors">INFO@CEROVIASYSTEMS.COM</a>
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+      <p class="italic text-white/50 text-sm text-center sm:text-left" style="line-height: 1.6;">
+        "We aren't just building a robot — we are engineering the next generation of farming."
+      </p>
+      <a href="mailto:info@ceroviasystems.com" class="font-mono text-[11px] tracking-widest text-white/50 hover:text-white transition-colors whitespace-nowrap">INFO@CEROVIASYSTEMS.COM</a>
+    </div>
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-2 font-mono text-[10px] uppercase tracking-widest text-white/25">
+      <a href="https://www.google.com/maps/search/?api=1&amp;query=%CE%92%CF%8C%CE%BB%CE%BF%CF%82" target="_blank" rel="noopener" class="hover:text-leaf transition-colors" aria-label="Άνοιγμα του Βόλου στον χάρτη">
+        39.36°N 22.94°E · ΒΟΛΟΣ · GREECE ↗
+      </a>
       <span>© 2026 CEROVIA SYSTEMS · R&amp;D PHASE</span>
     </div>
   </div>
