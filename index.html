@@ -127,14 +127,6 @@ tailwind.config = {
     transition: transform 1.4s cubic-bezier(0.22, 1, 0.36, 1) 0.25s;
   }
   #phase-track.is-visible .pt-fill { transform: scaleX(1); }
-  .phase-tab[aria-selected="true"] .pt-label { color: #F7F9F7; }
-  .phase-tab[aria-selected="true"] .pt-label::before { content: '[ '; color: #4CAF50; }
-  .phase-tab[aria-selected="true"] .pt-label::after { content: ' ]'; color: #4CAF50; }
-  .phase-tab[aria-selected="true"] .pt-node {
-    box-shadow: 0 0 0 4px rgba(76,175,80,0.18), 0 0 16px rgba(76,175,80,0.35);
-  }
-  /* the .grid utility would otherwise out-rank the [hidden] attribute */
-  .phase-panel[hidden] { display: none !important; }
   .hud-pulse-dot { animation: hudpulsedot 2.4s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
   @keyframes hudpulsedot { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
 
@@ -161,7 +153,6 @@ tailwind.config = {
     .learn-curve { stroke-dashoffset: 0; animation: none; }
     .hud-pulse-dot { animation: none; }
     #phase-track .pt-fill { transform: scaleX(1); transition: none; }
-    .phase-panel { transition: none; }
     /* unpin the scroll-driven scenes and show every step statically */
     #top, #rover { height: auto !important; }
     #top .sticky, #rover .sticky { position: relative !important; height: auto !important; min-height: 100vh; }
@@ -571,81 +562,41 @@ tailwind.config = {
       <span class="absolute top-[13px] -translate-x-1/2 -translate-y-1/2 w-[22px] h-[22px] rounded-full border-2 border-white/30 bg-navy/70" style="left: 87.5%;"></span>
     </div>
 
-    <!-- the panel: one phase at a time, swapped on click -->
-    <div class="reveal mt-8 rounded-3xl border border-white/10 bg-white/5 overflow-hidden">
-      <div id="phase-panel-1" role="tabpanel" aria-labelledby="phase-tab-1" data-step="1" hidden
-           class="phase-panel transition-[opacity,transform] duration-300 grid lg:grid-cols-[1.2fr_0.8fr]">
-        <div class="p-8 sm:p-10 space-y-4">
-          <p class="font-mono text-[11px] text-leaf tracking-widest">ΟΛΟΚΛΗΡΩΘΗΚΕ ✓</p>
-          <h3 class="text-white font-bold text-2xl sm:text-3xl tracking-tight">01. Σχεδιασμός &amp; Έρευνα</h3>
-          <p class="text-white/65 text-base leading-relaxed">
-            Μελέτη του προβλήματος μέσα στον θεσσαλικό κάμπο, συζητήσεις με παραγωγούς,
-            αρχιτεκτονική συστήματος και πρώτα δοκιμαστικά με laser. Η ιδέα δοκιμάστηκε
-            και διακρίθηκε πριν γραφτεί η πρώτη γραμμή κώδικα του rover.
-          </p>
-        </div>
-        <div class="border-t lg:border-t-0 lg:border-l border-white/10 p-8 sm:p-10 flex flex-col justify-center gap-2 bg-leaf/[0.06]">
-          <p class="font-mono font-bold text-leaf" style="font-size: clamp(34px, 4vw, 48px); line-height: 1;">1η ΘΕΣΗ</p>
-          <p class="text-white/60 text-sm leading-relaxed">στο Ideathlon Accelerator — επιβεβαίωση της ιδέας από κριτές αγοράς.</p>
-        </div>
-      </div>
-
-      <div id="phase-panel-2" role="tabpanel" aria-labelledby="phase-tab-2" data-step="2"
-           class="phase-panel transition-[opacity,transform] duration-300 grid lg:grid-cols-[1.2fr_0.8fr]">
-        <div class="p-8 sm:p-10 space-y-4">
-          <p class="font-mono text-[11px] text-leaf tracking-widest"><span class="hud-pulse-dot">●</span> ΕΔΩ ΕΙΜΑΣΤΕ</p>
-          <h3 class="text-white font-bold text-2xl sm:text-3xl tracking-tight">02. Working Prototype</h3>
-          <p class="text-white/65 text-base leading-relaxed">
-            Λειτουργικό rover: οι κάμερες βλέπουν, το AI ξεχωρίζει ζιζάνιο από καλλιέργεια,
-            το laser εξουδετερώνει — σε ελεγχόμενες συνθήκες. Κάθε εβδομάδα το σύστημα
-            γίνεται πιο γρήγορο και πιο εύστοχο.
-          </p>
-          <p class="text-white/45 text-sm leading-relaxed">Επόμενο ορόσημο: δοκιμές σε ανοιχτό χωράφι.</p>
-        </div>
-        <div class="border-t lg:border-t-0 lg:border-l border-white/10 p-8 sm:p-10 flex flex-col justify-center gap-2 bg-leaf/[0.06]">
-          <p class="font-mono font-bold text-leaf" style="font-size: clamp(34px, 4vw, 48px); line-height: 1;">AI + LASER</p>
-          <p class="text-white/60 text-sm leading-relaxed">αναγνώριση και εξουδετέρωση σε λειτουργία — όχι σε slides.</p>
-        </div>
-      </div>
-
-      <div id="phase-panel-3" role="tabpanel" aria-labelledby="phase-tab-3" data-step="3" hidden
-           class="phase-panel transition-[opacity,transform] duration-300 grid lg:grid-cols-[1.2fr_0.8fr]">
-        <div class="p-8 sm:p-10 space-y-4">
-          <p class="font-mono text-[11px] text-white/40 tracking-widest">ΕΠΟΜΕΝΟ ΒΗΜΑ</p>
-          <h3 class="text-white font-bold text-2xl sm:text-3xl tracking-tight">03. Field Pilots στη Θεσσαλία</h3>
-          <p class="text-white/65 text-base leading-relaxed">
-            Δοκιμές σε πραγματικά χωράφια, με πραγματικούς αγρότες και πραγματικά ζιζάνια.
-            Εκεί κρίνεται το προϊόν — και εκεί χτίζεται η λίστα των πρώτων πελατών.
-          </p>
-          <a href="#contact" class="link-secondary inline-flex items-center gap-2 text-leaf text-sm font-semibold">
-            Δήλωσε το χωράφι σου για pilot <span aria-hidden="true">→</span>
-          </a>
-        </div>
-        <div class="border-t lg:border-t-0 lg:border-l border-white/10 p-8 sm:p-10 flex flex-col justify-center gap-2">
-          <p class="font-mono font-bold text-white/80" style="font-size: clamp(34px, 4vw, 48px); line-height: 1;">€/στρ</p>
-          <p class="text-white/60 text-sm leading-relaxed">μετρήσιμο αποτέλεσμα ανά πιλότο — το νούμερο που πείθει αγρότες και επενδυτές.</p>
-        </div>
-      </div>
-
-      <div id="phase-panel-4" role="tabpanel" aria-labelledby="phase-tab-4" data-step="4" hidden
-           class="phase-panel transition-[opacity,transform] duration-300 grid lg:grid-cols-[1.2fr_0.8fr]">
-        <div class="p-8 sm:p-10 space-y-4">
-          <p class="font-mono text-[11px] text-white/40 tracking-widest">ΣΤΟΧΟΣ</p>
-          <h3 class="text-white font-bold text-2xl sm:text-3xl tracking-tight">04. Πρώτες Μονάδες σε Αγρότες</h3>
-          <p class="text-white/65 text-base leading-relaxed">
-            Από prototype σε προϊόν: μικρή σειρά παραγωγής για τους πρώτους
-            συνεργάτες-αγρότες της περιοχής μας — με ό,τι μάθαμε από τα pilots χτισμένο μέσα της.
-          </p>
-          <a href="mailto:info@ceroviasystems.com?subject=Investor deck" class="link-secondary inline-flex items-center gap-2 text-leaf text-sm font-semibold">
-            Ζήτησε το investor deck <span aria-hidden="true">→</span>
-          </a>
-        </div>
-        <div class="border-t lg:border-t-0 lg:border-l border-white/10 p-8 sm:p-10 flex flex-col justify-center gap-2">
-          <p class="font-mono font-bold text-white/80" style="font-size: clamp(34px, 4vw, 48px); line-height: 1;">ΜΙΚΡΗ ΣΕΙΡΑ</p>
-          <p class="text-white/60 text-sm leading-relaxed">παραγωγής — πρώτα αξιόπιστο σε 10 χωράφια, μετά σε 10.000.</p>
-        </div>
-      </div>
-    </div>
+    <!-- glass phase cards over the field -->
+    <ol class="mt-5 md:mt-4 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <li class="reveal rounded-3xl border border-white/15 bg-navy/25 backdrop-blur-md p-6 sm:p-7" style="transition-delay: 0.1s;">
+        <p class="font-mono text-[11px] text-leaf tracking-widest">ΟΛΟΚΛΗΡΩΘΗΚΕ ✓</p>
+        <h3 class="mt-3 text-white font-bold text-lg sm:text-xl tracking-tight">01. Σχεδιασμός &amp; Έρευνα</h3>
+        <p class="mt-2 text-white/70 text-sm leading-relaxed">
+          Μελέτη του προβλήματος στον κάμπο, αρχιτεκτονική συστήματος και
+          <span class="text-leaf font-semibold">1η θέση στο Ideathlon Accelerator</span>.
+        </p>
+      </li>
+      <li class="reveal rounded-3xl border border-leaf/60 bg-navy/30 backdrop-blur-md p-6 sm:p-7 shadow-[0_0_30px_rgba(76,175,80,0.18)]" style="transition-delay: 0.2s;">
+        <p class="font-mono text-[11px] text-leaf tracking-widest"><span class="hud-pulse-dot">●</span> ΕΔΩ ΕΙΜΑΣΤΕ</p>
+        <h3 class="mt-3 text-white font-bold text-lg sm:text-xl tracking-tight">02. Working Prototype</h3>
+        <p class="mt-2 text-white/70 text-sm leading-relaxed">
+          Λειτουργικό rover: αναγνώριση ζιζανίων με AI και εξουδετέρωση με laser
+          σε ελεγχόμενες συνθήκες. Επόμενο ορόσημο: ανοιχτό χωράφι.
+        </p>
+      </li>
+      <li class="reveal rounded-3xl border border-white/15 bg-navy/25 backdrop-blur-md p-6 sm:p-7" style="transition-delay: 0.3s;">
+        <p class="font-mono text-[11px] text-white/50 tracking-widest">ΕΠΟΜΕΝΟ ΒΗΜΑ</p>
+        <h3 class="mt-3 text-white font-bold text-lg sm:text-xl tracking-tight">03. Field Pilots στη Θεσσαλία</h3>
+        <p class="mt-2 text-white/70 text-sm leading-relaxed">
+          Δοκιμές σε πραγματικά χωράφια με πραγματικούς αγρότες. Μετράμε αποτέλεσμα
+          σε €/στρέμμα. <a href="#contact" class="text-leaf font-semibold underline underline-offset-4 hover:text-white transition-colors">Δήλωσε το χωράφι σου</a>
+        </p>
+      </li>
+      <li class="reveal rounded-3xl border border-white/15 bg-navy/25 backdrop-blur-md p-6 sm:p-7" style="transition-delay: 0.4s;">
+        <p class="font-mono text-[11px] text-white/50 tracking-widest">ΣΤΟΧΟΣ</p>
+        <h3 class="mt-3 text-white font-bold text-lg sm:text-xl tracking-tight">04. Πρώτες Μονάδες</h3>
+        <p class="mt-2 text-white/70 text-sm leading-relaxed">
+          Από prototype σε προϊόν: μικρή σειρά παραγωγής για τους πρώτους
+          συνεργάτες-αγρότες — πρώτα αξιόπιστο σε 10 χωράφια, μετά σε 10.000.
+        </p>
+      </li>
+    </ol>
   </div>
 </section>
 
@@ -686,8 +637,8 @@ tailwind.config = {
     
     <div class="grid sm:grid-cols-2 gap-8 pt-4 max-w-2xl mx-auto">
       <div class="bg-offwhite rounded-2xl p-6 border border-navy/5 text-center space-y-4 shadow-card">
-        <div class="w-24 h-24 rounded-full bg-navy mx-auto shadow-md border-2 border-white flex items-center justify-center">
-          <span class="font-mono font-bold text-leaf text-xl" aria-hidden="true">ΧΚ</span>
+        <div class="w-24 h-24 rounded-full bg-navy mx-auto shadow-md border-2 border-white overflow-hidden">
+          <img src="brand_assets/founders/koukos.jpg" alt="Πορτραίτο του Χαράλαμπου Κούκου" class="w-full h-full object-cover" width="400" height="400" loading="lazy">
         </div>
         <div class="space-y-0.5">
           <h3 class="text-navy font-bold text-base">
@@ -702,8 +653,8 @@ tailwind.config = {
       </div>
 
       <div class="bg-offwhite rounded-2xl p-6 border border-navy/5 text-center space-y-4 shadow-card">
-        <div class="w-24 h-24 rounded-full bg-forest mx-auto shadow-md border-2 border-white flex items-center justify-center">
-          <span class="font-mono font-bold text-white text-xl" aria-hidden="true">ΔΚ</span>
+        <div class="w-24 h-24 rounded-full bg-forest mx-auto shadow-md border-2 border-white overflow-hidden">
+          <img src="brand_assets/founders/kafetzis.jpg" alt="Πορτραίτο του Δημήτρη Καφετζή" class="w-full h-full object-cover" width="400" height="400" loading="lazy">
         </div>
         <div class="space-y-0.5">
           <h3 class="text-navy font-bold text-base">
@@ -801,39 +752,6 @@ tailwind.config = {
       offset += (e.deltaY || e.deltaX);
       apply();
     }, { passive: false });
-  })();
-
-  // ---- TRACTION PHASE TABS ----
-  (() => {
-    const tabs = Array.from(document.querySelectorAll('.phase-tab'));
-    const panels = Array.from(document.querySelectorAll('.phase-panel'));
-    if (!tabs.length) return;
-    const select = (n) => {
-      tabs.forEach((t) => t.setAttribute('aria-selected', String(+t.dataset.step === n)));
-      panels.forEach((p) => {
-        const sel = +p.dataset.step === n;
-        if (sel && p.hidden) {
-          p.hidden = false;
-          p.classList.add('opacity-0', 'translate-y-2');
-          // double rAF so the browser paints the hidden state before transitioning in
-          requestAnimationFrame(() => requestAnimationFrame(() => p.classList.remove('opacity-0', 'translate-y-2')));
-        } else if (!sel) {
-          p.hidden = true;
-        }
-      });
-    };
-    tabs.forEach((t) => {
-      t.addEventListener('click', () => select(+t.dataset.step));
-      t.addEventListener('keydown', (e) => {
-        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
-        e.preventDefault();
-        const next = e.key === 'ArrowRight'
-          ? Math.min(4, +t.dataset.step + 1)
-          : Math.max(1, +t.dataset.step - 1);
-        select(next);
-        tabs[next - 1].focus();
-      });
-    });
   })();
 
   // ---- INTEGRATED SCROLL TIMELINE MANAGER ----
