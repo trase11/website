@@ -31,6 +31,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Strip internal files from the deploy (kept in repo, not served publicly)
+        run: rm -f CLAUDE.md
       - name: Setup Pages
         uses: actions/configure-pages@v5
       - name: Upload artifact

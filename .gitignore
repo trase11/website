@@ -3,7 +3,9 @@ temporary screenshots/
 .claude/
 
 # local tooling & internal files — not part of the deployed site
-CLAUDE.md
+# NOTE: CLAUDE.md is intentionally TRACKED (it is the portable project handoff).
+# The deploy workflow strips it from the published artifact so it is not served at
+# ceroviasystems.com, but it stays in the repo so it clones to any machine.
 package.json
 package-lock.json
 serve.mjs
