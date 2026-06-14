@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="el">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-HWDWDPZ2Q1"></script>
 <script>
@@ -10,8 +12,6 @@
 
   gtag('config', 'G-HWDWDPZ2Q1');
 </script>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cerovia Systems — Autonomous laser weeding · Ζιζανιοκτονία χωρίς χημικά</title>
 <meta name="description" content="Η Cerovia Systems χτίζει αυτόνομα laser weeding robots — ζιζανιοκτονία με laser, χωρίς χημικά — για τον μικρομεσαίο αγρότη. Working prototype στον Βόλο, field pilots στη Θεσσαλία.">
 <link rel="canonical" href="https://ceroviasystems.com/">
@@ -800,8 +800,6 @@ tailwind.config = {
     'rover.s4p': 'Every pass collects data and trains the model. The longer the rover works your field, the better and faster it gets.',
     'rover.loc': '39.36°N 22.94°E · VOLOS ↗',
     'rover.chem': 'CHEMICALS: <span class="text-leaf">0</span>',
-    'rover.acc': 'ACCURACY <span class="text-leaf">↑</span>',
-    'rover.pass': 'EVERY PASS <span class="text-leaf">+DATA</span>',
     'supporters.h2': 'Sponsors &amp; ecosystem',
     'sp.uth': 'UNIVERSITY OF THESSALY', 'sp.innovent': 'INNOVENT FORUM · 2ND PLACE',
     'sp.grob': 'EQUIPMENT SPONSOR', 'sp.hellas': 'EQUIPMENT SPONSOR', 'sp.eyemagic': 'PARTNER',
@@ -889,15 +887,24 @@ tailwind.config = {
         track.style.transform = `translateX(${-offset}px)`;
       }
     };
+    let rafId = null;
     const tick = (now) => {
       const dt = (now - last) / 1000;
       last = now;
       // keeps moving even on hover; pauses only while actively dragging
       if (!dragging && !prefersReducedMotion) offset += SPEED * dt;
       apply();
-      requestAnimationFrame(tick);
+      rafId = requestAnimationFrame(tick);
     };
-    requestAnimationFrame(tick);
+    // run the loop only while the strip is on-screen (saves CPU/battery off-screen);
+    // resetting `last` on resume keeps the position from jumping
+    const startLoop = () => { if (rafId === null) { last = performance.now(); rafId = requestAnimationFrame(tick); } };
+    const stopLoop = () => { if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; } };
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((es) => { for (const e of es) e.isIntersecting ? startLoop() : stopLoop(); }, { threshold: 0 }).observe(track.parentElement);
+    } else {
+      startLoop();
+    }
 
     track.addEventListener('pointerdown', (e) => {
       dragging = true; startX = e.clientX; startOffset = offset;
@@ -910,56 +917,64 @@ tailwind.config = {
     track.addEventListener('pointerup', endDrag);
     track.addEventListener('pointercancel', endDrag);
 
-    // wheel over the strip browses the sponsors instead of scrolling the page
+    // horizontal wheel / trackpad browses the sponsors; vertical wheel must still
+    // scroll the page (previously every wheel event was trapped here, freezing the page)
     track.parentElement.addEventListener('wheel', (e) => {
-      e.preventDefault();
-      offset += (e.deltaY || e.deltaX);
-      apply();
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+        e.preventDefault();
+        offset += e.deltaX;
+        apply();
+      }
     }, { passive: false });
   })();
 
-  // ---- INTEGRATED SCROLL TIMELINE MANAGER ----
+  // ---- HERO LASER BEAM (scroll-driven) ----
   // skipped entirely under prefers-reduced-motion: the CSS fallback unpins the
-  // scenes and shows every step statically instead
-  if (!prefersReducedMotion) window.addEventListener('scroll', () => {
-    
-    // 1. HERO HORIZONTAL LASER BEAM — enters from the page's left edge; the word
-    // vanishes left-to-right as the beam tip passes through it
+  // scene and shows the headline statically instead.
+  // DOM lookups are hoisted out of the handler, and the handler is coalesced to
+  // one run per animation frame (passive listener) to keep scrolling cheap.
+  if (!prefersReducedMotion) {
     const topSection = document.getElementById('top');
     const weedText = document.getElementById('hero-weed-text');
     const heroBeam = document.getElementById('hero-beam');
+    const stickyBox = topSection ? topSection.querySelector('.sticky') : null;
 
-    if (topSection && weedText && heroBeam) {
-      const rectTop = topSection.getBoundingClientRect();
-      const scrollHeightTop = rectTop.height - window.innerHeight;
-      let progressTop = -rectTop.top / scrollHeightTop;
-      progressTop = Math.max(0, Math.min(1, progressTop));
+    if (topSection && weedText && heroBeam && stickyBox) {
+      let ticking = false;
+      const update = () => {
+        ticking = false;
+        const rectTop = topSection.getBoundingClientRect();
+        const scrollHeightTop = rectTop.height - window.innerHeight;
+        let progressTop = scrollHeightTop > 0 ? -rectTop.top / scrollHeightTop : 0;
+        progressTop = Math.max(0, Math.min(1, progressTop));
 
-      const stickyBox = topSection.querySelector('.sticky');
-      const cb = stickyBox.getBoundingClientRect();
-      const wr = weedText.getBoundingClientRect();
-      // measure against the word's full width even while partly clipped
-      const wordLeft = wr.left, wordWidth = weedText.offsetWidth;
-      const targetW = wordLeft + wordWidth - cb.left; // page left edge -> end of the word
-      const beamW = progressTop * targetW;
+        const cb = stickyBox.getBoundingClientRect();
+        const wr = weedText.getBoundingClientRect();
+        // measure against the word's full width even while partly clipped
+        const wordLeft = wr.left, wordWidth = weedText.offsetWidth;
+        const targetW = wordLeft + wordWidth - cb.left; // page left edge -> end of the word
+        const beamW = progressTop * targetW;
 
-      if (progressTop > 0 && progressTop < 0.96) {
-        heroBeam.style.opacity = '1';
-        heroBeam.style.top = `${wr.top + wr.height / 2 - cb.top - 2}px`;
-        heroBeam.style.width = `${beamW}px`;
-        // wipe the word away from the left, in sync with the beam tip
-        const covered = Math.max(0, Math.min(1, (cb.left + beamW - wordLeft) / wordWidth));
-        weedText.style.clipPath = `inset(0 0 0 ${covered * 100}%)`;
-      } else if (progressTop >= 0.96) {
-        heroBeam.style.opacity = '0';
-        weedText.style.clipPath = 'inset(0 0 0 100%)';
-      } else {
-        heroBeam.style.opacity = '0';
-        weedText.style.clipPath = 'none';
-      }
+        if (progressTop > 0 && progressTop < 0.96) {
+          heroBeam.style.opacity = '1';
+          heroBeam.style.top = `${Math.max(0, wr.top + wr.height / 2 - cb.top - 2)}px`;
+          heroBeam.style.width = `${beamW}px`;
+          // wipe the word away from the left, in sync with the beam tip
+          const covered = Math.max(0, Math.min(1, (cb.left + beamW - wordLeft) / wordWidth));
+          weedText.style.clipPath = `inset(0 0 0 ${covered * 100}%)`;
+        } else if (progressTop >= 0.96) {
+          heroBeam.style.opacity = '0';
+          weedText.style.clipPath = 'inset(0 0 0 100%)';
+        } else {
+          heroBeam.style.opacity = '0';
+          weedText.style.clipPath = 'none';
+        }
+      };
+      window.addEventListener('scroll', () => {
+        if (!ticking) { ticking = true; requestAnimationFrame(update); }
+      }, { passive: true });
     }
-
-  });
+  }
 
   // ---- ROVER CAROUSEL: arrows + numbered steps, crossfading field backdrops ----
   (() => {
