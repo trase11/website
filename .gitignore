@@ -12,6 +12,7 @@ serve.mjs
 screenshot.mjs
 index-old.html
 index-preview.html
+redesign.html
 
 # brand sources / raw assets not referenced by the live page
 brand_assets/01.docx
